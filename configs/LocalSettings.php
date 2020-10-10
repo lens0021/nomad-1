@@ -111,7 +111,7 @@ $wgMainCacheType = CACHE_MEMCACHED;
 $wgSessionCacheType = CACHE_MEMCACHED;
 $wgParserCacheType = CACHE_MEMCACHED;
 $wgMessageCacheType = CACHE_MEMCACHED;
-$wgMemCachedServers = [ 'memcached:11211' ];
+$wgMemCachedServers = [ getenv( 'NOMAD_UPSTREAM_ADDR_memcached' ) ];
 
 // To enable image uploads, make sure the 'images' directory
 // is writable, then set this to true:
@@ -384,13 +384,13 @@ $wgNamespaceAliases = [
 
 // Parsoid server Setting
 $wgVirtualRestConfig['modules']['parsoid'] = [
-	'url' => 'http://parsoid:8000',
+	'url' => 'http://' . getenv( 'NOMAD_UPSTREAM_ADDR_parsoid' ),
 	'domain' => 'femiwiki.com'
 ];
 
 // Restbase server Setting
 $wgVirtualRestConfig['modules']['restbase'] = [
-	'url' => 'http://restbase:7231',
+	'url' => 'http://' . getenv( 'NOMAD_UPSTREAM_ADDR_restbase' ),
 	'domain' => 'femiwiki.com'
 ];
 $wgVisualEditorRestbaseURL = 'https://femiwiki.com/femiwiki.com/v1/page/html/';
@@ -953,7 +953,6 @@ if ( defined( 'DEBUG_MODE' ) ) {
 	$wgForceHTTPS = false;
 	$wgServer = 'http://' . DEBUG_MODE;
 	$wgCanonicalServer = 'http://' . DEBUG_MODE;
-	$wgVirtualRestConfig['modules']['restbase']['url'] = 'http://restbase:7231';
 	$wgVisualEditorRestbaseURL = 'http://' . DEBUG_MODE . '/femiwiki.com/v1/page/html/';
 	$wgVisualEditorFullRestbaseURL = 'http://' . DEBUG_MODE . '/femiwiki.com/';
 	$wgMathFullRestbaseURL = 'http://' . DEBUG_MODE . '/femiwiki.com/';

@@ -1,3 +1,6 @@
+# local configurations
+development-client.hcl
+
 # secret
 /configs/secret.php
 /configs/bot-secret.env

@@ -1,10 +1,11 @@
-femiwiki.com *.femiwiki.com http://http
+# TODO Add an address for connections to Nomad upstream service
+femiwiki.com *.femiwiki.com
 tls {
   dns route53
 }
 root /srv/femiwiki.com
 index index.php
-fastcgi / fastcgi:9000 php
+fastcgi / {$NOMAD_UPSTREAM_ADDR_fastcgi} php
 gzip
 header / {
   # HSTS
@@ -27,4 +28,4 @@ rewrite /w {
 # Proxy requests to RESTBase
 # Reference:
 #   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
-proxy /femiwiki.com restbase:7231
+proxy /femiwiki.com {$NOMAD_UPSTREAM_ADDR_restbase}
