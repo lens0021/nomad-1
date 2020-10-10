@@ -35,28 +35,12 @@ jobs:
       run: |
         mv configs/secret.php.example configs/secret.php;
         sed -i -r 's/localhost/127.0.0.1/' configs/secret.php
-        sed -i -r 's/ghcr\.io\/femiwiki\/mediawiki:.+/ghcr\.io\/femiwiki\/mediawiki:docker-test/' development.yml
 
-    - run: echo "::set-output name=version::$(date +%Y-%m-%dT%H-%M)-$(echo ${{ github.sha }} | cut -c1-8)"
-      id: version
-
-    - name: Build docker image using cache
-      env:
-        DOCKER_BUILDKIT: 1
-      run: |
-        docker pull ghcr.io/femiwiki/mediawiki:latest
-        docker build \
-          --build-arg BUILDKIT_INLINE_CACHE=1 \
-          --cache-from ghcr.io/femiwiki/mediawiki:latest \
-          --tag ghcr.io/femiwiki/mediawiki:latest \
-          --tag ghcr.io/femiwiki/mediawiki:docker-test \
-          --tag ghcr.io/femiwiki/mediawiki:${{ steps.version.outputs.version }} \
-          .
-
-    - name: Initialize docker swarm and start services
-      run: |
-        docker swarm init
-        docker stack deploy -c development.yml mediawiki
+    # TODO port to Nomad
+    # - name: Initialize docker swarm and start services
+    #   run: |
+    #     docker swarm init
+    #     docker stack deploy -c development.yml mediawiki
 
     - name: Access 127.0.0.1 until success
       timeout-minutes: 3
@@ -66,25 +50,14 @@ jobs:
           sleep 1;
           printf '.';
         done; printf '\n'
-    - name: backup of accessing
-      if: ${{ failure() }}
-      run: |
-        echo 'Failed to connect to 127.0.0.1';
-        docker ps;
-        for s in $(docker service ls -q ); do docker service ps "$s"; done
-        docker container ps;
-        for s in $(docker service ls -q ); do docker service logs "$s"; done
-    - name: Check if the container is still up
-      run: test "$(docker service ps -qf 'desired-state=Running' -f 'desired-state=Ready' mediawiki_fastcgi)"
-    - name: Try to access the mediawiki
-      run: curl -sSLvo /dev/null 127.0.0.1 || docker service logs mediawiki_fastcgi
-
-    - name: Log into GitHub Container Registry
-      run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u femiwiki-bot --password-stdin
-
-    - name: Publish to Registry
-      # Publish only when in the master branch
-      if: github.ref == 'refs/heads/master'
-      run: |
-        docker push ghcr.io/femiwiki/mediawiki:latest
-        docker push ghcr.io/femiwiki/mediawiki:${{ steps.version.outputs.version }}
+    # TODO port to Nomad
+    # - name: backup of accessing
+    #   if: ${{ failure() }}
+    #   run: |
+    #     echo 'Failed to connect to 127.0.0.1';
+    #     docker ps;
+    #     for s in $(docker service ls -q ); do docker service ps "$s"; done
+    #     docker container ps;
+    #     for s in $(docker service ls -q ); do docker service logs "$s"; done
+    # - name: Try to access the mediawiki
+    #   run: curl -sSLvo /dev/null 127.0.0.1 || docker service logs mediawiki_fastcgi

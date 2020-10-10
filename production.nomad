@@ -1,55 +1,60 @@
-version: '3'
-services:
-  http:
-    image: ghcr.io/femiwiki/caddy:1.0.3
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./caddy/Caddyfile.prod:/etc/Caddyfile:ro
-      - files:/srv/femiwiki.com
-      - caddy:/etc/caddycerts
-    environment:
-      - CADDYPATH=/etc/caddycerts
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-  fastcgi:
-    image: ghcr.io/femiwiki/mediawiki:2020-10-07T04-04-8d049e0f
-    volumes:
-      - ./configs:/a:ro
-      - files:/srv/femiwiki.com
-      - l18n_cache:/tmp/cache
-  parsoid:
-    image: ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600
-    environment:
-      - MEDIAWIKI_LINTING=true
-  restbase:
-    image: ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6
-    environment:
-      # Workaround for https://github.com/femiwiki/femiwiki/issues/151
-      - MEDIAWIKI_APIS_URI=https://femiwiki.com/api.php
-    volumes:
-      - /srv/restbase.sqlite3:/srv/restbase/db.sqlite3
-  mathoid:
-    image: wikimedia/mathoid:bad5ec8d4
-  mysql:
-    image: mysql:8.0.21
-    ports:
-      - 3306:3306
-    command: --default-authentication-plugin=mysql_native_password
-    volumes:
-      - ./mysql:/etc/mysql/conf.d:ro
-      - /srv/mysql:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-  memcached:
-    image: memcached:1.6.6-alpine
+# TODO port to Nomad
+# TODO Use Container Storage Interface
+#   https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes
+#
 
-volumes:
-  files:
-  caddy:
-  l18n_cache:
+# version: '3'
+# services:
+#   http:
+#     image: ghcr.io/femiwiki/caddy:1.0.3
+#     ports:
+#       - 80:80
+#       - 443:443
+#     volumes:
+#       - ./caddy/Caddyfile.prod:/etc/Caddyfile:ro
+#       - files:/srv/femiwiki.com
+#       - caddy:/etc/caddycerts
+#     environment:
+#       - CADDYPATH=/etc/caddycerts
+#     deploy:
+#       restart_policy:
+#         condition: on-failure
+#         delay: 5s
+#         max_attempts: 3
+#         window: 120s
+#   fastcgi:
+#     image: ghcr.io/femiwiki/mediawiki:2020-10-07T04-04-8d049e0f
+#     volumes:
+#       - ./configs:/a:ro
+#       - files:/srv/femiwiki.com
+#       - l18n_cache:/tmp/cache
+#   parsoid:
+#     image: ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600
+#     environment:
+#       - MEDIAWIKI_LINTING=true
+#   restbase:
+#     image: ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6
+#     environment:
+#       # Workaround for https://github.com/femiwiki/femiwiki/issues/151
+#       - MEDIAWIKI_APIS_URI=https://femiwiki.com/api.php
+#     volumes:
+#       - /srv/restbase.sqlite3:/srv/restbase/db.sqlite3
+#   mathoid:
+#     image: wikimedia/mathoid:bad5ec8d4
+#   mysql:
+#     image: mysql:8.0.21
+#     ports:
+#       - 3306:3306
+#     command: --default-authentication-plugin=mysql_native_password
+#     volumes:
+#       - ./mysql:/etc/mysql/conf.d:ro
+#       - /srv/mysql:/var/lib/mysql
+#     environment:
+#       - MYSQL_RANDOM_ROOT_PASSWORD=yes
+#   memcached:
+#     image: memcached:1.6.6-alpine
+#
+# volumes:
+#   files:
+#   caddy:
+#   l18n_cache:
