@@ -1,6 +1,7 @@
 # TODO port to Nomad
 # TODO Use Container Storage Interface
 #   https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes
+# TODO Add restart stanza
 #
 
 # version: '3'
