@@ -36,6 +36,8 @@ AWS EC2 AMI는 [femiwiki/ami]를 참고해주세요.
 
 ```sh
 # TODO
+# TODO Configure systemd
+#      https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul#configure-systemd
 ```
 
 &nbsp;

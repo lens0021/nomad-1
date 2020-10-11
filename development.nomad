@@ -13,8 +13,9 @@ job "mediawiki" {
         ]
 
         # Mount volumes into the container
-        # https://www.nomadproject.io/docs/drivers/docker#mounts
+        # Reference: https://www.nomadproject.io/docs/drivers/docker#mounts
         mounts = [
+          # TODO Use temporary volume that synchronize to the lifecycle of this task
           {
             type     = "volume"
             target   = "/srv/femiwiki.com"
@@ -112,6 +113,7 @@ EOF
         # Mount volumes into the container
         # https://www.nomadproject.io/docs/drivers/docker#mounts
         mounts = [
+          # TODO Use temporary volume instead that syncs with the lifecycle of this task
           {
             type     = "volume"
             target   = "/srv/femiwiki.com"
