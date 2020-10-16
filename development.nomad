@@ -6,22 +6,13 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/caddy:1.0.3"
-
-        args = [
-          "--conf", "/local/Caddyfile"
-        ]
+        image   = "ghcr.io/femiwiki/mediawiki:latest"
+        command = "caddy"
+        args    = ["run"]
 
         # Mount volumes into the container
         # Reference: https://www.nomadproject.io/docs/drivers/docker#mounts
         mounts = [
-          # TODO Use temporary volume that synchronize to the lifecycle of this task
-          {
-            type     = "volume"
-            target   = "/srv/femiwiki.com"
-            source   = "files"
-            readonly = false
-          },
           {
             type     = "volume"
             target   = "/etc/caddycerts"
@@ -31,18 +22,24 @@ job "mediawiki" {
         ]
 
         volumes = [
-          "local/Caddyfile:/etc/Caddyfile"
+          "local/Caddyfile:/srv/femiwiki.com/Caddyfile"
         ]
       }
 
+      volume_mount {
+        volume      = "configs"
+        destination = "/a"
+        read_only = true
+      }
+
       template {
-        data        = <<EOF
-*:80
-root /srv/femiwiki.com
-index index.php
-fastcgi / {$NOMAD_UPSTREAM_ADDR_fastcgi} php
-gzip
-header / {
+        data = <<EOF
+*:80 127.0.0.1:80
+root * /srv/femiwiki.com
+php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
+file_server
+encode gzip
+header {
   # Enable XSS filtering for legacy browsers
   X-XSS-Protection "1; mode=block"
   # Block content sniffing, and enable Cross-Origin Read Blocking
@@ -50,28 +47,37 @@ header / {
   # Avoid clickjacking
   X-Frame-Options "DENY"
 }
-rewrite /w/api.php {
-  to /api.php
-}
-rewrite /w {
-  r  /(.*)
-  to /index.php
-}
+rewrite /w/api.php /api.php
+rewrite /w/* /index.php
+rewrite / /index.php
 
 # Proxy requests to RESTBase
 # Reference:
 #   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
-proxy /femiwiki.com {$NOMAD_UPSTREAM_ADDR_restbase}
+reverse_proxy /femiwiki.com/* {$NOMAD_UPSTREAM_ADDR_restbase}
 EOF
+
         destination = "local/Caddyfile"
       }
     }
 
+    volume "configs" {
+      type   = "host"
+      source = "configs"
+      read_only = true
+    }
+
     network {
       mode = "bridge"
+
       port "http" {
         static = 80
         to     = 80
+      }
+
+      port "https" {
+        static = 443
+        to     = 443
       }
     }
 
@@ -109,18 +115,6 @@ EOF
 
       config {
         image = "ghcr.io/femiwiki/mediawiki:latest"
-
-        # Mount volumes into the container
-        # https://www.nomadproject.io/docs/drivers/docker#mounts
-        mounts = [
-          # TODO Use temporary volume instead that syncs with the lifecycle of this task
-          {
-            type     = "volume"
-            target   = "/srv/femiwiki.com"
-            source   = "files"
-            readonly = false
-          }
-        ]
       }
 
       volume_mount {
@@ -273,8 +267,8 @@ EOF
 
       env {
         MEDIAWIKI_APIS_URI = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
-        PARSOID_URI = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
-        MATHOID_URI = "http://${NOMAD_UPSTREAM_ADDR_http}"
+        PARSOID_URI        = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
+        MATHOID_URI        = "http://${NOMAD_UPSTREAM_ADDR_http}"
       }
 
       resources {
