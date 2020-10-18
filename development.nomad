@@ -34,7 +34,11 @@ job "mediawiki" {
 
       template {
         data = <<EOF
-*:80 127.0.0.1:80
+{
+  # Global options
+  auto_https off
+}
+*:80
 root * /srv/femiwiki.com
 php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
 file_server
@@ -49,7 +53,6 @@ header {
 }
 rewrite /w/api.php /api.php
 rewrite /w/* /index.php
-rewrite / /index.php
 
 # Proxy requests to RESTBase
 # Reference:
