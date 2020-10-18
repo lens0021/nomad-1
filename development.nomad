@@ -54,7 +54,7 @@ rewrite / /index.php
 # Proxy requests to RESTBase
 # Reference:
 #   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
-reverse_proxy /femiwiki.com/* {$NOMAD_UPSTREAM_ADDR_restbase}
+reverse_proxy /localhost/* {$NOMAD_UPSTREAM_ADDR_restbase}
 EOF
 
         destination = "local/Caddyfile"
@@ -227,8 +227,9 @@ EOF
       }
 
       env {
-        MEDIAWIKI_LINTING = "true"
-        MEDIAWIKI_APIS_URI = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
+        MEDIAWIKI_LINTING     = "true"
+        MEDIAWIKI_APIS_DOMAIN = "localhost"
+        MEDIAWIKI_APIS_URI    = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
       }
 
       resources {
@@ -266,9 +267,10 @@ EOF
       }
 
       env {
-        MEDIAWIKI_APIS_URI = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
-        PARSOID_URI        = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
-        MATHOID_URI        = "http://${NOMAD_UPSTREAM_ADDR_http}"
+        MEDIAWIKI_APIS_URI    = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
+        MEDIAWIKI_APIS_DOMAIN = "localhost"
+        PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
+        MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
       }
 
       resources {
