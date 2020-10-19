@@ -1,5 +1,5 @@
 # local configurations
-development-client.hcl
+development.hcl
 
 # secret
 /configs/secret.php
