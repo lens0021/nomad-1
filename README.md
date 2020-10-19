@@ -4,7 +4,7 @@
 [Nomad]와 [Consul Connect] 등에 필요한 다양한 코드를 담고있습니다.
 데이터베이스와 memcached, 백업봇이 실행됩니다.
 
-Nomad를 이용해, 아래와 같이 간편하게 페미위키를 로컬에서 실행할 수
+Nomad와 Consul를 이용해, 아래와 같이 간편하게 페미위키를 로컬에서 실행할 수
 있습니다.
 
 ```bash
@@ -13,6 +13,7 @@ cp nomad/development-client.example.hcl nomad/development-client.hcl
 // Please make host volume paths available
 
 sudo nomad agent -dev-connect -config nomad/development-client.hcl
+consul agent -dev
 nomad job run development.nomad
 ```
 
