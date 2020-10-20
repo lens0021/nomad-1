@@ -1,16 +1,15 @@
 페미위키 미디어위키 서버 [![Github checks Status]][Github checks Link]
 ========
 한국의 페미니즘 위키인 [femiwiki.com]에 사용되는 미디어위키 서버입니다.
-[Nomad]와 [Consul Connect] 등에 필요한 다양한 코드를 담고있습니다.
+[Nomad]와 [Consul] 등에 필요한 다양한 코드를 담고있습니다.
 데이터베이스와 memcached, 백업봇이 실행됩니다.
 
-Nomad와 Consul를 이용해, 아래와 같이 간편하게 페미위키를 로컬에서 실행할 수
-있습니다.
+아래와 같이 간편하게 페미위키를 로컬에서 실행할 수 있습니다.
 
 ```bash
 cp configs/secret.php.example configs/secret.php
 cp nomad/development.example.hcl nomad/development.hcl
-// Please make host volume paths available
+# Please make host volume paths available
 
 sudo nomad agent -dev-connect -config nomad/development.hcl
 consul agent -dev
@@ -60,7 +59,8 @@ sudo cp systemd/consul.service /etc/systemd/system/consul.service
 sudo systemctl enable consul
 sudo systemctl start consul
 
-# TODO
+nomad job run production.nomad
+# TODO Use Terraform to run a job?
 ```
 
 &nbsp;
@@ -76,7 +76,7 @@ of the [GNU Affero General Public License v3.0] or any later version. See
 [femiwiki.com]: https://femiwiki.com
 [femiwiki/ami]: https://github.com/femiwiki/ami
 [Nomad]: https://www.nomadproject.io/
-[Consul Connect]: https://www.consul.io/docs/connect
+[Consul]: https://www.consul.io/
 [secret.php]: configs/secret.php.example
 [GNU Affero General Public License v3.0]: LICENSE
 [COPYRIGHT]: COPYRIGHT

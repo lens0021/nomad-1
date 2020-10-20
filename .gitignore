@@ -1,5 +1,5 @@
 # local configurations
-development.hcl
+/nomad/development.hcl
 
 # secret
 /configs/secret.php

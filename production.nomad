@@ -1,61 +1,341 @@
-# TODO port to Nomad
-# TODO Use Container Storage Interface
-#   https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes
-# TODO Add restart stanza
-#
+job "mediawiki" {
+  datacenters = ["dc1"]
 
-# version: '3'
-# services:
-#   http:
-#     image: ghcr.io/femiwiki/caddy:1.0.3
-#     ports:
-#       - 80:80
-#       - 443:443
-#     volumes:
-#       - ./caddy/Caddyfile.prod:/etc/Caddyfile:ro
-#       - files:/srv/femiwiki.com
-#       - caddy:/etc/caddycerts
-#     environment:
-#       - CADDYPATH=/etc/caddycerts
-#     deploy:
-#       restart_policy:
-#         condition: on-failure
-#         delay: 5s
-#         max_attempts: 3
-#         window: 120s
-#   fastcgi:
-#     image: ghcr.io/femiwiki/mediawiki:2020-10-07T04-04-8d049e0f
-#     volumes:
-#       - ./configs:/a:ro
-#       - files:/srv/femiwiki.com
-#       - l18n_cache:/tmp/cache
-#   parsoid:
-#     image: ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600
-#     environment:
-#       - MEDIAWIKI_LINTING=true
-#   restbase:
-#     image: ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6
-#     environment:
-#       # Workaround for https://github.com/femiwiki/femiwiki/issues/151
-#       - MEDIAWIKI_APIS_URI=https://femiwiki.com/api.php
-#     volumes:
-#       - /srv/restbase.sqlite3:/srv/restbase/db.sqlite3
-#   mathoid:
-#     image: wikimedia/mathoid:bad5ec8d4
-#   mysql:
-#     image: mysql:8.0.21
-#     ports:
-#       - 3306:3306
-#     command: --default-authentication-plugin=mysql_native_password
-#     volumes:
-#       - ./mysql:/etc/mysql/conf.d:ro
-#       - /srv/mysql:/var/lib/mysql
-#     environment:
-#       - MYSQL_RANDOM_ROOT_PASSWORD=yes
-#   memcached:
-#     image: memcached:1.6.6-alpine
-#
-# volumes:
-#   files:
-#   caddy:
-#   l18n_cache:
+  group "http" {
+    task "http" {
+      driver = "docker"
+
+      config {
+        image   = "ghcr.io/femiwiki/mediawiki:2020-10-18T06-03-9e5503e1"
+        command = "caddy"
+        args    = ["run"]
+
+        # Mount volumes into the container
+        # Reference: https://www.nomadproject.io/docs/drivers/docker#mounts
+        mounts = [
+          {
+            type     = "volume"
+            target   = "/etc/caddycerts"
+            source   = "caddy"
+            readonly = false
+          }
+        ]
+      }
+
+      env {
+        FASTCGI_ADDR  = "${NOMAD_UPSTREAM_ADDR_fastcgi}"
+        RESTBASE_ADDR = "${NOMAD_UPSTREAM_ADDR_restbase}"
+      }
+    }
+
+    network {
+      mode = "bridge"
+
+      port "http" {
+        static = 80
+        to     = 80
+      }
+
+      port "https" {
+        static = 443
+        to     = 443
+      }
+    }
+
+    service {
+      name = "http"
+      port = "80"
+
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "fastcgi"
+              local_bind_port  = 9000
+            }
+
+            upstreams {
+              destination_name = "restbase"
+              local_bind_port  = 7231
+            }
+          }
+        }
+      }
+    }
+
+    restart {
+      attempts = 0
+    }
+
+    reschedule {
+      attempts       = 3
+      interval       = "120s"
+      delay          = "5s"
+      delay_function = "constant"
+      unlimited      = false
+    }
+  }
+
+  group "fastcgi" {
+    volume "secret" {
+      type   = "host"
+      source = "secret"
+      read_only = true
+    }
+
+    task "fastcgi" {
+      driver = "docker"
+
+      config {
+        image = "ghcr.io/femiwiki/mediawiki:2020-10-18T06-03-9e5503e1"
+
+        volumes = [
+          "local/LocalSettings.php:/a/LocalSettings.php",
+          "local/sitelist.xml:/a/sitelist.xml"
+        ]
+      }
+
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/master/configs/LocalSettings.php"
+        destination = "local/LocalSettings.php"
+        mode        = "file"
+      }
+
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/master/configs/sitelist.xml"
+        destination = "local/sitelist.xml"
+        mode        = "file"
+      }
+
+      volume_mount {
+        volume      = "secret"
+        destination = "/a/secret.php"
+        read_only = true
+      }
+    }
+
+    network {
+      mode = "bridge"
+    }
+
+    service {
+      name = "fastcgi"
+      port = "9000"
+
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "mysql"
+              local_bind_port  = 3306
+            }
+
+            upstreams {
+              destination_name = "memcached"
+              local_bind_port  = 11211
+            }
+
+            upstreams {
+              destination_name = "parsoid"
+              local_bind_port  = 8000
+            }
+
+            upstreams {
+              destination_name = "restbase"
+              local_bind_port  = 7231
+            }
+          }
+        }
+      }
+    }
+  }
+
+  group "mysql" {
+    # TODO Declare csi volume
+    # - https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes
+
+    task "mysql" {
+      driver = "docker"
+
+      config {
+        image   = "mysql:8.0.21"
+        args    = ["--default-authentication-plugin=mysql_native_password"]
+        volumes = ["local/custom.cnf:/etc/mysql/conf.d/custom.cnf"]
+      }
+
+      # TODO Mount csi volume
+      # - https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes
+
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/master/mysql/custom.cnf"
+        destination = "local/custom.cnf"
+        mode        = "file"
+      }
+
+      env {
+        MYSQL_RANDOM_ROOT_PASSWORD = "yes"
+      }
+
+      resources {
+        memory = 1024
+      }
+    }
+
+    network {
+      mode = "bridge"
+    }
+
+    service {
+      name = "mysql"
+      port = "3306"
+
+      connect {
+        sidecar_service {}
+      }
+    }
+  }
+
+  group "memcached" {
+    task "memcached" {
+      driver = "docker"
+
+      config {
+        image = "memcached:1.6.6-alpine"
+      }
+    }
+
+    network {
+      mode = "bridge"
+    }
+
+    service {
+      name = "memcached"
+      port = "11211"
+
+      connect {
+        sidecar_service {}
+      }
+    }
+  }
+
+  group "parsoid" {
+    task "parsoid" {
+      driver = "docker"
+
+      config {
+        image = "ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600"
+      }
+
+      env {
+        MEDIAWIKI_LINTING     = "true"
+        MEDIAWIKI_APIS_DOMAIN = "localhost"
+        # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
+        MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
+      }
+
+      resources {
+        memory = 1024
+      }
+    }
+
+    network {
+      mode = "bridge"
+    }
+
+    service {
+      name = "parsoid"
+      port = "8000"
+
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "http"
+              local_bind_port  = 80
+            }
+          }
+        }
+      }
+    }
+  }
+
+  group "restbase" {
+    task "restbase" {
+      driver = "docker"
+
+      config {
+        image = "ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6"
+      }
+
+      env {
+        # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
+        MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
+        MEDIAWIKI_APIS_DOMAIN = "localhost"
+        PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
+        MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
+      }
+
+      resources {
+        memory = 1024
+      }
+    }
+
+    network {
+      mode = "bridge"
+    }
+
+    service {
+      name = "restbase"
+      port = "7231"
+
+
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "http"
+              local_bind_port  = 80
+            }
+
+            upstreams {
+              destination_name = "parsoid"
+              local_bind_port  = 8000
+            }
+
+            upstreams {
+              destination_name = "mathoid"
+              local_bind_port  = 10044
+            }
+          }
+        }
+      }
+    }
+  }
+
+  group "mathoid" {
+    task "mathoid" {
+      driver = "docker"
+
+      config {
+        image = "wikimedia/mathoid:bad5ec8d4"
+      }
+
+      resources {
+        memory = 1024
+      }
+    }
+
+    network {
+      mode = "bridge"
+    }
+
+    service {
+      name = "mathoid"
+      port = "10044"
+
+      connect {
+        sidecar_service {}
+      }
+    }
+  }
+}
