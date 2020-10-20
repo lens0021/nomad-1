@@ -49,19 +49,19 @@ jobs:
         sudo nomad agent -dev-connect -config nomad/development.hcl &
         consul agent -dev &
         # Wait for initializing...
-        sleep 10;
+        until consul members &> /dev/null; do
+          sleep 1;
+        done;
 
     - name: Run a Nomad job
       run: nomad job run development.nomad
 
     - name: Access localhost until success
-      timeout-minutes: 10
+      timeout-minutes: 5
       run: |
-        printf 'Waiting for http...'
         until curl -sLfo /dev/null localhost; do
           sleep 1;
-          printf '.';
-        done; printf '\n'
+        done;
     # TODO port to Nomad
     # - name: backup of accessing
     #   if: ${{ failure() }}
