@@ -26,27 +26,39 @@ jobs:
         composer test
 
   docker_image:
-    name: Docker image test and publishing
+    name: Test Nomad job specification
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
 
     - name: Edit configuration
       run: |
-        mv configs/secret.php.example configs/secret.php;
+        mv configs/secret.php.example configs/secret.php
         sed -i -r 's/localhost/127.0.0.1/' configs/secret.php
+        mv nomad/development.example.hcl nomad/development.hcl
+        sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
 
-    # TODO port to Nomad
-    # - name: Initialize docker swarm and start services
-    #   run: |
-    #     docker swarm init
-    #     docker stack deploy -c development.yml mediawiki
+    - name: Install Nomad and Consul
+      run: |
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get update && sudo apt-get install -y nomad consul
 
-    - name: Access 127.0.0.1 until success
-      timeout-minutes: 3
+    - name: Start a Nomad Agent and a Consul agent
+      run: |
+        sudo nomad agent -dev-connect -config nomad/development.hcl &
+        consul agent -dev &
+        # Wait for initializing...
+        sleep 10;
+
+    - name: Run a Nomad job
+      run: nomad job run development.nomad
+
+    - name: Access localhost until success
+      timeout-minutes: 10
       run: |
         printf 'Waiting for http...'
-        until curl -sLfo /dev/null 127.0.0.1; do
+        until curl -sLfo /dev/null localhost; do
           sleep 1;
           printf '.';
         done; printf '\n'
@@ -54,10 +66,10 @@ jobs:
     # - name: backup of accessing
     #   if: ${{ failure() }}
     #   run: |
-    #     echo 'Failed to connect to 127.0.0.1';
+    #     echo 'Failed to connect to localhost';
     #     docker ps;
     #     for s in $(docker service ls -q ); do docker service ps "$s"; done
     #     docker container ps;
     #     for s in $(docker service ls -q ); do docker service logs "$s"; done
-    # - name: Try to access the mediawiki
-    #   run: curl -sSLvo /dev/null 127.0.0.1 || docker service logs mediawiki_fastcgi
+    - name: Try to access the mediawiki
+      run: curl -sSLvo /dev/null localhost
