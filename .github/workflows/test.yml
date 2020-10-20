@@ -73,3 +73,5 @@ jobs:
     #     for s in $(docker service ls -q ); do docker service logs "$s"; done
     - name: Try to access the mediawiki
       run: curl -sSLvo /dev/null localhost
+    - name: Test VisualEditor API
+      run: curl -sSLvo /dev/null "http://localhost/api.php?action=visualeditor&format=json&page=main_page&paction=parse&wikitext='''foo'''"
