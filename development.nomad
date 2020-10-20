@@ -26,12 +26,6 @@ job "mediawiki" {
         ]
       }
 
-      volume_mount {
-        volume      = "configs"
-        destination = "/a"
-        read_only = true
-      }
-
       template {
         data = <<EOF
 {
@@ -65,8 +59,8 @@ EOF
     }
 
     volume "configs" {
-      type   = "host"
-      source = "configs"
+      type      = "host"
+      source    = "configs"
       read_only = true
     }
 
@@ -108,8 +102,8 @@ EOF
 
   group "fastcgi" {
     volume "configs" {
-      type   = "host"
-      source = "configs"
+      type      = "host"
+      source    = "configs"
       read_only = true
     }
 
@@ -123,7 +117,7 @@ EOF
       volume_mount {
         volume      = "configs"
         destination = "/a"
-        read_only = true
+        read_only   = true
       }
     }
 
