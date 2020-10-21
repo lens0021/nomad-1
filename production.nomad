@@ -5,7 +5,7 @@ job "mediawiki" {
   update {
     max_parallel = 1
     health_check = "checks"
-    auto_revert  = true
+    auto_revert  = false
     auto_promote = true
     # canary count equal to the desired count allows a Nomad job to model blue/green deployments
     canary       = 1
