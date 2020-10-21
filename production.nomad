@@ -103,6 +103,15 @@ job "mediawiki" {
           "local/LocalSettings.php:/a/LocalSettings.php",
           "local/sitelist.xml:/a/sitelist.xml"
         ]
+
+        mounts = [
+          {
+            type     = "volume"
+            target   = "/tmp/cache"
+            source   = "l18n_cache"
+            readonly = false
+          }
+        ]
       }
 
       artifact {
@@ -275,6 +284,15 @@ job "mediawiki" {
 
       config {
         image = "ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6"
+
+        mounts = [
+          {
+            type     = "volume"
+            target   = "/srv/restbase.sqlite3"
+            source   = "restbase"
+            readonly = false
+          }
+        ]
       }
 
       env {
