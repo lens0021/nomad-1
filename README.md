@@ -59,6 +59,15 @@ sudo cp systemd/consul.service /etc/systemd/system/consul.service
 sudo systemctl enable consul
 sudo systemctl start consul
 
+# Deploy the CSI plugin jobs
+nomad job run nomad/plugin-ebs-controller.nomad
+nomad job run nomad/plugin-ebs-nodes.nomad
+
+# You must write volume.hcl file as described in the instruction
+# - https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes#deploy-the-ebs-plugin
+# Register the volume
+nomad volume register volume.hcl
+
 nomad job run production.nomad
 # TODO Use Terraform to run a job?
 ```

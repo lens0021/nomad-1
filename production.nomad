@@ -170,16 +170,29 @@ job "mediawiki" {
   }
 
   group "mysql" {
-    # TODO Declare csi volume
-    # - https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes
+
+    volume "mysql" {
+      type      = "csi"
+      read_only = false
+      source    = "mysql"
+    }
 
     task "mysql" {
       driver = "docker"
 
+      volume_mount {
+        volume      = "mysql"
+        destination = "/srv"
+        read_only   = false
+      }
+
       config {
         image   = "mysql:8.0.21"
-        args    = ["--default-authentication-plugin=mysql_native_password"]
         volumes = ["local/custom.cnf:/etc/mysql/conf.d/custom.cnf"]
+        args    = [
+          "--default-authentication-plugin=mysql_native_password",
+          "--datadir", "/srv/mysql"
+        ]
       }
 
       # TODO Mount csi volume
