@@ -180,12 +180,6 @@ job "mediawiki" {
     task "mysql" {
       driver = "docker"
 
-      volume_mount {
-        volume      = "mysql"
-        destination = "/srv"
-        read_only   = false
-      }
-
       config {
         image   = "mysql:8.0.21"
         volumes = ["local/custom.cnf:/etc/mysql/conf.d/custom.cnf"]
@@ -195,8 +189,11 @@ job "mediawiki" {
         ]
       }
 
-      # TODO Mount csi volume
-      # - https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes
+      volume_mount {
+        volume      = "mysql"
+        destination = "/srv"
+        read_only   = false
+      }
 
       artifact {
         source      = "https://github.com/femiwiki/nomad/raw/master/mysql/custom.cnf"
