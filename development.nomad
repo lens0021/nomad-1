@@ -58,12 +58,6 @@ EOF
       }
     }
 
-    volume "configs" {
-      type      = "host"
-      source    = "configs"
-      read_only = true
-    }
-
     network {
       mode = "bridge"
 
