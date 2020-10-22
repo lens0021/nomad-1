@@ -14,7 +14,7 @@ client {
   host_volume "secret" {
     # Please replace the path with available one
     # Reference: https://www.nomadproject.io/docs/configuration/client#host_volume-stanza
-    path      = "/home/ec2-user/mediawiki/configs/secret.php"
+    path      = "/home/ec2-user/nomad/configs/secret.php"
     read_only = true
   }
 }
