@@ -59,6 +59,9 @@ sudo cp systemd/consul.service /etc/systemd/system/consul.service
 sudo systemctl enable consul
 sudo systemctl start consul
 
+# Run Docker daemon
+sudo systemctl start docker
+
 # Deploy the CSI plugin jobs
 nomad job run nomad/plugin-ebs-controller.nomad
 nomad job run nomad/plugin-ebs-nodes.nomad
