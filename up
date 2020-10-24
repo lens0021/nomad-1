@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail; IFS=$'\n\t'
+
+# Enable verbose mode
+set -x
+
+GIT_REPO=$(dirname "$0")
+cp "${GIT_REPO}/configs/secret.php.example" "${GIT_REPO}/configs/secret.php"
+
+# Configure Nomad
+# Reference: https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul
+mkdir -p /opt/nomad /etc/nomad.d
+chmod 700 /etc/nomad.d
+cp "${GIT_REPO}/nomad/production.hcl" /etc/nomad.d/nomad.hcl
+cp "${GIT_REPO}/systemd/nomad.service" /etc/systemd/system/nomad.service
+
+# Configure Consul
+# Reference: https://learn.hashicorp.com/tutorials/consul/deployment-guide
+useradd -rd /etc/consul.d -s /bin/false consul
+mkdir -p /etc/consul.d /opt/consul
+cp "${GIT_REPO}/consul/consul.hcl" /etc/consul.d/consul.hcl
+chmod 640 /etc/consul.d/consul.hcl
+chown -R consul:consul /etc/consul.d
+chown -R consul:consul /opt/consul
+sudo -u consul consul validate /etc/consul.d/consul.hcl
+cp "${GIT_REPO}/systemd/consul.service" /etc/systemd/system/consul.service
+
+# Start Nomad
+systemctl enable nomad
+systemctl start nomad
+
+# Start Consul
+systemctl enable consul
+# https://github.com/femiwiki/nomad/issues/2
+systemctl start consul || true

@@ -34,30 +34,15 @@ AWS EC2 AMI는 [femiwiki/ami]를 참고해주세요.
 
 프로덕션 배포를 할때엔 [secret.php] 에서 개발자모드를 반드시 꺼주세요.
 
+다음 소프트웨어가 필요합니다.
+
+- Docker
+- Nomad
+- Consul
+- CNI network plugins
+
 ```sh
-# Configure Nomad
-# - https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul
-sudo mkdir --parents /opt/nomad /etc/nomad.d
-sudo chmod 700 /etc/nomad.d
-sudo cp nomad/production.hcl /etc/nomad.d/nomad.hcl
-
-sudo cp systemd/nomad.service /etc/systemd/system/nomad.service
-sudo systemctl enable nomad
-sudo systemctl start nomad
-
-# Configure Consul
-# - https://learn.hashicorp.com/tutorials/consul/deployment-guide
-sudo mkdir --parents /etc/consul.d /opt/consul
-sudo cp consul/consul.hcl /etc/consul.d/consul.hcl
-sudo useradd --system --home /etc/consul.d --shell /bin/false consul
-sudo chown --recursive consul:consul /etc/consul.d
-sudo chown --recursive consul:consul /opt/consul
-sudo chmod 640 /etc/consul.d/consul.hcl
-consul validate /etc/consul.d/consul.hcl
-
-sudo cp systemd/consul.service /etc/systemd/system/consul.service
-sudo systemctl enable consul
-sudo systemctl start consul
+sudo ./up
 
 # Run Docker daemon
 sudo systemctl start docker
