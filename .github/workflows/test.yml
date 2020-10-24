@@ -54,7 +54,7 @@ jobs:
         done;
 
     - name: Run a Nomad job
-      run: nomad job run development.nomad
+      run: nomad job run nomad/development.nomad
 
     - name: Access localhost until success
       timeout-minutes: 5
