@@ -13,7 +13,7 @@ cp nomad/development.example.hcl nomad/development.hcl
 
 sudo nomad agent -dev-connect -config nomad/development.hcl
 consul agent -dev
-nomad job run development.nomad
+nomad job run nomad/development.nomad
 ```
 
 페미위키 개발하실 때엔 아래 커맨드들을 참고해주세요.
@@ -71,7 +71,7 @@ nomad job run nomad/plugin-ebs-nodes.nomad
 # Register the volume
 nomad volume register volume.hcl
 
-nomad job run production.nomad
+nomad job run nomad/production.nomad
 # TODO Use Terraform to run a job?
 ```
 
