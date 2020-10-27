@@ -66,6 +66,10 @@ EOF
 
         destination = "local/Caddyfile"
       }
+
+      resources {
+        memory = 256
+      }
     }
 
     network {
@@ -122,6 +126,10 @@ EOF
         volume      = "configs"
         destination = "/a"
         read_only   = true
+      }
+
+      resources {
+        memory = 256
       }
     }
 
@@ -202,6 +210,10 @@ EOF
 
       config {
         image = "memcached:1-alpine"
+      }
+
+      resources {
+        memory = 256
       }
     }
 
