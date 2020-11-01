@@ -293,7 +293,7 @@ job "mediawiki" {
 
       env {
         MEDIAWIKI_LINTING     = "true"
-        MEDIAWIKI_APIS_DOMAIN = "localhost"
+        MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
         MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
       }
@@ -350,7 +350,7 @@ job "mediawiki" {
       env {
         # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
         MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
-        MEDIAWIKI_APIS_DOMAIN = "localhost"
+        MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
         MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
       }
