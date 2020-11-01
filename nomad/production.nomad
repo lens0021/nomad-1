@@ -38,7 +38,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 24
+        memory = 32
       }
     }
 
