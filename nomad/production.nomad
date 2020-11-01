@@ -38,7 +38,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 256
+        memory = 24
       }
     }
 
@@ -137,7 +137,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 256
+        memory = 110
       }
     }
 
@@ -214,7 +214,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 1024
+        memory = 512
       }
     }
 
@@ -241,7 +241,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 256
+        memory = 80
       }
     }
 
@@ -272,6 +272,10 @@ job "mediawiki" {
         MEDIAWIKI_APIS_DOMAIN = "localhost"
         # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
         MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
+      }
+
+      resources {
+        memory = 150
       }
     }
 
@@ -320,6 +324,10 @@ job "mediawiki" {
         PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
         MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
       }
+
+      resources {
+        memory = 128
+      }
     }
 
     network {
@@ -360,6 +368,10 @@ job "mediawiki" {
 
       config {
         image = "wikimedia/mathoid:bad5ec8d4"
+      }
+
+      resources {
+        memory = 128
       }
     }
 

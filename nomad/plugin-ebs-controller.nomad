@@ -26,7 +26,7 @@ job "plugin-aws-ebs-controller" {
 
       resources {
         cpu    = 500
-        memory = 256
+        memory = 16
       }
     }
   }
