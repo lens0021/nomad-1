@@ -34,6 +34,12 @@ job "mediawiki" {
         volumes = [
           "local/Caddyfile:/srv/femiwiki.com/Caddyfile"
         ]
+
+        memory_hard_limit = 400
+      }
+
+      resources {
+        memory = 80
       }
 
       template {
@@ -65,10 +71,6 @@ reverse_proxy /localhost/* {$NOMAD_UPSTREAM_ADDR_restbase}
 EOF
 
         destination = "local/Caddyfile"
-      }
-
-      resources {
-        memory = 256
       }
     }
 
@@ -120,16 +122,17 @@ EOF
 
       config {
         image = "ghcr.io/femiwiki/mediawiki:latest"
+        memory_hard_limit = 600
+      }
+
+      resources {
+        memory = 80
       }
 
       volume_mount {
         volume      = "configs"
         destination = "/a"
         read_only   = true
-      }
-
-      resources {
-        memory = 256
       }
     }
 
@@ -176,6 +179,11 @@ EOF
       config {
         image = "mysql:8.0"
         args  = ["--default-authentication-plugin=mysql_native_password"]
+        memory_hard_limit = 1000
+      }
+
+      resources {
+        memory = 500
       }
 
       env {
@@ -183,10 +191,6 @@ EOF
         MYSQL_DATABASE      = "femiwiki"
         MYSQL_USER          = "DB_USERNAME" // secret.php.example에 적힌 기본값
         MYSQL_PASSWORD      = "DB_PASSWORD" // secret.php.example에 적힌 기본값
-      }
-
-      resources {
-        memory = 1024
       }
     }
 
@@ -210,10 +214,11 @@ EOF
 
       config {
         image = "memcached:1-alpine"
+        memory_hard_limit = 240
       }
 
       resources {
-        memory = 256
+        memory = 60
       }
     }
 
@@ -237,6 +242,11 @@ EOF
 
       config {
         image = "ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600"
+        memory_hard_limit = 400
+      }
+
+      resources {
+        memory = 120
       }
 
       env {
@@ -244,10 +254,6 @@ EOF
         MEDIAWIKI_APIS_DOMAIN = "localhost"
         # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
         MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
-      }
-
-      resources {
-        memory = 1024
       }
     }
 
@@ -278,6 +284,11 @@ EOF
 
       config {
         image = "ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6"
+        memory_hard_limit = 400
+      }
+
+      resources {
+        memory = 100
       }
 
       env {
@@ -286,10 +297,6 @@ EOF
         MEDIAWIKI_APIS_DOMAIN = "localhost"
         PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
         MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
-      }
-
-      resources {
-        memory = 1024
       }
     }
 
@@ -331,10 +338,11 @@ EOF
 
       config {
         image = "wikimedia/mathoid:bad5ec8d4"
+        memory_hard_limit = 600
       }
 
       resources {
-        memory = 1024
+        memory = 150
       }
     }
 

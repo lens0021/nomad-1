@@ -30,15 +30,17 @@ job "mediawiki" {
             readonly = false
           }
         ]
+
+        memory_hard_limit = 400
+      }
+
+      resources {
+        memory = 80
       }
 
       env {
         FASTCGI_ADDR  = "${NOMAD_UPSTREAM_ADDR_fastcgi}"
         RESTBASE_ADDR = "${NOMAD_UPSTREAM_ADDR_restbase}"
-      }
-
-      resources {
-        memory = 32
       }
     }
 
@@ -122,6 +124,12 @@ job "mediawiki" {
             readonly = false
           }
         ]
+
+        memory_hard_limit = 600
+      }
+
+      resources {
+        memory = 80
       }
 
       artifact {
@@ -140,10 +148,6 @@ job "mediawiki" {
         volume      = "secret"
         destination = "/a/secret.php"
         read_only = true
-      }
-
-      resources {
-        memory = 110
       }
     }
 
@@ -207,6 +211,11 @@ job "mediawiki" {
           "--default-authentication-plugin=mysql_native_password",
           "--datadir", "/srv/mysql"
         ]
+        memory_hard_limit = 1000
+      }
+
+      resources {
+        memory = 500
       }
 
       volume_mount {
@@ -223,10 +232,6 @@ job "mediawiki" {
 
       env {
         MYSQL_RANDOM_ROOT_PASSWORD = "yes"
-      }
-
-      resources {
-        memory = 512
       }
     }
 
@@ -256,10 +261,11 @@ job "mediawiki" {
 
       config {
         image = "memcached:1.6.6-alpine"
+        memory_hard_limit = 240
       }
 
       resources {
-        memory = 80
+        memory = 60
       }
     }
 
@@ -289,6 +295,11 @@ job "mediawiki" {
 
       config {
         image = "ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600"
+        memory_hard_limit = 400
+      }
+
+      resources {
+        memory = 120
       }
 
       env {
@@ -296,10 +307,6 @@ job "mediawiki" {
         MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
         MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
-      }
-
-      resources {
-        memory = 150
       }
     }
 
@@ -345,6 +352,12 @@ job "mediawiki" {
             readonly = false
           }
         ]
+
+        memory_hard_limit = 400
+      }
+
+      resources {
+        memory = 100
       }
 
       env {
@@ -353,10 +366,6 @@ job "mediawiki" {
         MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
         MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
-      }
-
-      resources {
-        memory = 128
       }
     }
 
@@ -404,10 +413,11 @@ job "mediawiki" {
 
       config {
         image = "wikimedia/mathoid:bad5ec8d4"
+        memory_hard_limit = 600
       }
 
       resources {
-        memory = 128
+        memory = 150
       }
     }
 
