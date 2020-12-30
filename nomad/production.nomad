@@ -32,6 +32,10 @@ job "mediawiki" {
         ]
 
         memory_hard_limit = 400
+
+        ulimit {
+          nofile = "20000:40000"
+        }
       }
 
       resources {
