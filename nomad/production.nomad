@@ -137,13 +137,13 @@ job "mediawiki" {
       }
 
       artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/master/configs/LocalSettings.php"
+        source      = "https://github.com/femiwiki/nomad/raw/main/configs/LocalSettings.php"
         destination = "local/LocalSettings.php"
         mode        = "file"
       }
 
       artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/master/configs/sitelist.xml"
+        source      = "https://github.com/femiwiki/nomad/raw/main/configs/sitelist.xml"
         destination = "local/sitelist.xml"
         mode        = "file"
       }
@@ -229,7 +229,7 @@ job "mediawiki" {
       }
 
       artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/master/mysql/custom.cnf"
+        source      = "https://github.com/femiwiki/nomad/raw/main/mysql/custom.cnf"
         destination = "local/custom.cnf"
         mode        = "file"
       }
