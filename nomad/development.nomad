@@ -32,6 +32,7 @@ job "mediawiki" {
         ]
 
         volumes = [
+          # Overwrite production Caddyfile
           "local/Caddyfile:/srv/femiwiki.com/Caddyfile"
         ]
 
@@ -166,6 +167,11 @@ EOF
               destination_name = "restbase"
               local_bind_port  = 7231
             }
+
+            upstreams {
+              destination_name = "mathoid"
+              local_bind_port  = 10044
+            }
           }
         }
       }
@@ -241,7 +247,7 @@ EOF
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600"
+        image = "ghcr.io/femiwiki/parsoid:latest"
         memory_hard_limit = 400
       }
 
@@ -283,7 +289,7 @@ EOF
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6"
+        image = "ghcr.io/femiwiki/restbase:latest"
         memory_hard_limit = 400
       }
 
@@ -337,7 +343,7 @@ EOF
       driver = "docker"
 
       config {
-        image = "wikimedia/mathoid:bad5ec8d4"
+        image = "ghcr.io/femiwiki/mathoid:latest"
         memory_hard_limit = 600
       }
 

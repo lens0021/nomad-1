@@ -16,7 +16,7 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:2020-10-18T06-03-9e5503e1"
+        image   = "ghcr.io/femiwiki/mediawiki:2021-01-03T11-48-c3b6669f"
         command = "caddy"
         args    = ["run"]
 
@@ -43,6 +43,7 @@ job "mediawiki" {
       }
 
       env {
+        CADDYPATH     = "/etc/caddycerts"
         FASTCGI_ADDR  = "${NOMAD_UPSTREAM_ADDR_fastcgi}"
         RESTBASE_ADDR = "${NOMAD_UPSTREAM_ADDR_restbase}"
       }
@@ -113,7 +114,7 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2020-10-18T06-03-9e5503e1"
+        image = "ghcr.io/femiwiki/mediawiki:2021-01-03T11-48-c3b6669f"
 
         volumes = [
           "local/LocalSettings.php:/a/LocalSettings.php",
@@ -185,6 +186,11 @@ job "mediawiki" {
               destination_name = "restbase"
               local_bind_port  = 7231
             }
+
+            upstreams {
+              destination_name = "mathoid"
+              local_bind_port  = 10044
+            }
           }
         }
 
@@ -223,6 +229,7 @@ job "mediawiki" {
       }
 
       volume_mount {
+        # Container Storage Interface
         volume      = "mysql"
         destination = "/srv"
         read_only   = false
@@ -298,7 +305,7 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/parsoid:2020-09-05T10-03-ae442600"
+        image = "ghcr.io/femiwiki/parsoid:2020-12-10T14-51-f84b9d2d"
         memory_hard_limit = 400
       }
 
@@ -346,7 +353,7 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/restbase:2020-09-05T10-04-5dcdc8b6"
+        image = "ghcr.io/femiwiki/restbase:2020-12-13T02-25-8388f4c4"
 
         mounts = [
           {
@@ -416,7 +423,7 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image = "wikimedia/mathoid:bad5ec8d4"
+        image = "ghcr.io/femiwiki/mathoid:2020-12-09T04-56-c3db867c"
         memory_hard_limit = 600
       }
 
