@@ -81,12 +81,6 @@ job "mediawiki" {
             }
           }
         }
-
-        sidecar_task {
-          resources {
-            memory = 16
-          }
-        }
       }
     }
 
@@ -193,12 +187,6 @@ job "mediawiki" {
             }
           }
         }
-
-        sidecar_task {
-          resources {
-            memory = 16
-          }
-        }
       }
     }
   }
@@ -256,12 +244,6 @@ job "mediawiki" {
 
       connect {
         sidecar_service {}
-
-        sidecar_task {
-          resources {
-            memory = 16
-          }
-        }
       }
     }
   }
@@ -290,12 +272,6 @@ job "mediawiki" {
 
       connect {
         sidecar_service {}
-
-        sidecar_task {
-          resources {
-            memory = 16
-          }
-        }
       }
     }
   }
@@ -336,12 +312,6 @@ job "mediawiki" {
               destination_name = "http"
               local_bind_port  = 80
             }
-          }
-        }
-
-        sidecar_task {
-          resources {
-            memory = 16
           }
         }
       }
@@ -408,12 +378,6 @@ job "mediawiki" {
             }
           }
         }
-
-        sidecar_task {
-          resources {
-            memory = 16
-          }
-        }
       }
     }
   }
@@ -442,12 +406,6 @@ job "mediawiki" {
 
       connect {
         sidecar_service {}
-
-        sidecar_task {
-          resources {
-            memory = 16
-          }
-        }
       }
     }
   }
