@@ -23,5 +23,10 @@ plugin "docker" {
   config {
     # CSI Node plugins must run as privileged Docker jobs
     allow_privileged = true
+
+    # Cache
+    volumes {
+      enabled = true
+    }
   }
 }
