@@ -20,6 +20,8 @@ job "plugin-aws-ebs-nodes" {
         ]
 
         privileged = true
+
+        memory_hard_limit = 256
       }
 
       csi_plugin {
