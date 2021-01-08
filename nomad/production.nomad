@@ -83,8 +83,11 @@ job "mediawiki" {
         }
 
         sidecar_task {
+          config {
+            memory_hard_limit = 500
+          }
           resources {
-            memory = 16
+            memory = 300
           }
         }
       }
@@ -134,7 +137,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 80
+        memory = 300
       }
 
       artifact {
@@ -195,6 +198,9 @@ job "mediawiki" {
         }
 
         sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
           resources {
             memory = 32
           }
@@ -258,8 +264,11 @@ job "mediawiki" {
         sidecar_service {}
 
         sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
           resources {
-            memory = 16
+            memory = 30
           }
         }
       }
@@ -292,8 +301,11 @@ job "mediawiki" {
         sidecar_service {}
 
         sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
           resources {
-            memory = 16
+            memory = 30
           }
         }
       }
@@ -340,8 +352,11 @@ job "mediawiki" {
         }
 
         sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
           resources {
-            memory = 16
+            memory = 30
           }
         }
       }
@@ -410,8 +425,11 @@ job "mediawiki" {
         }
 
         sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
           resources {
-            memory = 16
+            memory = 30
           }
         }
       }
@@ -444,8 +462,11 @@ job "mediawiki" {
         sidecar_service {}
 
         sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
           resources {
-            memory = 16
+            memory = 30
           }
         }
       }
