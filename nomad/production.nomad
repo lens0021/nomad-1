@@ -16,7 +16,7 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:2021-01-03T11-48-c3b6669f"
+        image   = "ghcr.io/femiwiki/mediawiki:2021-01-08T08-36-3d7bef6a"
         command = "caddy"
         args    = ["run"]
 
@@ -114,7 +114,7 @@ job "mediawiki" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-01-03T11-48-c3b6669f"
+        image = "ghcr.io/femiwiki/mediawiki:2021-01-08T08-36-3d7bef6a"
 
         volumes = [
           "local/LocalSettings.php:/a/LocalSettings.php",
