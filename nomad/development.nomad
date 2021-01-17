@@ -107,6 +107,15 @@ EOF
             }
           }
         }
+
+        sidecar_task {
+          config {
+            memory_hard_limit = 500
+          }
+          resources {
+            memory = 300
+          }
+        }
       }
     }
   }
@@ -127,7 +136,7 @@ EOF
       }
 
       resources {
-        memory = 80
+        memory = 300
       }
 
       volume_mount {
@@ -174,6 +183,15 @@ EOF
             }
           }
         }
+
+        sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
+          resources {
+            memory = 32
+          }
+        }
       }
     }
   }
@@ -210,6 +228,15 @@ EOF
 
       connect {
         sidecar_service {}
+
+        sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
+          resources {
+            memory = 30
+          }
+        }
       }
     }
   }
@@ -238,6 +265,15 @@ EOF
 
       connect {
         sidecar_service {}
+
+        sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
+          resources {
+            memory = 30
+          }
+        }
       }
     }
   }
@@ -278,6 +314,15 @@ EOF
               destination_name = "http"
               local_bind_port  = 80
             }
+          }
+        }
+
+        sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
+          resources {
+            memory = 30
           }
         }
       }
@@ -334,6 +379,15 @@ EOF
             }
           }
         }
+
+        sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
+          resources {
+            memory = 30
+          }
+        }
       }
     }
   }
@@ -362,6 +416,15 @@ EOF
 
       connect {
         sidecar_service {}
+
+        sidecar_task {
+          config {
+            memory_hard_limit = 300
+          }
+          resources {
+            memory = 30
+          }
+        }
       }
     }
   }

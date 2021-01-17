@@ -29,8 +29,7 @@ composer fix
 &nbsp;
 
 ### Production
-페미위키는 프로덕션 배포에도 [Nomad]를 사용할 예정입니다. 페미위키에서 사용하는
-AWS EC2 AMI는 [femiwiki/ami]를 참고해주세요.
+페미위키는 프로덕션 배포에도 [Nomad]를 사용할 예정입니다.
 
 프로덕션 배포를 할때엔 [secret.php] 에서 개발자모드를 반드시 꺼주세요.
 
