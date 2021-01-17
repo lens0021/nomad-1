@@ -404,6 +404,11 @@ EOF
       resources {
         memory = 150
       }
+
+      env {
+        # Amazon EC2 t3a-small has two vCPUs
+        MATHOID_NUM_WORKERS = "2"
+      }
     }
 
     network {
