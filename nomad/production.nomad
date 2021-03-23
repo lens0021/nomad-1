@@ -121,6 +121,7 @@ job "mediawiki" {
 
         volumes = [
           "local/LocalSettings.php:/a/LocalSettings.php",
+          "secrets/secret.php:/a/LocalSettings.php",
           "local/sitelist.xml:/a/sitelist.xml"
         ]
 
@@ -146,16 +147,18 @@ job "mediawiki" {
         mode        = "file"
       }
 
+      # TODO Replace Github source with S3
+      # https://www.nomadproject.io/docs/job-specification/artifact#download-from-an-s3-compatible-bucket
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/main/configs/secret.php.example"
+        destination = "secrets/secret.php"
+        mode        = "file"
+      }
+
       artifact {
         source      = "https://github.com/femiwiki/nomad/raw/main/configs/sitelist.xml"
         destination = "local/sitelist.xml"
         mode        = "file"
-      }
-
-      volume_mount {
-        volume      = "secret"
-        destination = "/a/secret.php"
-        read_only = true
       }
     }
 

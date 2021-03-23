@@ -5,7 +5,6 @@ set -euo pipefail; IFS=$'\n\t'
 set -x
 
 GIT_REPO=$(dirname "$0")
-cp "${GIT_REPO}/configs/secret.php.example" "${GIT_REPO}/configs/secret.php"
 
 # Configure Nomad
 # Reference: https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul
