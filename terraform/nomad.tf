@@ -1,4 +1,4 @@
-// Must set TF_VAR_PERSISTENT_EBS_ID
+// Must set PERSISTENT_EBS_ID
 variable "PERSISTENT_EBS_ID" {}
 
 resource "nomad_job" "plugin-ebs-controller" {
@@ -37,6 +37,7 @@ resource "nomad_volume" "mysql_volume" {
 
 resource "nomad_job" "mediawiki" {
   depends_on = [nomad_volume.mysql_volume]
+  detach     = false
   jobspec    = file("../nomad/production.nomad")
 
   hcl2 {
