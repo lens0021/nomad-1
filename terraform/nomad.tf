@@ -3,10 +3,20 @@ variable "PERSISTENT_EBS_ID" {}
 
 resource "nomad_job" "plugin-ebs-controller" {
   jobspec = file("../nomad/plugin-ebs-controller.nomad")
+
+  hcl2 {
+    enabled  = true
+    allow_fs = true
+  }
 }
 
 resource "nomad_job" "plugin-ebs-nodes" {
   jobspec = file("../nomad/plugin-ebs-nodes.nomad")
+
+  hcl2 {
+    enabled  = true
+    allow_fs = true
+  }
 }
 
 data "nomad_plugin" "ebs" {
@@ -28,4 +38,9 @@ resource "nomad_volume" "mysql_volume" {
 resource "nomad_job" "mediawiki" {
   depends_on = [nomad_volume.mysql_volume]
   jobspec    = file("../nomad/production.nomad")
+
+  hcl2 {
+    enabled  = true
+    allow_fs = true
+  }
 }

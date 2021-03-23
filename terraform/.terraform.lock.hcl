@@ -2,19 +2,19 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/nomad" {
-  version     = "1.4.11"
+  version     = "1.4.13"
   constraints = "~> 1.4"
   hashes = [
-    "h1:ElEvgyMfWoWyQbB6c51rGTjQlZKWf3QOvf5NhX/Vuyw=",
-    "zh:150d0ab25241a42f2ac5008878e0106c0887eec15181a40bee1433b87f01b8ed",
-    "zh:1d4ccda0729f12060e7f4ce5c6d83042d6d38ba2e546b68722ccb74832793b0c",
-    "zh:2964652181f59097aa1126f4b215b9232702b1a56df3e017e6b5683d5615714b",
-    "zh:42843e68bca24280e84ec600ae5d8f085fb26bdcdb4c0ccff2139ed81e1cb8c1",
-    "zh:4c6d90d40a360d84bc84c9af35c64056237537fa0f8118bf890fcf4e71f7b0f6",
-    "zh:51771ce42a99d7d4f5a4306367eee4cea72391c07f1f1c55c3c4a5c6a9eca53d",
-    "zh:6ab2389f1be6bb39d4966c253bf4fc77348e90f7e07ed2abb5ec5c90a4bbb615",
-    "zh:9b109254ea7ca6a5b0ede33b406cf5fed779f05672891bbd1cc3255c9cb17663",
-    "zh:a38c929d4fd03193cce94178c0fbaa1f7f09e93223ac71dc77c834d429b1c7c9",
-    "zh:bdc9bc10a1ecb5ae3da651df1709bf9d5474f25e310b73bdf32c86417674d32b",
+    "h1:Qca2Y2GlKPN+YRjLS4m95HSHyJIqokwrl2AjpYhnQt0=",
+    "zh:2406f842b2c5c70fceb5715b4dfc3ffe47630072816ecfb047b7f11169cd04fb",
+    "zh:318575fecf8c77ea9d9c99198ec2df9d8c35ad5a3d53674d92dc6bdce5598d4d",
+    "zh:3379c8466e0ba8f865ac2f0d909879e088e02559f527b0a45f6d9790fc7a13b5",
+    "zh:6209427c15d6bb1ff327613d8e261758f0c1abf5d8045b2fe985d6546333b4bc",
+    "zh:8c159fe5a9c2e12f831ac3e847ec9007e42d116ba4b8adc53c93998446d0e36d",
+    "zh:90bc5ea082ff0400b698df4f9d70ad82d8f85d21653b341c229a477aba196bf5",
+    "zh:a0c9c7fe2a0f024365a0e94894d074f61ab5f0db89092eeb538ba9b12ff0b9b9",
+    "zh:b35293b9fbacca3a3ef772658d977ddc7061c94e4b460623b184293e8fc8ebb4",
+    "zh:c5fbd8c0639a9b421f92f29268707ac6b16ae008b477256f4aac89d7f14c2f1d",
+    "zh:d4a8cfcb867fc24ab400340a07c06a62e913317d2d20961c0b6a4f4578af6cb5",
   ]
 }
