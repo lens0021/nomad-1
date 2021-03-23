@@ -107,12 +107,6 @@ job "mediawiki" {
   }
 
   group "fastcgi" {
-    volume "secret" {
-      type   = "host"
-      source = "secret"
-      read_only = true
-    }
-
     task "fastcgi" {
       driver = "docker"
 
