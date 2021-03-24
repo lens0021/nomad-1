@@ -1,3 +1,12 @@
+variable "nomad_addr" {
+  type = string
+}
+
+variable "nomad_token" {
+  type      = string
+  sensitive = true
+}
+
 terraform {
   required_version = "~> 0.14.0"
 
@@ -17,4 +26,7 @@ terraform {
   }
 }
 
-provider "nomad" {}
+provider "nomad" {
+  address   = var.nomad_addr
+  secret_id = var.nomad_token
+}

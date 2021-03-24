@@ -1,5 +1,6 @@
-// Must set PERSISTENT_EBS_ID
-variable "PERSISTENT_EBS_ID" {}
+variable "PERSISTENT_EBS_ID" {
+  type = string
+}
 
 resource "nomad_job" "plugin-ebs-controller" {
   jobspec = file("../nomad/plugin-ebs-controller.nomad")
