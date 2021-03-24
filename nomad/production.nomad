@@ -115,7 +115,7 @@ job "mediawiki" {
 
         volumes = [
           "local/LocalSettings.php:/a/LocalSettings.php",
-          "secrets/secret.php:/a/LocalSettings.php",
+          "secrets/secret.php:/a/secret.php",
           "local/sitelist.xml:/a/sitelist.xml"
         ]
 
