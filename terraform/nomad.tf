@@ -1,4 +1,4 @@
-variable "PERSISTENT_EBS_ID" {
+variable "persistent_ebs_id" {
   type = string
 }
 
@@ -31,7 +31,7 @@ resource "nomad_volume" "mysql_volume" {
   plugin_id       = "aws-ebs0"
   volume_id       = "mysql"
   name            = "mysql"
-  external_id     = var.PERSISTENT_EBS_ID
+  external_id     = var.persistent_ebs_id
   access_mode     = "single-node-writer"
   attachment_mode = "file-system"
 }
