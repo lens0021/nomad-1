@@ -49,7 +49,7 @@ job "mediawiki" {
   # Global options
   auto_https off
 }
-*:80
+127.0.0.1:80 localhost:80
 root * /srv/femiwiki.com
 php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
 file_server

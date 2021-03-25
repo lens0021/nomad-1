@@ -37,7 +37,7 @@ jobs:
         run: nomad job run nomad/development.nomad
 
       - name: Access localhost until success
-        timeout-minutes: 5
+        timeout-minutes: 10
         run: |
           until curl -sLfo /dev/null localhost; do
             sleep 1;
@@ -59,6 +59,8 @@ jobs:
             echo "Allocation $s stderr logs $line";
             nomad alloc logs -stderr "$s" $task;
           done
+          echo "curl $line";
+          curl -sSLv localhost
       - name: Try to access the mediawiki
         run: curl -sSLvo /dev/null localhost
       - name: Test VisualEditor API
