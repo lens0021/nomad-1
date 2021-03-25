@@ -135,6 +135,10 @@ EOF
         memory_hard_limit = 600
       }
 
+      env {
+        FEMIWIKI_DEBUG_MODE = "localhost"
+      }
+
       resources {
         memory = 300
       }

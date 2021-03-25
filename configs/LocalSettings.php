@@ -972,20 +972,21 @@ require_once '/a/secret.php';
 //
 // Debug Mode
 //
-if ( defined( 'DEBUG_MODE' ) ) {
+if ( defined( 'DEBUG_MODE' ) || getenv( 'FEMIWIKI_DEBUG_MODE' ) ) {
 	// 도메인 변경
-	$wgForceHTTPS = false;
-	$wgServer = 'http://' . DEBUG_MODE;
-	$wgCanonicalServer = 'http://' . DEBUG_MODE;
+	$domain = getenv( 'FEMIWIKI_DEBUG_MODE' ) ?: DEBUG_MODE;
+	$wgServer = 'http://' . $domain;
+	$wgCanonicalServer = 'http://' . $domain;
+	$wgVisualEditorRestbaseURL = 'http://' . $domain . '/localhost/v1/page/html/';
+	$wgVisualEditorFullRestbaseURL = 'http://' . $domain . '/localhost/';
+	$wgMathFullRestbaseURL = 'http://' . $domain . '/localhost/';
 	$wgVirtualRestConfig['modules']['parsoid']['domain'] = 'localhost';
 	$wgVirtualRestConfig['modules']['restbase']['domain'] = 'localhost';
-	$wgVisualEditorRestbaseURL = 'http://' . DEBUG_MODE . '/localhost/v1/page/html/';
-	$wgVisualEditorFullRestbaseURL = 'http://' . DEBUG_MODE . '/localhost/';
-	$wgMathFullRestbaseURL = 'http://' . DEBUG_MODE . '/localhost/';
+	// Etc
+	$wgForceHTTPS = false;
 	$wgWBRepoSettings['conceptBaseUri'] = $wgServer . '/w/Item:';
 	$wgWBClientSettings['dataBridgeHrefRegExp'] = '^' . $wgCanonicalServer .
 		str_replace( '$1', 'Item:(Q[1-9][0-9]*).*#(P[1-9][0-9]*)', $wgArticlePath ) . '$';
-
 	$wgBounceHandlerInternalIPs = [ '0.0.0.0/0' ];
 
 	// 디버그 툴 활성화
