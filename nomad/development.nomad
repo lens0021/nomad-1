@@ -49,7 +49,7 @@ job "mediawiki" {
   # Global options
   auto_https off
 }
-127.0.0.1:80 localhost:80
+127.0.0.1:{$NOMAD_HOST_PORT_http} localhost:{$NOMAD_HOST_PORT_http}
 root * /srv/femiwiki.com
 php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
 file_server
@@ -80,12 +80,10 @@ EOF
 
       port "http" {
         static = 80
-        to     = 80
       }
 
       port "https" {
         static = 443
-        to     = 443
       }
     }
 
@@ -298,8 +296,8 @@ EOF
       env {
         MEDIAWIKI_LINTING     = "true"
         MEDIAWIKI_APIS_DOMAIN = "localhost"
-        # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
-        MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
+        # Avoid using NOMAD_UPSTREAM_IP_http https://github.com/femiwiki/nomad/issues/1
+        MEDIAWIKI_APIS_URI    = "http://localhost:${NOMAD_UPSTREAM_PORT_http}/api.php"
       }
     }
 
@@ -348,7 +346,7 @@ EOF
 
       env {
         # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
-        MEDIAWIKI_APIS_URI    = "http://localhost/api.php"
+        MEDIAWIKI_APIS_URI    = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
         MEDIAWIKI_APIS_DOMAIN = "localhost"
         PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
         MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
