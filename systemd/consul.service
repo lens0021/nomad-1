@@ -1,4 +1,5 @@
 # https://learn.hashicorp.com/tutorials/consul/deployment-guide#configure-systemd
+# https://github.com/hashicorp/terraform-aws-consul/blob/master/modules/run-consul/run-consul
 [Unit]
 Description="HashiCorp Consul - A service mesh solution"
 Documentation=https://www.consul.io/
@@ -15,6 +16,7 @@ ExecReload=/usr/local/bin/consul reload
 ExecStop=/usr/local/bin/consul leave
 KillMode=process
 Restart=on-failure
+TimeoutSec=300s
 LimitNOFILE=65536
 
 [Install]
