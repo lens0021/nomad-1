@@ -21,6 +21,8 @@ jobs:
         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt-get update && sudo apt-get install -y nomad consul
+        echo "::set-output name=consul_version::$(consul -v)"
+        echo "::set-output name=nomad_version::$(nomad -v)"
 
     - name: Start a Nomad Agent and a Consul agent
       run: |
@@ -40,15 +42,12 @@ jobs:
         until curl -sLfo /dev/null localhost; do
           sleep 1;
         done;
-    # TODO port to Nomad
-    # - name: backup of accessing
-    #   if: ${{ failure() }}
-    #   run: |
-    #     echo 'Failed to connect to localhost';
-    #     docker ps;
-    #     for s in $(docker service ls -q ); do docker service ps "$s"; done
-    #     docker container ps;
-    #     for s in $(docker service ls -q ); do docker service logs "$s"; done
+    - name: backup of accessing
+      if: ${{ failure() }}
+      run: |
+        echo 'Failed to connect to localhost';
+        nomad job status
+        nomad job status mediawiki
     - name: Try to access the mediawiki
       run: curl -sSLvo /dev/null localhost
     - name: Test VisualEditor API
