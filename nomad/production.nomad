@@ -156,7 +156,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 300
+        memory = 100
       }
 
       artifact {

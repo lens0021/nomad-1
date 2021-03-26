@@ -167,7 +167,7 @@ job "mediawiki" {
       }
 
       resources {
-        memory = 300
+        memory = 100
       }
 
       volume_mount {
