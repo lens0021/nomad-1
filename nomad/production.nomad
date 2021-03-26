@@ -8,7 +8,7 @@ job "mediawiki" {
     auto_revert  = false
     auto_promote = true
     # canary count equal to the desired count allows a Nomad job to model blue/green deployments
-    canary       = 1
+    canary = 1
   }
 
   group "http" {
@@ -105,6 +105,23 @@ job "mediawiki" {
   }
 
   group "fastcgi" {
+    # Init Task Lifecycle
+    # See https://www.nomadproject.io/docs/job-specification/lifecycle#init-task-pattern
+    task "wait-for-db" {
+      lifecycle {
+        hook    = "prestart"
+        sidecar = false
+      }
+
+      driver = "exec"
+      config {
+        command = "sh"
+        # TODO Use Forward DNS for Consul Service Discovery
+        # https://github.com/femiwiki/nomad/issues/8
+        args = ["-c", "while [[ ! $(consul catalog services) == *mysql* ]]; do sleep 2; done"]
+      }
+    }
+
     task "fastcgi" {
       driver = "docker"
 
@@ -308,6 +325,21 @@ job "mediawiki" {
   }
 
   group "parsoid" {
+    # Init Task Lifecycle
+    # See https://www.nomadproject.io/docs/job-specification/lifecycle#init-task-pattern
+    task "wait-for-mediawiki" {
+      lifecycle {
+        hook    = "prestart"
+        sidecar = false
+      }
+
+      driver = "exec"
+      config {
+        command = "sh"
+        args    = ["-c", "while ! nc -z localhost 80; do sleep 1; done"]
+      }
+    }
+
     task "parsoid" {
       driver = "docker"
 
