@@ -25,7 +25,7 @@ data "nomad_plugin" "ebs" {
   wait_for_healthy = true
 }
 
-resource "nomad_volume" "mysql_volume" {
+resource "nomad_volume" "mysql" {
   depends_on      = [data.nomad_plugin.ebs]
   type            = "csi"
   plugin_id       = "aws-ebs0"
@@ -37,7 +37,7 @@ resource "nomad_volume" "mysql_volume" {
 }
 
 resource "nomad_job" "mediawiki" {
-  depends_on = [nomad_volume.mysql_volume]
+  depends_on = [nomad_volume.mysql]
   detach     = false
   jobspec    = file("../nomad/production.nomad")
 
