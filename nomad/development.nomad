@@ -131,8 +131,7 @@ job "mediawiki" {
       driver = "exec"
       config {
         command = "sh"
-        # TODO Use Forward DNS for Consul Service Discovery
-        # https://github.com/femiwiki/nomad/issues/8
+        # To simply, we assume that Consul forward DNS is not configured.
         args = ["-c", "while ! nc -z localhost 3306; do sleep 2; done"]
       }
     }
@@ -235,6 +234,7 @@ job "mediawiki" {
     network {
       mode = "bridge"
 
+      # Expose port to simply init task pattern of lifecycle
       port "mysql" {
         static = 3306
       }
@@ -391,7 +391,6 @@ job "mediawiki" {
     service {
       name = "restbase"
       port = "7231"
-
 
       connect {
         sidecar_service {

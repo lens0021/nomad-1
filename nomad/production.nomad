@@ -111,9 +111,7 @@ job "mediawiki" {
       driver = "exec"
       config {
         command = "sh"
-        # TODO Use Forward DNS for Consul Service Discovery
-        # https://github.com/femiwiki/nomad/issues/8
-        args = ["-c", "while ! nc -z localhost 3306; do sleep 2; done"]
+        args = ["-c", "while [[ ! $(dig @127.0.0.1 mysql.service.dc1.consul) == *';; ANSWER SECTION:'* ]]; do sleep 1; done"]
       }
     }
 
@@ -336,7 +334,7 @@ job "mediawiki" {
       driver = "exec"
       config {
         command = "sh"
-        args    = ["-c", "while ! nc -z localhost 80; do sleep 1; done"]
+        args    = ["-c", "while ! ncat --send-only localhost 80 < /dev/null; do sleep 1; done"]
       }
     }
 
