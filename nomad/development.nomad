@@ -150,7 +150,7 @@ job "mediawiki" {
         command = "sh"
         # TODO Use Forward DNS for Consul Service Discovery
         # https://github.com/femiwiki/nomad/issues/8
-        args = ["-c", "while [[ ! $(consul catalog services) == *mysql* ]]; do sleep 2; done"]
+        args = ["-c", "while ! nc -z localhost 3306; do sleep 2; done"]
       }
     }
 
@@ -251,6 +251,10 @@ job "mediawiki" {
 
     network {
       mode = "bridge"
+
+      port "mysql" {
+        static = 3306
+      }
     }
 
     service {
