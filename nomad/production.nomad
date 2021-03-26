@@ -102,6 +102,15 @@ job "mediawiki" {
       delay_function = "constant"
       unlimited      = false
     }
+
+    # Avoid reserved port collision
+    # See https://github.com/femiwiki/nomad/issues/6 for details
+    update {
+      max_parallel = 0
+      canary       = 0
+      auto_revert  = true
+      auto_promote = false
+    }
   }
 
   group "fastcgi" {

@@ -116,6 +116,14 @@ EOF
         }
       }
     }
+
+    # Avoid reserved port collision
+    update {
+      max_parallel = 0
+      canary       = 0
+      auto_revert  = true
+      auto_promote = false
+    }
   }
 
   group "fastcgi" {
