@@ -25,9 +25,13 @@ jobs:
 
       - name: Start a Nomad Agent and a Consul agent
         run: |
+          mv nomad/development.example.hcl nomad/development.hcl
+          sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
           sudo nomad agent -dev-connect -config nomad/development.hcl &
           consul agent -dev &
-          # Wait for initializing...
+
+      - name: Wait for initializing...
+        run: |
           until consul members &> /dev/null && nomad status &> /dev/null; do
             sleep 1;
           done;
@@ -36,8 +40,6 @@ jobs:
         run: |
           mv configs/secret.php.example configs/secret.php
           sed -i -r 's/localhost/127.0.0.1/' configs/secret.php
-          mv nomad/development.example.hcl nomad/development.hcl
-          sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
 
       - name: Run a Nomad job
         run: nomad job run nomad/development.nomad
