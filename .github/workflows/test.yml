@@ -28,7 +28,7 @@ jobs:
           sudo nomad agent -dev-connect -config nomad/development.hcl &
           consul agent -dev &
           # Wait for initializing...
-          until consul members &> /dev/null; do
+          until consul members &> /dev/null && nomad status &> /dev/null; do
             sleep 1;
           done;
 
