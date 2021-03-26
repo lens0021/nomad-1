@@ -9,13 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Edit configuration
-        run: |
-          mv configs/secret.php.example configs/secret.php
-          sed -i -r 's/localhost/127.0.0.1/' configs/secret.php
-          mv nomad/development.example.hcl nomad/development.hcl
-          sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
-
       - name: Install Nomad and Consul
         run: |
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -23,6 +16,12 @@ jobs:
           sudo apt-get update && sudo apt-get install -y nomad consul
           echo "::set-output name=consul_version::$(consul -v)"
           echo "::set-output name=nomad_version::$(nomad -v)"
+
+      - name: Validate job files
+        run: |
+          for job in nomad/*.nomad; do
+            nomad job validate "$job";
+          done
 
       - name: Start a Nomad Agent and a Consul agent
         run: |
@@ -32,6 +31,13 @@ jobs:
           until consul members &> /dev/null; do
             sleep 1;
           done;
+
+      - name: Edit configuration
+        run: |
+          mv configs/secret.php.example configs/secret.php
+          sed -i -r 's/localhost/127.0.0.1/' configs/secret.php
+          mv nomad/development.example.hcl nomad/development.hcl
+          sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
 
       - name: Run a Nomad job
         run: nomad job run nomad/development.nomad
