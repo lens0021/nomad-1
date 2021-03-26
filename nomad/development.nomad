@@ -1,3 +1,33 @@
+variable "caddyfile_for_dev" {
+  type    = string
+  default = <<EOF
+{
+  # Global options
+  auto_https off
+}
+127.0.0.1:{$NOMAD_HOST_PORT_http} localhost:{$NOMAD_HOST_PORT_http}
+root * /srv/femiwiki.com
+php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
+file_server
+encode gzip
+header {
+  # Enable XSS filtering for legacy browsers
+  X-XSS-Protection "1; mode=block"
+  # Block content sniffing, and enable Cross-Origin Read Blocking
+  X-Content-Type-Options "nosniff"
+  # Avoid clickjacking
+  X-Frame-Options "DENY"
+}
+rewrite /w/api.php /api.php
+rewrite /w/* /index.php
+
+# Proxy requests to RESTBase
+# Reference:
+#   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
+reverse_proxy /localhost/* {$NOMAD_UPSTREAM_ADDR_restbase}
+EOF
+}
+
 job "mediawiki" {
   datacenters = ["dc1"]
 
@@ -44,33 +74,7 @@ job "mediawiki" {
       }
 
       template {
-        data = <<EOF
-{
-  # Global options
-  auto_https off
-}
-127.0.0.1:{$NOMAD_HOST_PORT_http} localhost:{$NOMAD_HOST_PORT_http}
-root * /srv/femiwiki.com
-php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
-file_server
-encode gzip
-header {
-  # Enable XSS filtering for legacy browsers
-  X-XSS-Protection "1; mode=block"
-  # Block content sniffing, and enable Cross-Origin Read Blocking
-  X-Content-Type-Options "nosniff"
-  # Avoid clickjacking
-  X-Frame-Options "DENY"
-}
-rewrite /w/api.php /api.php
-rewrite /w/* /index.php
-
-# Proxy requests to RESTBase
-# Reference:
-#   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
-reverse_proxy /localhost/* {$NOMAD_UPSTREAM_ADDR_restbase}
-EOF
-
+        data = var.caddyfile_for_dev
         destination = "local/Caddyfile"
       }
     }
