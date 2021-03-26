@@ -32,7 +32,7 @@ job "plugin-aws-ebs-nodes" {
 
       resources {
         cpu    = 500
-        memory = 8
+        memory = 10
       }
     }
   }
