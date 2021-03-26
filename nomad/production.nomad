@@ -3,12 +3,7 @@ job "mediawiki" {
 
   # The update stanza specified at the job level will apply to all groups within the job
   update {
-    max_parallel = 1
-    health_check = "checks"
-    auto_revert  = false
-    auto_promote = true
-    # canary count equal to the desired count allows a Nomad job to model blue/green deployments
-    canary = 1
+    auto_revert = true
   }
 
   group "http" {
@@ -101,15 +96,6 @@ job "mediawiki" {
       delay          = "5s"
       delay_function = "constant"
       unlimited      = false
-    }
-
-    # Avoid reserved port collision
-    # See https://github.com/femiwiki/nomad/issues/6 for details
-    update {
-      max_parallel = 0
-      canary       = 0
-      auto_revert  = true
-      auto_promote = false
     }
   }
 

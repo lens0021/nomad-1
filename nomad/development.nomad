@@ -31,16 +31,6 @@ EOF
 job "mediawiki" {
   datacenters = ["dc1"]
 
-  # The update stanza specified at the job level will apply to all groups within the job
-  update {
-    max_parallel = 1
-    health_check = "checks"
-    auto_revert  = false
-    auto_promote = true
-    # canary count equal to the desired count allows a Nomad job to model blue/green deployments
-    canary = 1
-  }
-
   group "http" {
     task "http" {
       driver = "docker"
@@ -74,6 +64,7 @@ job "mediawiki" {
       }
 
       template {
+        # Overwrite the default caddyfile provided by femiwiki:mediawiki
         data = var.caddyfile_for_dev
         destination = "local/Caddyfile"
       }
@@ -119,14 +110,6 @@ job "mediawiki" {
           }
         }
       }
-    }
-
-    # Avoid reserved port collision
-    update {
-      max_parallel = 0
-      canary       = 0
-      auto_revert  = true
-      auto_promote = false
     }
   }
 
