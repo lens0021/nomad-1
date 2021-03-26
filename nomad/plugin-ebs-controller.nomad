@@ -1,6 +1,6 @@
 # https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes#deploy-the-ebs-plugin
 
-job "plugin-aws-ebs-controller" {
+job "plugin-ebs-controller" {
   datacenters = ["dc1"]
 
   group "controller" {
@@ -28,7 +28,7 @@ job "plugin-aws-ebs-controller" {
 
       resources {
         cpu    = 500
-        memory = 16
+        memory = 14
       }
     }
   }

@@ -80,7 +80,7 @@ job "mediawiki" {
             memory_hard_limit = 500
           }
           resources {
-            memory = 300
+            memory = 24
           }
         }
       }
@@ -207,7 +207,7 @@ job "mediawiki" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 32
+            memory = 24
           }
         }
       }
@@ -278,7 +278,7 @@ job "mediawiki" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 30
+            memory = 24
           }
         }
       }
@@ -315,7 +315,7 @@ job "mediawiki" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 30
+            memory = 24
           }
         }
       }
@@ -381,7 +381,7 @@ job "mediawiki" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 30
+            memory = 24
           }
         }
       }
@@ -454,7 +454,7 @@ job "mediawiki" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 30
+            memory = 24
           }
         }
       }
@@ -491,7 +491,7 @@ job "mediawiki" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 30
+            memory = 24
           }
         }
       }
