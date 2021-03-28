@@ -1,6 +1,6 @@
 # https://learn.hashicorp.com/tutorials/nomad/stateful-workloads-csi-volumes#deploy-the-ebs-plugin
 
-job "plugin-aws-ebs-nodes" {
+job "plugin-ebs-nodes" {
   datacenters = ["dc1"]
 
   type = "system"
