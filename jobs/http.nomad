@@ -1,6 +1,10 @@
 job "http" {
   datacenters = ["dc1"]
 
+  update {
+    auto_revert = true
+  }
+
   group "http" {
     task "http" {
       driver = "docker"
