@@ -111,7 +111,6 @@ job "mediawiki" {
       driver = "exec"
       config {
         command = "sh"
-        args = ["-c", "while [[ ! $(dig @127.0.0.1 mysql.service.dc1.consul) == *';; ANSWER SECTION:'* ]]; do sleep 1; done"]
       }
     }
 

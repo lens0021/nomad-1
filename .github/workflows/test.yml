@@ -19,7 +19,7 @@ jobs:
 
       - name: Validate job files
         run: |
-          for job in nomad/*.nomad; do
+          for job in jobs/*.nomad; do
             nomad job validate "$job";
           done
 
