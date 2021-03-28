@@ -17,8 +17,7 @@ job "parsoid" {
       env {
         MEDIAWIKI_LINTING     = "true"
         MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
-        # Avoid using NOMAD_UPSTREAM_IP_http https://github.com/femiwiki/nomad/issues/1
-        MEDIAWIKI_APIS_URI    = "http://localhost:${NOMAD_UPSTREAM_PORT_http}/api.php"
+        MEDIAWIKI_APIS_URI    = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
       }
     }
 
@@ -35,7 +34,7 @@ job "parsoid" {
           proxy {
             upstreams {
               destination_name = "http"
-              local_bind_port  = 80
+              local_bind_port  = 8080
             }
           }
         }

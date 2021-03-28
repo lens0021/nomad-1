@@ -15,9 +15,8 @@ job "restbase" {
       }
 
       env {
-        # Avoid using NOMAD_UPSTREAM_ADDR_http https://github.com/femiwiki/nomad/issues/1
-        MEDIAWIKI_APIS_URI    = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
         MEDIAWIKI_APIS_DOMAIN = "localhost"
+        MEDIAWIKI_APIS_URI    = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
         PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
         MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
       }
@@ -36,7 +35,7 @@ job "restbase" {
           proxy {
             upstreams {
               destination_name = "http"
-              local_bind_port  = 80
+              local_bind_port  = 8080
             }
 
             upstreams {
