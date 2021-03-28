@@ -14,7 +14,13 @@ cp nomad/development.example.hcl nomad/development.hcl
 
 sudo nomad agent -dev-connect -config nomad/development.hcl
 consul agent -dev
-nomad job run nomad/development.nomad
+nomad job run jobs/development/mysql.nomad
+nomad job run jobs/development/memcached.nomad
+nomad job run jobs/development/fastcgi.nomad
+nomad job run jobs/development/http.nomad
+nomad job run jobs/development/parsoid.nomad
+nomad job run jobs/development/restbase.nomad
+nomad job run jobs/development/mathoid.nomad
 ```
 
 페미위키 개발하실 때엔 아래 커맨드들을 참고해주세요.

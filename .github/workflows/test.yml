@@ -42,7 +42,14 @@ jobs:
           sed -i -r 's/localhost/127.0.0.1/' configs/secret.php
 
       - name: Run a Nomad job
-        run: nomad job run nomad/development.nomad
+        run: |
+          nomad job run jobs/development/mysql.nomad
+          nomad job run jobs/development/memcached.nomad
+          nomad job run jobs/development/fastcgi.nomad
+          nomad job run jobs/development/http.nomad
+          nomad job run jobs/development/parsoid.nomad
+          nomad job run jobs/development/restbase.nomad
+          nomad job run jobs/development/mathoid.nomad
 
       - name: Access localhost until success
         timeout-minutes: 10

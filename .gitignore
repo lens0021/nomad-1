@@ -10,6 +10,7 @@
 
 # Terraform plugins
 .terraform/
+terraform/terraform.tfvars
 
 # Terraform states
 *.tfstate
