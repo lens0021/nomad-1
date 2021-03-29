@@ -4,8 +4,8 @@ data "nomad_plugin" "ebs" {
 }
 
 resource "nomad_job" "mysql" {
-  detach     = false
-  jobspec    = file("../jobs/mysql.nomad")
+  detach  = false
+  jobspec = file("../jobs/mysql.nomad")
 
   hcl2 {
     enabled  = true
