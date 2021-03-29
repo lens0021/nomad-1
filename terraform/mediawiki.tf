@@ -4,7 +4,6 @@ data "nomad_plugin" "ebs" {
 }
 
 resource "nomad_job" "mysql" {
-  depends_on = [nomad_volume.mysql]
   detach     = false
   jobspec    = file("../jobs/mysql.nomad")
 

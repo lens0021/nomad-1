@@ -13,6 +13,10 @@ server {
 
 client {
   enabled = true
+  host_volume "mysql" {
+    path      = "/srv/mysql"
+    read_only = false
+  }
 }
 
 plugin "docker" {

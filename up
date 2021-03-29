@@ -5,6 +5,7 @@ set -euo pipefail; IFS=$'\n\t'
 set -x
 
 GIT_REPO=$(dirname "$0")
+mkdir -p /srv/mysql
 
 # Configure Consul
 # Reference: https://learn.hashicorp.com/tutorials/consul/deployment-guide

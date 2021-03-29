@@ -12,9 +12,9 @@ job "mysql" {
 
   group "mysql" {
     volume "mysql" {
-      type      = "csi"
-      read_only = false
+      type      = "host"
       source    = "mysql"
+      read_only = false
     }
 
     task "mysql" {
