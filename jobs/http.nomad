@@ -6,6 +6,12 @@ job "http" {
   }
 
   group "http" {
+    volume "caddycerts" {
+      type      = "host"
+      source    = "caddycerts"
+      read_only = false
+    }
+
     task "http" {
       driver = "docker"
 
@@ -13,17 +19,6 @@ job "http" {
         image   = "ghcr.io/femiwiki/mediawiki:2021-03-21T09-12-c32a248f"
         command = "caddy"
         args    = ["run"]
-
-        # Mount volumes into the container
-        # Reference: https://www.nomadproject.io/docs/drivers/docker#mounts
-        mounts = [
-          {
-            type     = "volume"
-            target   = "/etc/caddycerts"
-            source   = "caddy"
-            readonly = false
-          }
-        ]
 
         memory_hard_limit = 400
 
@@ -34,6 +29,12 @@ job "http" {
 
       resources {
         memory = 80
+      }
+
+      volume_mount {
+        volume      = "caddycerts"
+        destination = "/etc/caddycerts"
+        read_only   = false
       }
 
       env {

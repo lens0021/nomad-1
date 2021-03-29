@@ -35,7 +35,6 @@ job "mysql" {
       }
 
       volume_mount {
-        # Container Storage Interface
         volume      = "mysql"
         destination = "/srv"
         read_only   = false
