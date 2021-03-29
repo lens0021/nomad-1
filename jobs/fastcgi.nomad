@@ -46,7 +46,7 @@ job "fastcgi" {
       }
 
       artifact {
-        source      = "s3::https://femiwiki-secrets/secrets.php"
+        source      = "s3::https://femiwiki-secrets.s3-ap-northeast-1.amazonaws.com/secrets.php"
         destination = "secrets/secret.php"
         mode        = "file"
       }
