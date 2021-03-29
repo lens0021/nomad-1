@@ -11,6 +11,21 @@ job "parsoid" {
   }
 
   group "parsoid" {
+    # Init Task Lifecycle
+    # See https://www.nomadproject.io/docs/job-specification/lifecycle#init-task-pattern
+    task "wait-for-mediawiki" {
+      lifecycle {
+        hook    = "prestart"
+        sidecar = false
+      }
+
+      driver = "exec"
+      config {
+        command = "sh"
+        args    = ["-c", "while ! ncat --send-only ${NOMAD_UPSTREAM_IP_http} ${NOMAD_UPSTREAM_PORT_http} < /dev/null; do sleep 1; done"]
+      }
+    }
+
     task "parsoid" {
       driver = "docker"
 

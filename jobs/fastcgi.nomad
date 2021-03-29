@@ -11,6 +11,27 @@ job "fastcgi" {
   }
 
   group "fastcgi" {
+    # Init Task Lifecycle
+    # See https://www.nomadproject.io/docs/job-specification/lifecycle#init-task-pattern
+    task "wait-for-backend" {
+      lifecycle {
+        hook    = "prestart"
+        sidecar = false
+      }
+
+      driver = "exec"
+      config {
+        command = "sh"
+        args    = [
+          "-c",
+          join( ";", [
+            "while ! ncat --send-only ${NOMAD_UPSTREAM_IP_mysql} ${NOMAD_UPSTREAM_PORT_mysql} < /dev/null; do sleep 1; done",
+            "while ! ncat --send-only ${NOMAD_UPSTREAM_IP_memcached} ${NOMAD_UPSTREAM_PORT_memcached} < /dev/null; do sleep 1; done"
+          ] )
+        ]
+      }
+    }
+
     task "fastcgi" {
       driver = "docker"
 
