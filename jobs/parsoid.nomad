@@ -1,15 +1,6 @@
 job "parsoid" {
   datacenters = ["dc1"]
 
-  update {
-    max_parallel = 1
-    health_check = "checks"
-    auto_revert  = false
-    auto_promote = true
-    # canary count equal to the desired count allows a Nomad job to model blue/green deployments
-    canary = 1
-  }
-
   group "parsoid" {
     # Init Task Lifecycle
     # See https://www.nomadproject.io/docs/job-specification/lifecycle#init-task-pattern
@@ -73,5 +64,21 @@ job "parsoid" {
         }
       }
     }
+  }
+
+  reschedule {
+    attempts  = 3
+    interval  = "24h"
+    delay     = "10s"
+    unlimited = false
+  }
+
+  update {
+    max_parallel = 1
+    health_check = "checks"
+    auto_revert  = true
+    auto_promote = true
+    # canary count equal to the desired count allows a Nomad job to model blue/green deployments
+    canary = 1
   }
 }

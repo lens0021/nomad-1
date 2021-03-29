@@ -1,10 +1,6 @@
 job "http" {
   datacenters = ["dc1"]
 
-  update {
-    auto_revert = true
-  }
-
   group "http" {
     volume "caddycerts" {
       type      = "host"
@@ -89,13 +85,17 @@ job "http" {
     restart {
       attempts = 0
     }
+  }
 
-    reschedule {
-      attempts       = 3
-      interval       = "120s"
-      delay          = "5s"
-      delay_function = "constant"
-      unlimited      = false
-    }
+  reschedule {
+    attempts       = 3
+    interval       = "120s"
+    delay          = "5s"
+    delay_function = "constant"
+    unlimited      = false
+  }
+
+  update {
+    auto_revert = true
   }
 }

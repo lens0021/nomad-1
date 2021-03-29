@@ -1,10 +1,6 @@
 job "bots" {
   datacenters = ["dc1"]
 
-  update {
-    auto_revert = true
-  }
-
   group "backupbot" {
     task "backupbot" {
       driver = "docker"
@@ -26,5 +22,15 @@ job "bots" {
       # todo change to host
       mode = "bridge"
     }
+  }
+
+  reschedule {
+    attempts = 1
+    interval  = "24h"
+    unlimited = false
+  }
+
+  update {
+    auto_revert = true
   }
 }
