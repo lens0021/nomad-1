@@ -45,10 +45,8 @@ job "fastcgi" {
         mode        = "file"
       }
 
-      # TODO Replace Github source with S3
-      # https://www.nomadproject.io/docs/job-specification/artifact#download-from-an-s3-compatible-bucket
       artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/main/configs/secret.php.example"
+        source      = "s3::https://femiwiki-secrets/secrets.php"
         destination = "secrets/secret.php"
         mode        = "file"
       }
