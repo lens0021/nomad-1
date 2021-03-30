@@ -1,8 +1,3 @@
-data "nomad_plugin" "ebs" {
-  plugin_id        = "aws-ebs0"
-  wait_for_healthy = true
-}
-
 resource "nomad_job" "mysql" {
   detach  = false
   jobspec = file("../jobs/mysql.nomad")
