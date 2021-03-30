@@ -18,8 +18,8 @@ job "mysql" {
       env {
         MYSQL_ROOT_PASSWORD = "localfemiwikipassword"
         MYSQL_DATABASE      = "femiwiki"
-        MYSQL_USER          = "DB_USERNAME" // secret.php.example에 적힌 기본값
-        MYSQL_PASSWORD      = "DB_PASSWORD" // secret.php.example에 적힌 기본값
+        MYSQL_USER          = "DB_USERNAME" // secrets.php.example에 적힌 기본값
+        MYSQL_PASSWORD      = "DB_PASSWORD" // secrets.php.example에 적힌 기본값
       }
     }
 

@@ -7,8 +7,8 @@
 아래와 같이 간편하게 페미위키를 로컬에서 실행할 수 있습니다.
 
 ```bash
-cp configs/secret.php.example configs/secret.php
-# [secret.php]의 내용을 필요에 따라 수정해주세요.
+cp configs/secrets.php.example configs/secrets.php
+# [secrets.php]의 내용을 필요에 따라 수정해주세요.
 cp nomad/development.example.hcl nomad/development.hcl
 # Please make host volume paths available
 
@@ -93,6 +93,6 @@ of the [GNU Affero General Public License v3.0] or any later version. See
 [terraform]: https://terraform.io/
 [terraform cloud]: https://app.terraform.io/
 [femiwiki/infra]: https://github.com/femiwiki/infra/blob/main/aws/res/bootstrap.sh
-[secret.php]: configs/secret.php.example
+[secrets.php]: configs/secrets.php.example
 [gnu affero general public license v3.0]: LICENSE
 [copyright]: COPYRIGHT

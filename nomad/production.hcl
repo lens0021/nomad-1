@@ -23,6 +23,11 @@ client {
     path      = "/srv/caddycerts"
     read_only = false
   }
+
+  host_volume "secrets" {
+    path      = "/srv/secrets.php"
+    read_only = true
+  }
 }
 
 plugin "docker" {

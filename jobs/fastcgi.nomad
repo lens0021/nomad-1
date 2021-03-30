@@ -23,13 +23,17 @@ job "fastcgi" {
       }
     }
 
+    volume "secrets" {
+      type      = "host"
+      source    = "secrets"
+      read_only = true
+    }
+
     task "fastcgi" {
       driver = "docker"
 
       config {
         image = "ghcr.io/femiwiki/mediawiki:2021-03-30T04-50-4705a7ed"
-
-        volumes = [ "secrets/secret.php:/a/secret.php" ]
 
         mounts = [
           {
@@ -43,14 +47,14 @@ job "fastcgi" {
         memory_hard_limit = 600
       }
 
-      resources {
-        memory = 100
+      volume_mount {
+        volume      = "secrets"
+        destination = "/a/secret.php"
+        read_only   = true
       }
 
-      artifact {
-        source      = "s3::https://femiwiki-secrets.s3-ap-northeast-1.amazonaws.com/secrets.php"
-        destination = "secrets/secret.php"
-        mode        = "file"
+      resources {
+        memory = 100
       }
     }
 
