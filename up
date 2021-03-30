@@ -5,7 +5,10 @@ set -euo pipefail; IFS=$'\n\t'
 set -x
 
 GIT_REPO=$(dirname "$0")
-mkdir -p /srv/mysql
+
+# Prepare host volume mounts
+mkdir -p /srv/mysql /srv/caddycerts
+touch /srv/secrets.php
 
 # Configure Consul
 # Reference: https://learn.hashicorp.com/tutorials/consul/deployment-guide
