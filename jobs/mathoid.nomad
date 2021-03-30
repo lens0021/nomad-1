@@ -15,7 +15,7 @@ job "mathoid" {
       }
 
       env {
-        MEDIAWIKI_LINTING = "true"
+        MATHOID_NUM_WORKERS = "0"
       }
     }
 
