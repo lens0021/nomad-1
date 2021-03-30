@@ -28,14 +28,14 @@ jobs:
           mv nomad/development.example.hcl nomad/development.hcl
           sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
           sudo nomad agent -dev-connect -config nomad/development.hcl &
-          consul agent -dev &
+          consul agent -dev -bootstrap &
 
       - name: Wait for initializing...
         run: |
-          until consul members &> /dev/null && nomad status &> /dev/null; do
+          until [[ "$(consul catalog services)" == *nomad-client* ]]; do
             sleep 1;
           done;
-          sleep 1;
+          sleep 5;
 
       - name: Prepare configuration
         run: |
