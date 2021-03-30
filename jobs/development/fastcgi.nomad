@@ -29,6 +29,12 @@ job "fastcgi" {
         destination = "/a"
         read_only   = true
       }
+
+      volume_mount {
+        volume      = "configs"
+        destination = "/config/mediawiki"
+        read_only   = true
+      }
     }
 
     network {

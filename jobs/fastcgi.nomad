@@ -27,13 +27,9 @@ job "fastcgi" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-03-21T09-12-c32a248f"
+        image = "ghcr.io/femiwiki/mediawiki:2021-03-30T04-50-4705a7ed"
 
-        volumes = [
-          "local/LocalSettings.php:/a/LocalSettings.php",
-          "secrets/secret.php:/a/secret.php",
-          "local/sitelist.xml:/a/sitelist.xml"
-        ]
+        volumes = [ "secrets/secret.php:/a/secret.php" ]
 
         mounts = [
           {
@@ -52,20 +48,8 @@ job "fastcgi" {
       }
 
       artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/main/configs/LocalSettings.php"
-        destination = "local/LocalSettings.php"
-        mode        = "file"
-      }
-
-      artifact {
         source      = "s3::https://femiwiki-secrets.s3-ap-northeast-1.amazonaws.com/secrets.php"
         destination = "secrets/secret.php"
-        mode        = "file"
-      }
-
-      artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/main/configs/sitelist.xml"
-        destination = "local/sitelist.xml"
         mode        = "file"
       }
     }
