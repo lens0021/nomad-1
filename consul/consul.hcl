@@ -4,10 +4,9 @@ data_dir   = "/opt/consul"
 server           = true
 node_name        = "femiwiki"
 bootstrap_expect = 1
-bind_addr        = "{{GetInterfaceIP \"eth0\"}}"
-# Cloud Auto-join
-# - https://www.consul.io/docs/install/cloud-auto-join#amazon-ec2
-retry_join = ["provider=aws tag_key=Name tag_value=femiwiki"]
+# Workaround for single node environment.
+# https://github.com/hashicorp/consul/issues/7137
+retry_join       = ["127.0.0.1"]
 
 ports {
   grpc = 8502
