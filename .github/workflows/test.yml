@@ -61,21 +61,23 @@ jobs:
         if: ${{ failure() }}
         run: |
           echo 'Failed to connect to localhost';
-          nomad job status
-          nomad job status mediawiki
           line='--------------------------------------------------------'
-          allocs=$(nomad job status mediawiki | awk '/Allocations/,0' | tail -n +3 | awk '{if($6=="failed")print $1}')
-          for s in $allocs; do
-            echo "Allocation $s status $line";
-            nomad alloc status "$s";
-            task=$(nomad alloc status -short "$s" | tail -n1 | awk '{print $1}')
-            echo "Allocation $s stdout logs $line";
-            nomad alloc logs "$s" $task;
-            echo "Allocation $s stderr logs $line";
-            nomad alloc logs -stderr "$s" $task;
+          nomad status
+          for job in mysql memcached fastcgi http parsoid restbase mathoid; do
+            nomad job status "$job"
+            allocs=$(nomad job status "$job" | awk '/Allocations/,0' | tail -n +3 | awk '{if($6=="failed")print $1}')
+            for s in $allocs; do
+              echo "Allocation $s status $line";
+              nomad alloc status "$s";
+              task=$(nomad alloc status -short "$s" | tail -n1 | awk '{print $1}')
+              echo "Allocation $s stdout logs $line";
+              nomad alloc logs "$s" $task;
+              echo "Allocation $s stderr logs $line";
+              nomad alloc logs -stderr "$s" $task;
+            done
+            echo "curl $line";
           done
-          echo "curl $line";
-          curl -sSLv localhost
+          curl -sSLv localhost || true
       - name: Try to access the mediawiki
         run: curl -sSLvo /dev/null localhost
       - name: Test VisualEditor API
