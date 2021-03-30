@@ -2,11 +2,7 @@
 /nomad/development.hcl
 
 # secret
-/configs/secrets.php
 /configs/bot-secret.env
-
-# Composer
-/vendor
 
 # Terraform plugins
 .terraform/

@@ -35,11 +35,11 @@ jobs:
           until consul members &> /dev/null && nomad status &> /dev/null; do
             sleep 1;
           done;
+          sleep 1;
 
-      - name: Edit configuration
+      - name: Prepare configuration
         run: |
-          mv configs/secrets.php.example configs/secrets.php
-          sed -i -r 's/localhost/127.0.0.1/' configs/secrets.php
+          curl -L https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs/secret.php.example -o configs/secrets.php
 
       - name: Run a Nomad job
         run: |
