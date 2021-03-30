@@ -12,7 +12,7 @@ mkdir -p /srv/mysql
 mkdir -p /etc/consul.d /opt/consul
 chown -R consul:consul /etc/consul.d
 cp "${GIT_REPO}/consul/consul.hcl" /etc/consul.d/consul.hcl
-cdsudo -u consul consul validate /etc/consul.d/consul.hcl
+sudo -u consul consul validate /etc/consul.d/consul.hcl
 
 # Configure Nomad
 # Reference: https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul
