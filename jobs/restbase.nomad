@@ -21,7 +21,7 @@ job "restbase" {
       }
 
       resources {
-        memory = 100
+        memory = 70
       }
 
       env {
@@ -68,7 +68,7 @@ job "restbase" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 24
+            memory = 20
           }
         }
       }

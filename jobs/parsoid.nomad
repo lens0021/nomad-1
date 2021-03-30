@@ -26,7 +26,7 @@ job "parsoid" {
       }
 
       resources {
-        memory = 120
+        memory = 100
       }
 
       env {
@@ -60,7 +60,7 @@ job "parsoid" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 24
+            memory = 20
           }
         }
       }

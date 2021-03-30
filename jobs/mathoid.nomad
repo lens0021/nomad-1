@@ -35,7 +35,7 @@ job "mathoid" {
             memory_hard_limit = 300
           }
           resources {
-            memory = 24
+            memory = 20
           }
         }
       }
