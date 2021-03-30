@@ -10,7 +10,7 @@ mkdir -p /srv/mysql
 # Configure Consul
 # Reference: https://learn.hashicorp.com/tutorials/consul/deployment-guide
 mkdir -p /etc/consul.d /opt/consul
-chown -R consul:consul /etc/consul.d
+chown -R consul:consul /etc/consul.d /opt/consul
 cp "${GIT_REPO}/consul/consul.hcl" /etc/consul.d/consul.hcl
 sudo -u consul consul validate /etc/consul.d/consul.hcl
 
