@@ -49,7 +49,7 @@ job "fastcgi" {
 
       volume_mount {
         volume      = "secrets"
-        destination = "/a/secret.php"
+        destination = "/a"
         read_only   = true
       }
 

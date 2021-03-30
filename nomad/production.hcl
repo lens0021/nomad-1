@@ -25,7 +25,7 @@ client {
   }
 
   host_volume "secrets" {
-    path      = "/srv/secrets.php"
+    path      = "/srv/secrets"
     read_only = true
   }
 }
