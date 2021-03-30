@@ -25,6 +25,7 @@ job "restbase" {
       }
 
       env {
+        RESTBASE_NUM_WORKERS  = "0"
         MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         # Workaround for https://github.com/femiwiki/femiwiki/issues/151
         MEDIAWIKI_APIS_URI    = "https://femiwiki.com/api.php"

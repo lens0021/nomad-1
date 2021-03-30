@@ -13,6 +13,10 @@ job "mathoid" {
       resources {
         memory = 150
       }
+
+      env {
+        MEDIAWIKI_LINTING = "true"
+      }
     }
 
     network {
