@@ -33,7 +33,7 @@ job "fastcgi" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-03-30T04-50-4705a7ed"
+        image = "ghcr.io/femiwiki/mediawiki:2021-03-30T07-35-0ce24ec5"
 
         mounts = [
           {
@@ -51,6 +51,11 @@ job "fastcgi" {
         volume      = "secrets"
         destination = "/a/secret.php"
         read_only   = true
+      }
+
+      env {
+        # Change server during porting
+        FEMIWIKI_SERVER = "https://test.femiwiki.com"
       }
 
       resources {
