@@ -17,7 +17,9 @@ job "fastcgi" {
       }
 
       env {
-        FEMIWIKI_DEBUG_MODE = "localhost"
+        FEMIWIKI_SERVER     = "http://127.0.0.1"
+        FEMIWIKI_DOMAIN     = "localhost"
+        FEMIWIKI_DEBUG_MODE = "1"
       }
 
       resources {
@@ -34,12 +36,6 @@ job "fastcgi" {
         volume      = "configs"
         destination = "/config/mediawiki"
         read_only   = true
-      }
-
-      env {
-        FEMIWIKI_SERVER     = "http://127.0.0.1"
-        FEMIWIKI_DOMAIN     = "localhost"
-        FEMIWIKI_DEBUG_MODE = "1"
       }
     }
 
