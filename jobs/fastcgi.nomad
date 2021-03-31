@@ -54,8 +54,7 @@ job "fastcgi" {
       }
 
       env {
-        # Change server during porting
-        FEMIWIKI_SERVER = "https://test.femiwiki.com"
+        FEMIWIKI_SERVER = "https://femiwiki.com"
       }
 
       resources {

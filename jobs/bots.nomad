@@ -19,7 +19,7 @@ job "bots" {
     }
 
     network {
-      # todo change to host
+      # todo change to host or add an upstream to connect to database
       mode = "bridge"
     }
   }
