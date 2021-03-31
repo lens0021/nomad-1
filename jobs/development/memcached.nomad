@@ -6,7 +6,7 @@ job "memcached" {
       driver = "docker"
 
       config {
-        image = "memcached:1-alpine"
+        image             = "memcached:1-alpine"
         memory_hard_limit = 240
       }
 
@@ -17,23 +17,9 @@ job "memcached" {
 
     network {
       mode = "bridge"
-    }
 
-    service {
-      name = "memcached"
-      port = "11211"
-
-      connect {
-        sidecar_service {}
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 300
-          }
-          resources {
-            memory = 30
-          }
-        }
+      port "memcached" {
+        static = 11211
       }
     }
   }

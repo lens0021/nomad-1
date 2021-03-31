@@ -16,6 +16,7 @@ job "http" {
         command = "caddy"
         args    = ["run"]
 
+        network_mode      = "host"
         memory_hard_limit = 400
 
         ulimit {
@@ -34,51 +35,9 @@ job "http" {
       }
 
       env {
-        CADDYPATH     = "/etc/caddycerts"
-        FASTCGI_ADDR  = "${NOMAD_UPSTREAM_ADDR_fastcgi}"
-        RESTBASE_ADDR = "${NOMAD_UPSTREAM_ADDR_restbase}"
-      }
-    }
-
-    network {
-      mode = "bridge"
-
-      port "http" {
-        static = 80
-      }
-
-      port "https" {
-        static = 443
-      }
-    }
-
-    service {
-      name = "http"
-      port = "80"
-
-      connect {
-        sidecar_service {
-          proxy {
-            upstreams {
-              destination_name = "fastcgi"
-              local_bind_port  = 9000
-            }
-
-            upstreams {
-              destination_name = "restbase"
-              local_bind_port  = 7231
-            }
-          }
-        }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
-          resources {
-            memory = 20
-          }
-        }
+        CADDYPATH            = "/etc/caddycerts"
+        FASTCGI_ADDR         = "127.0.0.1:9000"
+        RESTBASE_ADDR        = "127.0.0.1:7231"
       }
     }
 

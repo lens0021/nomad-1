@@ -16,8 +16,8 @@ job "fastcgi" {
         args    = [
           "-c",
           join( ";", [
-            "while ! ncat --send-only ${NOMAD_UPSTREAM_IP_mysql} ${NOMAD_UPSTREAM_PORT_mysql} < /dev/null; do sleep 1; done",
-            "while ! ncat --send-only ${NOMAD_UPSTREAM_IP_memcached} ${NOMAD_UPSTREAM_PORT_memcached} < /dev/null; do sleep 1; done"
+            "while ! ncat --send-only 127.0.0.1 3306 < /dev/null; do sleep 1; done",
+            "while ! ncat --send-only 127.0.0.1 11211 < /dev/null; do sleep 1; done"
           ] )
         ]
       }
@@ -44,6 +44,7 @@ job "fastcgi" {
           }
         ]
 
+        network_mode      = "host"
         memory_hard_limit = 600
       }
 
@@ -54,60 +55,15 @@ job "fastcgi" {
       }
 
       env {
-        FEMIWIKI_SERVER = "https://femiwiki.com"
+        FEMIWIKI_SERVER               = "https://femiwiki.com"
+        NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
+        NOMAD_UPSTREAM_ADDR_parsoid   = "127.0.0.1:8000"
+        NOMAD_UPSTREAM_ADDR_restbase  = "127.0.0.1:7231"
+        NOMAD_UPSTREAM_ADDR_mathoid   = "127.0.0.1:10044"
       }
 
       resources {
         memory = 100
-      }
-    }
-
-    network {
-      mode = "bridge"
-    }
-
-    service {
-      name = "fastcgi"
-      port = "9000"
-
-      connect {
-        sidecar_service {
-          proxy {
-            upstreams {
-              destination_name = "mysql"
-              local_bind_port  = 3306
-            }
-
-            upstreams {
-              destination_name = "memcached"
-              local_bind_port  = 11211
-            }
-
-            upstreams {
-              destination_name = "parsoid"
-              local_bind_port  = 8000
-            }
-
-            upstreams {
-              destination_name = "restbase"
-              local_bind_port  = 7231
-            }
-
-            upstreams {
-              destination_name = "mathoid"
-              local_bind_port  = 10044
-            }
-          }
-        }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 300
-          }
-          resources {
-            memory = 20
-          }
-        }
       }
     }
   }
@@ -120,11 +76,6 @@ job "fastcgi" {
   }
 
   update {
-    max_parallel = 1
-    health_check = "checks"
-    auto_revert  = true
-    auto_promote = true
-    # canary count equal to the desired count allows a Nomad job to model blue/green deployments
-    canary = 1
+    auto_revert = true
   }
 }

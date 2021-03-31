@@ -17,6 +17,7 @@ job "restbase" {
           }
         ]
 
+        network_mode      = "host"
         memory_hard_limit = 400
       }
 
@@ -29,48 +30,8 @@ job "restbase" {
         MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         # Workaround for https://github.com/femiwiki/femiwiki/issues/151
         MEDIAWIKI_APIS_URI    = "https://femiwiki.com/api.php"
-        PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
-        MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
-      }
-    }
-
-    network {
-      mode = "bridge"
-    }
-
-    service {
-      name = "restbase"
-      port = "7231"
-
-
-      connect {
-        sidecar_service {
-          proxy {
-            upstreams {
-              destination_name = "http"
-              local_bind_port  = 8080
-            }
-
-            upstreams {
-              destination_name = "parsoid"
-              local_bind_port  = 8000
-            }
-
-            upstreams {
-              destination_name = "mathoid"
-              local_bind_port  = 10044
-            }
-          }
-        }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 300
-          }
-          resources {
-            memory = 20
-          }
-        }
+        PARSOID_URI           = "http://127.0.0.1:8000"
+        MATHOID_URI           = "http://127.0.0.1:10044"
       }
     }
   }
@@ -83,11 +44,6 @@ job "restbase" {
   }
 
   update {
-    max_parallel = 1
-    health_check = "checks"
-    auto_revert  = true
-    auto_promote = true
-    # canary count equal to the desired count allows a Nomad job to model blue/green deployments
-    canary = 1
+    auto_revert = true
   }
 }

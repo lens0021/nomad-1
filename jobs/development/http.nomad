@@ -5,9 +5,9 @@ variable "caddyfile_for_dev" {
   # Global options
   auto_https off
 }
-127.0.0.1:{$NOMAD_HOST_PORT_http} localhost:{$NOMAD_HOST_PORT_http}
+127.0.0.1:80 localhost:80
 root * /srv/femiwiki.com
-php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
+php_fastcgi 127.0.0.1:9000
 file_server
 encode gzip
 header {
@@ -24,7 +24,7 @@ rewrite /w/* /index.php
 # Proxy requests to RESTBase
 # Reference:
 #   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
-reverse_proxy /localhost/* {$NOMAD_UPSTREAM_ADDR_restbase}
+reverse_proxy /localhost/* 127.0.0.1:7231
 EOF
 }
 
@@ -56,6 +56,7 @@ job "http" {
           "local/Caddyfile:/srv/femiwiki.com/Caddyfile"
         ]
 
+        network_mode      = "host"
         memory_hard_limit = 400
       }
 
@@ -67,48 +68,6 @@ job "http" {
         # Overwrite the default caddyfile provided by femiwiki:mediawiki
         data = var.caddyfile_for_dev
         destination = "local/Caddyfile"
-      }
-    }
-
-    network {
-      mode = "bridge"
-
-      port "http" {
-        static = 80
-      }
-
-      port "https" {
-        static = 443
-      }
-    }
-
-    service {
-      name = "http"
-      port = "80"
-
-      connect {
-        sidecar_service {
-          proxy {
-            upstreams {
-              destination_name = "fastcgi"
-              local_bind_port  = 9000
-            }
-
-            upstreams {
-              destination_name = "restbase"
-              local_bind_port  = 7231
-            }
-          }
-        }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
-          resources {
-            memory = 300
-          }
-        }
       }
     }
   }

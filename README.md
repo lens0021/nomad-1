@@ -1,7 +1,7 @@
 # 페미위키 미디어위키 서버 [![Github checks Status]][github checks link]
 
 한국의 페미니즘 위키인 [femiwiki.com]에 사용되는 미디어위키 서버입니다.
-[Nomad]와 [Consul] 등에 필요한 다양한 코드를 담고있습니다.
+[Nomad]와 [terraform] 등에 필요한 다양한 코드를 담고있습니다.
 데이터베이스와 memcached, 백업봇이 실행됩니다.
 
 아래와 같이 간편하게 페미위키를 로컬에서 실행할 수 있습니다.
@@ -13,8 +13,7 @@ curl -L https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs
 cp nomad/development.example.hcl nomad/development.hcl
 # Please make host volume paths available
 
-sudo nomad agent -dev-connect -config nomad/development.hcl
-consul agent -dev
+sudo nomad agent -dev -config nomad/development.hcl
 nomad job run jobs/development/mysql.nomad
 nomad job run jobs/development/memcached.nomad
 nomad job run jobs/development/fastcgi.nomad
@@ -44,7 +43,6 @@ composer fix
 
 - Docker
 - Nomad
-- Consul
 - CNI network plugins
 
 설치 후엔 이 리포지토리에 정의된 각 소프트웨어의 설정들을 적용해야 합니다.
@@ -89,7 +87,6 @@ of the [GNU Affero General Public License v3.0] or any later version. See
 [femiwiki.com]: https://femiwiki.com
 [femiwiki/ami]: https://github.com/femiwiki/ami
 [nomad]: https://www.nomadproject.io/
-[consul]: https://www.consul.io/
 [nomad provider]: https://registry.terraform.io/providers/hashicorp/nomad
 [terraform]: https://terraform.io/
 [terraform cloud]: https://app.terraform.io/

@@ -7,6 +7,7 @@ job "bots" {
 
       config {
         image = "ghcr.io/femiwiki/backupbot:2020-09-05T10-11-eefb914b"
+        network_mode      = "host"
         memory_hard_limit = 600
       }
 
@@ -16,11 +17,6 @@ job "bots" {
       resources {
         memory = 150
       }
-    }
-
-    network {
-      # todo change to host or add an upstream to connect to database
-      mode = "bridge"
     }
   }
 

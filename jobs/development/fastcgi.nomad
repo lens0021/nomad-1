@@ -12,14 +12,20 @@ job "fastcgi" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:latest"
+        image             = "ghcr.io/femiwiki/mediawiki:latest"
+        network_mode      = "host"
         memory_hard_limit = 600
       }
 
       env {
-        FEMIWIKI_SERVER     = "http://127.0.0.1"
-        FEMIWIKI_DOMAIN     = "localhost"
-        FEMIWIKI_DEBUG_MODE = "1"
+        FEMIWIKI_SERVER               = "http://127.0.0.1"
+        NOMAD_UPSTREAM_ADDR_mysql     = "127.0.0.1:3306"
+        NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
+        NOMAD_UPSTREAM_ADDR_parsoid   = "127.0.0.1:8000"
+        NOMAD_UPSTREAM_ADDR_restbase  = "127.0.0.1:7231"
+        NOMAD_UPSTREAM_ADDR_mathoid   = "127.0.0.1:10044"
+        FEMIWIKI_DOMAIN               = "localhost"
+        FEMIWIKI_DEBUG_MODE           = "1"
       }
 
       resources {
@@ -30,55 +36,6 @@ job "fastcgi" {
         volume      = "configs"
         destination = "/a"
         read_only   = true
-      }
-    }
-
-    network {
-      mode = "bridge"
-    }
-
-    service {
-      name = "fastcgi"
-      port = "9000"
-
-      connect {
-        sidecar_service {
-          proxy {
-            upstreams {
-              destination_name = "mysql"
-              local_bind_port  = 3306
-            }
-
-            upstreams {
-              destination_name = "memcached"
-              local_bind_port  = 11211
-            }
-
-            upstreams {
-              destination_name = "parsoid"
-              local_bind_port  = 8000
-            }
-
-            upstreams {
-              destination_name = "restbase"
-              local_bind_port  = 7231
-            }
-
-            upstreams {
-              destination_name = "mathoid"
-              local_bind_port  = 10044
-            }
-          }
-        }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 300
-          }
-          resources {
-            memory = 32
-          }
-        }
       }
     }
   }

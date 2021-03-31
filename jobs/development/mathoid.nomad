@@ -22,23 +22,9 @@ job "mathoid" {
 
     network {
       mode = "bridge"
-    }
 
-    service {
-      name = "mathoid"
-      port = "10044"
-
-      connect {
-        sidecar_service {}
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 300
-          }
-          resources {
-            memory = 30
-          }
-        }
+      port "mathoid" {
+        static = 10044
       }
     }
   }

@@ -9,12 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Nomad and Consul
+      - name: Install Nomad
         run: |
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-          sudo apt-get update && sudo apt-get install -y nomad consul
-          echo "::set-output name=consul_version::$(consul -v)"
+          sudo apt-get update && sudo apt-get install -y nomad
           echo "::set-output name=nomad_version::$(nomad -v)"
 
       - name: Validate job files
@@ -23,17 +22,15 @@ jobs:
             nomad job validate "$job";
           done
 
-      - name: Start a Nomad Agent and a Consul agent
+      - name: Start a Nomad Agent
         run: |
           mv nomad/development.example.hcl nomad/development.hcl
           sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
-          sudo nomad agent -dev-connect -config nomad/development.hcl &
-          consul agent -dev -bootstrap &
+          sudo nomad agent -dev -config nomad/development.hcl &
 
       - name: Wait for initializing...
         run: |
-          NODE_ID="$(nomad node status -self | head -1 | awk '{print $3}')"
-          until [[ $(curl -s "http://127.0.0.1:4646/v1/node/$NODE_ID") = *"consul.version"* ]]; do
+          until nomad node status > /dev/null; do
             sleep 1; done;
 
       - name: Prepare configuration
@@ -51,7 +48,7 @@ jobs:
           nomad job run jobs/development/mathoid.nomad
 
       - name: Access localhost until success
-        timeout-minutes: 10
+        timeout-minutes: 5
         run: |
           until curl -sLfo /dev/null localhost; do
             sleep 1;

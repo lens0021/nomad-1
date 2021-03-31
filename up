@@ -10,29 +10,17 @@ GIT_REPO=$(dirname "$0")
 mkdir -p /srv/mysql /srv/caddycerts
 touch /srv/secrets.php
 
-# Configure Consul
-# Reference: https://learn.hashicorp.com/tutorials/consul/deployment-guide
-mkdir -p /etc/consul.d /opt/consul
-chown -R consul:consul /etc/consul.d /opt/consul
-cp "${GIT_REPO}/consul/consul.hcl" /etc/consul.d/consul.hcl
-sudo -u consul consul validate /etc/consul.d/consul.hcl
-
 # Configure Nomad
-# Reference: https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul
 mkdir -p /opt/nomad /etc/nomad.d
 cp "${GIT_REPO}/nomad/production.hcl" /etc/nomad.d/nomad.hcl
 
 # Configure systemd
-cp "${GIT_REPO}/systemd/consul.service" /etc/systemd/system/consul.service
 cp "${GIT_REPO}/systemd/nomad.service" /etc/systemd/system/nomad.service
 
-# Start Consul and Nomad
+# Start Nomad
 #
 # Reference:
-#   - https://github.com/hashicorp/terraform-aws-consul/blob/master/modules/run-consul/run-consul
 #   - https://github.com/hashicorp/terraform-aws-nomad/blob/master/modules/run-nomad/run-nomad
 systemctl daemon-reload
-systemctl enable consul.service
 systemctl enable nomad.service
-systemctl restart consul.service
 systemctl restart nomad.service

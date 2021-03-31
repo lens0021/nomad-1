@@ -45,27 +45,8 @@ job "mysql" {
     network {
       mode = "bridge"
 
-      # Accessed by Backupbot
       port "mysql" {
         static = 3306
-      }
-    }
-
-    service {
-      name = "mysql"
-      port = "3306"
-
-      connect {
-        sidecar_service {}
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 300
-          }
-          resources {
-            memory = 20
-          }
-        }
       }
     }
   }
