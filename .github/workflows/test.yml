@@ -32,10 +32,9 @@ jobs:
 
       - name: Wait for initializing...
         run: |
-          until [[ "$(consul catalog services)" == *nomad-client* ]]; do
-            sleep 1;
-          done;
-          sleep 5;
+          NODE_ID="$(nomad node status -self | head -1 | awk '{print $3}')"
+          until [[ $(curl -s "http://127.0.0.1:4646/v1/node/$NODE_ID") = *"consul.version"* ]]; do
+            sleep 1; done;
 
       - name: Prepare configuration
         run: |
