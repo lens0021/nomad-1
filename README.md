@@ -43,7 +43,6 @@ composer fix
 
 - Docker
 - Nomad
-- CNI network plugins
 
 설치 후엔 이 리포지토리에 정의된 각 소프트웨어의 설정들을 적용해야 합니다.
 
