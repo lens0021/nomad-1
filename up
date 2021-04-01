@@ -12,7 +12,7 @@ touch /srv/secrets.php
 
 # Configure Nomad
 mkdir -p /opt/nomad /etc/nomad.d
-cp "${GIT_REPO}/nomad/production.hcl" /etc/nomad.d/nomad.hcl
+cp "${GIT_REPO}/nomad/production.hcl" /etc/nomad.d/default.hcl
 
 # Configure systemd
 cp "${GIT_REPO}/systemd/nomad.service" /etc/systemd/system/nomad.service

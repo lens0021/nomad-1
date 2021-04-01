@@ -7,7 +7,7 @@ After=network-online.target
 ConditionFileNotEmpty=/etc/nomad.d/nomad.hcl
 
 [Service]
-ExecStart=/usr/local/bin/nomad agent -config /etc/nomad.d
+ExecStart=/usr/local/bin/nomad agent -config /etc/default.d
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
