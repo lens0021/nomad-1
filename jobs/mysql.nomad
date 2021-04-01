@@ -27,7 +27,7 @@ job "mysql" {
 
       volume_mount {
         volume      = "mysql"
-        destination = "/srv"
+        destination = "/srv/mysql"
         read_only   = false
       }
 
