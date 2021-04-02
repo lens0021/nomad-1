@@ -11,7 +11,7 @@ job "mathoid" {
       }
 
       resources {
-        memory = 150
+        memory = 170
       }
 
       env {

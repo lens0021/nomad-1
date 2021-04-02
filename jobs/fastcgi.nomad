@@ -63,7 +63,7 @@ job "fastcgi" {
       }
 
       resources {
-        memory = 100
+        memory = 110
       }
     }
   }

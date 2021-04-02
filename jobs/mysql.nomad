@@ -22,7 +22,7 @@ job "mysql" {
       }
 
       resources {
-        memory = 400
+        memory = 600
       }
 
       volume_mount {

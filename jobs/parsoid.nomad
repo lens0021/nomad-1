@@ -27,7 +27,7 @@ job "parsoid" {
       }
 
       resources {
-        memory = 100
+        memory = 120
       }
 
       env {

@@ -25,7 +25,7 @@ job "http" {
       }
 
       resources {
-        memory = 50
+        memory = 70
       }
 
       volume_mount {
