@@ -18,14 +18,14 @@ job "fastcgi" {
       }
 
       env {
-        FEMIWIKI_SERVER               = "http://127.0.0.1"
-        NOMAD_UPSTREAM_ADDR_mysql     = "127.0.0.1:3306"
-        NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
-        NOMAD_UPSTREAM_ADDR_parsoid   = "127.0.0.1:8000"
-        NOMAD_UPSTREAM_ADDR_restbase  = "127.0.0.1:7231"
-        NOMAD_UPSTREAM_ADDR_mathoid   = "127.0.0.1:10044"
-        FEMIWIKI_DOMAIN               = "localhost"
-        FEMIWIKI_DEBUG_MODE           = "1"
+        MEDIAWIKI_DEBUG_MODE              = "1"
+        MEDIAWIKI_SERVER                  = "http://127.0.0.1"
+        MEDIAWIKI_DOMAIN_FOR_NODE_SERVICE = "localhost"
+        NOMAD_UPSTREAM_ADDR_mysql         = "127.0.0.1:3306"
+        NOMAD_UPSTREAM_ADDR_memcached     = "127.0.0.1:11211"
+        NOMAD_UPSTREAM_ADDR_parsoid       = "127.0.0.1:8000"
+        NOMAD_UPSTREAM_ADDR_restbase      = "127.0.0.1:7231"
+        NOMAD_UPSTREAM_ADDR_mathoid       = "127.0.0.1:10044"
       }
 
       resources {
