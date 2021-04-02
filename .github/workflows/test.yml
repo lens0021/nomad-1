@@ -57,21 +57,27 @@ jobs:
         if: ${{ failure() }}
         run: |
           echo 'Failed to connect to localhost';
-          line='--------------------------------------------------------'
+          function header {
+            line="--------------------------------------------------------"
+            echo -e "$line\n$1\n$line"
+          }
+          header "docker images"
+          docker image ls --no-trunc
+          header "nomad status"
           nomad status
-          for job in mysql memcached fastcgi http parsoid restbase mathoid; do
-            nomad job status "$job"
-            allocs=$(nomad job status "$job" | awk '/Allocations/,0' | tail -n +3 | awk '{if($6=="failed")print $1}')
-            for s in $allocs; do
-              echo "Allocation $s status $line";
-              nomad alloc status "$s";
-              task=$(nomad alloc status -short "$s" | tail -n1 | awk '{print $1}')
-              echo "Allocation $s stdout logs $line";
-              nomad alloc logs "$s" $task;
-              echo "Allocation $s stderr logs $line";
-              nomad alloc logs -stderr "$s" $task;
+          for JOB in mysql memcached fastcgi http parsoid restbase mathoid; do
+            header "nomad job '$JOB' status"
+            nomad job status "$JOB"
+            allocs=$(nomad job status "$JOB" | awk '/Allocations/,0' | tail -n +3 | awk '{if($6=="failed")print $1}')
+            for ALLOC in $allocs; do
+              header "Allocation '$ALLOC' status"
+              nomad alloc status "$ALLOC";
+              task=$(nomad alloc status -short "$ALLOC" | tail -n1 | awk '{print $1}')
+              header "Allocation '$ALLOC' stdout logs "
+              nomad alloc logs "$ALLOC" $task;
+              header "Allocation '$ALLOC' stderr logs "
+              nomad alloc logs -stderr "$ALLOC" $task;
             done
-            echo "curl $line";
           done
           curl -sSLv localhost || true
       - name: Try to access the mediawiki
