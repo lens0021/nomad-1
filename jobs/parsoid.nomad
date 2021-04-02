@@ -31,6 +31,7 @@ job "parsoid" {
       }
 
       env {
+        PARSOID_NUM_WORKERS   = "0"
         MEDIAWIKI_LINTING     = "true"
         MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         MEDIAWIKI_APIS_URI    = "http://127.0.0.1/api.php"
