@@ -4,10 +4,10 @@ Description="HashiCorp Nomad"
 Documentation=https://www.nomadproject.io/
 Requires=network-online.target
 After=network-online.target
-ConditionFileNotEmpty=/etc/nomad.d/nomad.hcl
+ConditionFileNotEmpty=/etc/nomad.d/default.hcl
 
 [Service]
-ExecStart=/usr/local/bin/nomad agent -config /etc/default.d
+ExecStart=/usr/local/bin/nomad agent -config /etc/nomad.d
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
