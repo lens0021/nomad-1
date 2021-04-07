@@ -28,6 +28,11 @@ client {
     path      = "/srv/secrets"
     read_only = true
   }
+
+  host_volume "file_cache" {
+    path      = "/srv/file-cache"
+    read_only = true
+  }
 }
 
 plugin "docker" {

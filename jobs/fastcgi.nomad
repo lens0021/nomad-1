@@ -29,6 +29,12 @@ job "fastcgi" {
       read_only = true
     }
 
+    volume "file_cache" {
+      type      = "host"
+      source    = "file_cache"
+      read_only = false
+    }
+
     task "fastcgi" {
       driver = "docker"
 
@@ -53,6 +59,13 @@ job "fastcgi" {
         destination = "/a"
         read_only   = true
       }
+
+      volume_mount {
+        volume      = "file_cache"
+        destination = "/tmp/file-cache"
+        read_only   = false
+      }
+
 
       env {
         FEMIWIKI_SERVER               = "https://femiwiki.com"

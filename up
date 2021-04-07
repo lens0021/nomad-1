@@ -7,8 +7,8 @@ set -x
 GIT_REPO=$(dirname "$0")
 
 # Prepare host volume mounts
-mkdir -p /srv/mysql /srv/caddycerts
-touch /srv/secrets.php
+mkdir -p /srv/mysql /srv/caddycerts /srv/secrets /srv/file-cache
+touch /srv/secrets/secret.php
 
 # Configure Nomad
 mkdir -p /opt/nomad /etc/nomad.d
