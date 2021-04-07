@@ -14,6 +14,11 @@ server {
 client {
   enabled = true
 
+  host_volume "secrets" {
+    path      = "/srv/secrets"
+    read_only = true
+  }
+
   host_volume "mysql" {
     path      = "/srv/mysql"
     read_only = false
@@ -24,14 +29,9 @@ client {
     read_only = false
   }
 
-  host_volume "secrets" {
-    path      = "/srv/secrets"
-    read_only = true
-  }
-
   host_volume "file_cache" {
     path      = "/srv/file-cache"
-    read_only = true
+    read_only = false
   }
 }
 
