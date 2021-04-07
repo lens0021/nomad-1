@@ -39,7 +39,7 @@ job "fastcgi" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-03-30T15-34-a70e0d27"
+        image = "ghcr.io/femiwiki/mediawiki:2021-04-07T21-56-e2dc8b41"
 
         mounts = [
           {
@@ -68,11 +68,14 @@ job "fastcgi" {
 
 
       env {
-        FEMIWIKI_SERVER               = "https://femiwiki.com"
+        # FEMIWIKI_SERVER               = "https://test.femiwiki.com"
         NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
         NOMAD_UPSTREAM_ADDR_parsoid   = "127.0.0.1:8000"
         NOMAD_UPSTREAM_ADDR_restbase  = "127.0.0.1:7231"
         NOMAD_UPSTREAM_ADDR_mathoid   = "127.0.0.1:10044"
+        MEDIAWIKI_SKIP_INSTALL        = "1"
+        MEDIAWIKI_SKIP_UPDATE         = "1"
+        MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
       }
 
       resources {
