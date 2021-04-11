@@ -28,11 +28,6 @@ client {
     path      = "/srv/caddycerts"
     read_only = false
   }
-
-  host_volume "file_cache" {
-    path      = "/srv/file-cache"
-    read_only = false
-  }
 }
 
 plugin "docker" {

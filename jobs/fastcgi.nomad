@@ -29,17 +29,11 @@ job "fastcgi" {
       read_only = true
     }
 
-    volume "file_cache" {
-      type      = "host"
-      source    = "file_cache"
-      read_only = false
-    }
-
     task "fastcgi" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-04-07T21-56-e2dc8b41"
+        image = "ghcr.io/femiwiki/mediawiki:caddy-mwcache"
 
         mounts = [
           {
@@ -60,15 +54,9 @@ job "fastcgi" {
         read_only   = true
       }
 
-      volume_mount {
-        volume      = "file_cache"
-        destination = "/tmp/file-cache"
-        read_only   = false
-      }
-
-
       env {
         # FEMIWIKI_SERVER               = "https://test.femiwiki.com"
+        NOMAD_UPSTREAM_ADDR_http      = "127.0.0.1:80"
         NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
         NOMAD_UPSTREAM_ADDR_parsoid   = "127.0.0.1:8000"
         NOMAD_UPSTREAM_ADDR_restbase  = "127.0.0.1:7231"

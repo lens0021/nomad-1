@@ -4,12 +4,16 @@ variable "caddyfile_for_dev" {
 {
   # Global options
   auto_https off
+  order mwcache before rewrite
 }
 127.0.0.1:80 localhost:80
 root * /srv/femiwiki.com
 php_fastcgi 127.0.0.1:9000
 file_server
 encode gzip
+mwcache {
+  purge_acl 10.0.0.0/8
+}
 header {
   # Enable XSS filtering for legacy browsers
   X-XSS-Protection "1; mode=block"
@@ -25,6 +29,11 @@ rewrite /w/* /index.php
 # Reference:
 #   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
 reverse_proxy /localhost/* 127.0.0.1:7231
+
+log {
+  output stdout
+}
+
 EOF
 }
 
