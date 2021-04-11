@@ -33,7 +33,7 @@ job "fastcgi" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:caddy-mwcache"
+        image = "ghcr.io/femiwiki/mediawiki:2021-04-11T23-38-8e0828c9-caddy-mwcache"
 
         mounts = [
           {

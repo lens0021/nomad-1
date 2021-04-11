@@ -12,7 +12,7 @@ job "fastcgi" {
       driver = "docker"
 
       config {
-        image             = "ghcr.io/femiwiki/mediawiki:latest"
+        image             = "ghcr.io/femiwiki/mediawiki:caddy-mwcache"
         network_mode      = "host"
         memory_hard_limit = 600
       }

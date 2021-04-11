@@ -45,7 +45,7 @@ job "http" {
       driver = "docker"
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:latest"
+        image   = "ghcr.io/femiwiki/mediawiki:caddy-mwcache"
         command = "caddy"
         args    = ["run"]
 
