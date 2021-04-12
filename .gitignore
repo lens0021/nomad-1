@@ -3,6 +3,7 @@
 
 # secret
 /configs/bot-secret.env
+/configs/secret.php
 
 # Terraform plugins
 .terraform/

@@ -7,7 +7,7 @@
 아래와 같이 간편하게 페미위키를 로컬에서 실행할 수 있습니다.
 
 ```bash
-curl -L https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs/secret.php.example -o secrets.php
+curl -L https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs/secret.php.example -o configs/secret.php
 # [secrets.php]의 내용을 필요에 따라 수정해주세요.
 
 cp nomad/development.example.hcl nomad/development.hcl
