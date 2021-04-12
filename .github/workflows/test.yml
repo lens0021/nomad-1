@@ -47,12 +47,25 @@ jobs:
           nomad job run jobs/development/restbase.nomad
           nomad job run jobs/development/mathoid.nomad
 
-      - name: Access localhost until success
+      - name: Access MediaWiki until success
         timeout-minutes: 5
         run: |
+          echo 'Waiting for http...'
           until curl -sLfo /dev/null localhost; do
-            sleep 1;
-          done;
+            sleep 1; done
+
+          echo 'Waiting for parsoid...'
+          until [ -n "$(docker ps -qf 'name=^parsoid')" ]; do
+            sleep 1; done
+          ID="$(docker ps -qf 'name=^parsoid')"
+          until [ "$(docker inspect "$ID" --format='{{json .State.Health.Status}}')" = \"healthy\" ]; do
+            sleep 1; done
+
+      - name: Test VisualEditor API
+        run: |
+          curl -sSLvo /dev/null "http://localhost/api.php?action=visualeditor&page=arbitrary_page&paction=parse&wikitext=arbitrary"
+          curl -sSLvo /dev/null "http://localhost/localhost/v1/"
+
       - name: backup of accessing
         if: ${{ failure() }}
         run: |
@@ -80,7 +93,3 @@ jobs:
             done
           done
           curl -sSLv localhost || true
-      - name: Try to access the mediawiki
-        run: curl -sSLvo /dev/null localhost
-      - name: Test VisualEditor API
-        run: curl -sSLvo /dev/null "http://localhost/api.php?action=visualeditor&format=json&page=main_page&paction=parse&wikitext='''foo'''"
