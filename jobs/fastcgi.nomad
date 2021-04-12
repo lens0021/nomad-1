@@ -55,7 +55,7 @@ job "fastcgi" {
       }
 
       env {
-        # FEMIWIKI_SERVER               = "https://test.femiwiki.com"
+        MEDIAWIKI_SERVER               = "https://test.femiwiki.com"
         NOMAD_UPSTREAM_ADDR_http      = "127.0.0.1:80"
         NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
         NOMAD_UPSTREAM_ADDR_parsoid   = "127.0.0.1:8000"
