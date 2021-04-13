@@ -17,7 +17,7 @@ job "http" {
         args    = ["run"]
 
         network_mode      = "host"
-        memory_hard_limit = 600
+        memory_hard_limit = 400
 
         ulimit {
           nofile = "20000:40000"
@@ -25,7 +25,7 @@ job "http" {
       }
 
       resources {
-        memory = 200
+        memory = 70
       }
 
       volume_mount {
