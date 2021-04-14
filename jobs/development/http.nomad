@@ -12,9 +12,11 @@ php_fastcgi 127.0.0.1:9000
 file_server
 encode gzip
 mwcache {
-  badger {
-    in_memory true
-  }
+	ristretto {
+		num_counters 100000
+		max_cost 10000
+		buffer_items 64
+	}
   purge_acl {
     10.0.0.0/8
     127.0.0.1
