@@ -3,8 +3,8 @@ name: Test
 on: [push, pull_request]
 
 jobs:
-  docker_image:
-    name: Test Nomad job specification
+  # This name is used by status check requirement
+  before-cd-test:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
