@@ -37,7 +37,7 @@ composer fix
 
 ### Production
 
-페미위키는 프로덕션 배포에도 Nomad를 사용할 예정이며 이를 위해 [Nomad Provider]와 [Terraform Cloud]를 사용할 예정입니다. 그러면 서버에 Nomad를 준비하고 Terraform Cloud와 연결하는 작업이 필요합니다.
+페미위키는 프로덕션 배포에도 Nomad를 사용하고 있으며 이를 위해 [Nomad Provider]와 [Terraform Cloud]를 사용하고 있습니다. 그러면 서버에 Nomad를 준비하고 Terraform Cloud와 연결하는 작업이 필요합니다.
 
 서버에는 다음 소프트웨어가 필요합니다.
 
@@ -52,7 +52,7 @@ cd nomad
 sudo ./up
 ```
 
-이상의 과정은 실제로는 [femiwiki/infra]에 저장된 스크립트를 통해 인스턴스 Launch 후 자동으로 실행될 예정입니다.
+이상의 과정은 실제로는 [femiwiki/infra]에 저장된 스크립트를 통해 인스턴스 Launch 후 자동으로 실행됩니다.
 
 수작업으로는 Terraform Cloud와 Nomad cluster를 연결하기 위해 ACL을 시작시키고 생성된 토큰을 Terraform Cloud에 저장하는 과정이 필요합니다. 다음을 실행해주세요.
 
@@ -71,7 +71,9 @@ Modify Index = 7
 
 출력된 Secret ID를 [terraform cloud femiwiki/nomad workspace의 Variables 설정](https://app.terraform.io/app/femiwiki/workspaces/nomad/variables)에서 `nomad_token`으로 입력해주세요.
 
-`nomad_addr`로 노마드 서버의 주소를, `persistent_ebs_id`로 EBS 볼륨의 아이디도 입력한 후 Terraform Cloud에서 job의 plan 및 run을 해주세요.
+그리고 `nomad_addr`로 노마드 서버의 주소를, `persistent_ebs_id`로 EBS 볼륨의 아이디들도 입력한 후<sup>\*</sup> Terraform Cloud에서 job의 plan 및 run을 해주세요.
+
+\* 이 부분은 Terraform Cloud에 의해 자동화될 가능성이 있습니다. ([#85](https://github.com/femiwiki/infra/issues/85))
 
 &nbsp;
 
