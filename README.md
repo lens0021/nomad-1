@@ -71,10 +71,6 @@ Modify Index = 7
 
 출력된 Secret ID를 [terraform cloud femiwiki/nomad workspace의 Variables 설정](https://app.terraform.io/app/femiwiki/workspaces/nomad/variables)에서 `nomad_token`으로 입력해주세요.
 
-그리고 `nomad_addr`로 노마드 서버의 주소를, `persistent_ebs_id`로 EBS 볼륨의 아이디들도 입력한 후<sup>\*</sup> Terraform Cloud에서 job의 plan 및 run을 해주세요.
-
-\* 이 부분은 Terraform Cloud에 의해 자동화될 가능성이 있습니다. ([#85](https://github.com/femiwiki/infra/issues/85))
-
 &nbsp;
 
 ---
