@@ -21,10 +21,10 @@ resource "nomad_job" "memcached" {
 
 resource "nomad_job" "fastcgi" {
   depends_on = [
-    nomad_volume.secrets,
     nomad_job.mysql,
     nomad_job.memcached,
   ]
+
   detach  = false
   jobspec = file("../jobs/fastcgi.nomad")
 

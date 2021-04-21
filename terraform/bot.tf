@@ -1,8 +1,5 @@
 resource "nomad_job" "backupbot" {
-  depends_on = [
-    nomad_volume.secrets,
-    nomad_job.mysql
-  ]
+  depends_on = [nomad_job.mysql]
 
   detach  = false
   jobspec = file("../jobs/backupbot.nomad")

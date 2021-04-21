@@ -23,14 +23,6 @@ job "fastcgi" {
       }
     }
 
-    volume "secrets" {
-      type   = "csi"
-      source = "secrets"
-      // Use writable mode
-      // https://github.com/femiwiki/nomad/issues/18
-      read_only = false
-    }
-
     task "fastcgi" {
       driver = "docker"
 
@@ -40,8 +32,20 @@ job "fastcgi" {
         change_mode = "noop"
       }
 
+      artifact {
+        source      = "s3::https://femiwiki-secrets.s3-ap-northeast-1.amazonaws.com/secrets.php"
+        destination = "secrets/secrets.php"
+        mode        = "file"
+      }
+
       config {
         image = "ghcr.io/femiwiki/mediawiki:2021-04-20T08-41-c3cea3e5"
+
+        volumes = [
+          "secrets/secret.php:/a/secret.php",
+          # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
+          "local/Hotfix.php:/config/mediawiki/Hotfix.php",
+        ]
 
         mounts = [
           {
@@ -52,21 +56,8 @@ job "fastcgi" {
           }
         ]
 
-        volumes = [
-          # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
-          "local/Hotfix.php:/config/mediawiki/Hotfix.php"
-        ]
-
         network_mode      = "host"
         memory_hard_limit = 600
-      }
-
-      volume_mount {
-        volume      = "secrets"
-        destination = "/a"
-        // Use writable mode
-        // https://github.com/femiwiki/nomad/issues/18
-        read_only = false
       }
 
       env {

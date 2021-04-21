@@ -42,14 +42,3 @@ resource "nomad_volume" "caddycerts" {
   access_mode     = "single-node-writer"
   attachment_mode = "file-system"
 }
-
-resource "nomad_volume" "secrets" {
-  depends_on      = [data.nomad_plugin.ebs]
-  type            = "csi"
-  plugin_id       = "aws-ebs0"
-  volume_id       = "secrets"
-  name            = "secrets"
-  external_id     = data.terraform_remote_state.aws.outputs.ebs_secrets_id
-  access_mode     = "single-node-writer"
-  attachment_mode = "file-system"
-}
