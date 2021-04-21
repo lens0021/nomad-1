@@ -42,7 +42,7 @@ job "fastcgi" {
         image = "ghcr.io/femiwiki/mediawiki:2021-04-20T08-41-c3cea3e5"
 
         volumes = [
-          "secrets/secret.php:/a/secret.php",
+          "secrets/secrets.php:/a/secret.php",
           # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
           "local/Hotfix.php:/config/mediawiki/Hotfix.php",
         ]
