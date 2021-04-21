@@ -11,10 +11,21 @@ job "fastcgi" {
     task "fastcgi" {
       driver = "docker"
 
+      template {
+        data        = var.hotfix
+        destination = "local/Hotfix.php"
+        change_mode = "noop"
+      }
+
       config {
-        image             = "ghcr.io/femiwiki/mediawiki:caddy-mwcache"
+        image             = "ghcr.io/femiwiki/mediawiki:latest"
         network_mode      = "host"
         memory_hard_limit = 600
+
+        volumes = [
+          # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
+          "local/Hotfix.php:/config/mediawiki/Hotfix.php"
+        ]
       }
 
       env {
@@ -40,4 +51,17 @@ job "fastcgi" {
       }
     }
   }
+}
+
+variable "hotfix" {
+  type    = string
+  default = <<EOF
+<?php
+// Use this file for hotfixes
+
+// Examples:
+//
+// $wgDebugToolbar = false;
+// $wgDefaultSkin = 'vector';
+EOF
 }

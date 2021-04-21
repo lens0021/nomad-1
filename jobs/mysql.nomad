@@ -3,7 +3,7 @@ job "mysql" {
 
   group "mysql" {
     volume "mysql" {
-      type      = "host"
+      type      = "csi"
       source    = "mysql"
       read_only = false
     }
@@ -12,7 +12,7 @@ job "mysql" {
       driver = "docker"
 
       config {
-        image   = "mysql:8.0.23"
+        image   = "mysql/mysql-server:8.0.23"
         volumes = ["local/custom.cnf:/etc/mysql/conf.d/custom.cnf"]
         args = [
           "--default-authentication-plugin=mysql_native_password",
