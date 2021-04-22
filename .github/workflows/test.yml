@@ -25,10 +25,11 @@ jobs:
       - name: Start a Nomad Agent
         run: |
           mv nomad/development.example.hcl nomad/development.hcl
-          sed -i -r "s#/path/to/configs#${PWD}/configs#" nomad/development.hcl
+          sed -i -r "s#/path/to/configs#${PWD}/jobs/development/configs#" nomad/development.hcl
           sudo nomad agent -dev -config nomad/development.hcl &
 
       - name: Wait for initializing...
+        timeout-minutes: 5
         run: |
           until nomad node status > /dev/null; do
             sleep 1; done;
