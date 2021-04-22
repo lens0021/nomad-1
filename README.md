@@ -1,14 +1,15 @@
 # 페미위키 미디어위키 서버 [![Github checks Status]][github checks link]
 
 한국의 페미니즘 위키인 [femiwiki.com]에 사용되는 미디어위키 서버입니다.
-[Nomad]와 [terraform] 등에 필요한 다양한 코드를 담고있습니다.
+[Nomad]와 [Terraform] 등에 필요한 다양한 코드를 담고있습니다.
 데이터베이스와 memcached, 백업봇이 실행됩니다.
+
+## Development
 
 아래와 같이 간편하게 페미위키를 로컬에서 실행할 수 있습니다.
 
 ```bash
-curl -L https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs/secret.php.example -o configs/secret.php
-# [secrets.php]의 내용을 필요에 따라 수정해주세요.
+curl -L https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs/secret.php.example -o jobs/development/configs/secret.php
 
 cp nomad/development.example.hcl nomad/development.hcl
 # Please make host volume paths available
@@ -22,20 +23,11 @@ nomad job run jobs/development/parsoid.nomad
 nomad job run jobs/development/restbase.nomad
 nomad job run jobs/development/mathoid.nomad
 ```
-
-페미위키 개발하실 때엔 아래 커맨드들을 참고해주세요.
-
-```bash
-# configs/LocalSettings.php 검사
-composer install
-composer test
-# configs/LocalSettings.php 자동 교정
-composer fix
-```
+[secrets.php]의 내용은 필요에 따라 수정해주세요.
 
 &nbsp;
 
-### Production
+## Production
 
 페미위키는 프로덕션 배포에도 Nomad를 사용하고 있으며 이를 위해 [Nomad Provider]와 [Terraform Cloud]를 사용하고 있습니다. 그러면 서버에 Nomad를 준비하고 Terraform Cloud와 연결하는 작업이 필요합니다.
 
@@ -82,7 +74,6 @@ of the [GNU Affero General Public License v3.0] or any later version. See
 [github checks status]: https://badgen.net/github/checks/femiwiki/docker-mediawiki
 [github checks link]: https://github.com/femiwiki/docker-mediawiki
 [femiwiki.com]: https://femiwiki.com
-[femiwiki/ami]: https://github.com/femiwiki/ami
 [nomad]: https://www.nomadproject.io/
 [nomad provider]: https://registry.terraform.io/providers/hashicorp/nomad
 [terraform]: https://terraform.io/

@@ -52,6 +52,12 @@ job "http" {
     task "http" {
       driver = "docker"
 
+      template {
+        # Overwrite the default caddyfile provided by femiwiki:mediawiki
+        data        = var.caddyfile_for_dev
+        destination = "local/Caddyfile"
+      }
+
       config {
         image   = "ghcr.io/femiwiki/mediawiki:latest"
         command = "caddy"
@@ -79,12 +85,6 @@ job "http" {
 
       resources {
         memory = 80
-      }
-
-      template {
-        # Overwrite the default caddyfile provided by femiwiki:mediawiki
-        data = var.caddyfile_for_dev
-        destination = "local/Caddyfile"
       }
     }
   }

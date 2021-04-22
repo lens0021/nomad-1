@@ -19,6 +19,8 @@ job "parsoid" {
         MEDIAWIKI_LINTING     = "true"
         MEDIAWIKI_APIS_DOMAIN = "localhost"
         MEDIAWIKI_APIS_URI    = "http://127.0.0.1/api.php"
+        # Amazon EC2-t type small instances has two vCPUs
+        PARSOID_NUM_WORKERS = "2"
       }
     }
   }

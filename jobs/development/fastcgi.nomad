@@ -1,3 +1,16 @@
+variable "hotfix" {
+  type    = string
+  default = <<EOF
+<?php
+// Use this file for hotfixes
+
+// Examples:
+//
+// $wgDebugToolbar = false;
+// $wgDefaultSkin = 'vector';
+EOF
+}
+
 job "fastcgi" {
   datacenters = ["dc1"]
 
@@ -10,6 +23,12 @@ job "fastcgi" {
 
     task "fastcgi" {
       driver = "docker"
+
+      volume_mount {
+        volume      = "configs"
+        destination = "/a"
+        read_only   = true
+      }
 
       template {
         data        = var.hotfix
@@ -43,25 +62,6 @@ job "fastcgi" {
       resources {
         memory = 100
       }
-
-      volume_mount {
-        volume      = "configs"
-        destination = "/a"
-        read_only   = true
-      }
     }
   }
-}
-
-variable "hotfix" {
-  type    = string
-  default = <<EOF
-<?php
-// Use this file for hotfixes
-
-// Examples:
-//
-// $wgDebugToolbar = false;
-// $wgDefaultSkin = 'vector';
-EOF
 }

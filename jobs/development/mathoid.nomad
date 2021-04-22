@@ -15,7 +15,7 @@ job "mathoid" {
       }
 
       env {
-        # Amazon EC2 t3a-small has two vCPUs
+        # Amazon EC2-t type small instances has two vCPUs
         MATHOID_NUM_WORKERS = "2"
       }
     }

@@ -20,6 +20,8 @@ job "restbase" {
         MEDIAWIKI_APIS_URI    = "http://127.0.0.7/api.php"
         PARSOID_URI           = "http://127.0.0.1:8080"
         MATHOID_URI           = "http://127.0.0.1:10044"
+        # Amazon EC2-t type small instances has two vCPUs
+        RESTBASE_NUM_WORKERS = "2"
       }
     }
   }

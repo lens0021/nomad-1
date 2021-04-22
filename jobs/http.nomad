@@ -11,6 +11,12 @@ job "http" {
     task "http" {
       driver = "docker"
 
+      volume_mount {
+        volume      = "caddycerts"
+        destination = "/etc/caddycerts"
+        read_only   = false
+      }
+
       config {
         image   = "ghcr.io/femiwiki/mediawiki:2021-04-19T12-14-11fd8960"
         command = "caddy"
@@ -26,12 +32,6 @@ job "http" {
 
       resources {
         memory = 70
-      }
-
-      volume_mount {
-        volume      = "caddycerts"
-        destination = "/etc/caddycerts"
-        read_only   = false
       }
 
       env {

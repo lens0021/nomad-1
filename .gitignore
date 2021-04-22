@@ -2,8 +2,8 @@
 /nomad/development.hcl
 
 # secret
-/configs/bot-secret.env
-/configs/secret.php
+jobs/development/configs/secret.php
+jobs/development/configs/secrets.php
 
 # Terraform plugins
 .terraform/
