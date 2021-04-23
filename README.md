@@ -71,8 +71,8 @@ The source code of _femiwiki/mediawiki_ is primarily distributed under the terms
 of the [GNU Affero General Public License v3.0] or any later version. See
 [COPYRIGHT] for details.
 
-[github checks status]: https://badgen.net/github/checks/femiwiki/docker-mediawiki
-[github checks link]: https://github.com/femiwiki/docker-mediawiki
+[github checks status]: https://badgen.net/github/checks/femiwiki/nomad/main
+[github checks link]: https://github.com/femiwiki/nomad/actions
 [femiwiki.com]: https://femiwiki.com
 [nomad]: https://www.nomadproject.io/
 [nomad provider]: https://registry.terraform.io/providers/hashicorp/nomad
