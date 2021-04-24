@@ -16,8 +16,6 @@ job "plugin-ebs-controller" {
           "--logtostderr",
           "--v=5",
         ]
-
-        memory_hard_limit = 100
       }
 
       csi_plugin {

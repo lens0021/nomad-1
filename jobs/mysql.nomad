@@ -30,11 +30,10 @@ job "mysql" {
           "--default-authentication-plugin=mysql_native_password",
           "--datadir", "/srv/mysql"
         ]
-        memory_hard_limit = 800
       }
 
       resources {
-        memory = 600
+        memory = 800
       }
 
       env {

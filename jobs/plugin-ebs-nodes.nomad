@@ -27,8 +27,7 @@ job "plugin-ebs-nodes" {
           "--v=5",
         ]
 
-        privileged        = true
-        memory_hard_limit = 100
+        privileged = true
       }
 
       csi_plugin {

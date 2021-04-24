@@ -43,8 +43,6 @@ job "http" {
           },
         ]
 
-        memory_hard_limit = 400
-
         # Increase max fd number
         # https://github.com/femiwiki/docker-mediawiki/issues/467
         ulimit {
@@ -53,7 +51,7 @@ job "http" {
       }
 
       resources {
-        memory = 100
+        memory = 200
       }
 
       env {
