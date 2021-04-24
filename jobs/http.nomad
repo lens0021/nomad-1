@@ -51,7 +51,7 @@ job "http" {
       }
 
       resources {
-        memory = 200
+        memory = 150
       }
 
       env {
