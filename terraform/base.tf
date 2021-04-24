@@ -40,6 +40,6 @@ data "terraform_remote_state" "aws" {
 provider "nomad" {
   # address   = data.terraform_remote_state.aws.outputs.nomad_addr
   # https://github.com/femiwiki/femiwiki/issues/249
-  address = "http://13.231.184.214:4646"
+  address   = "http://13.231.184.214:4646"
   secret_id = var.nomad_token_t3a
 }
