@@ -38,11 +38,32 @@ job "fastcgi" {
         mode        = "file"
       }
 
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/main/php/opcache-recommended.ini"
+        destination = "local/opcache-recommended.ini"
+        mode        = "file"
+      }
+
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/main/php/php.ini"
+        destination = "local/php.ini"
+        mode        = "file"
+      }
+
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/main/php/www.conf"
+        destination = "local/www.conf"
+        mode        = "file"
+      }
+
       config {
         image = "ghcr.io/femiwiki/mediawiki:2021-04-20T08-41-c3cea3e5"
 
         volumes = [
           "secrets/secrets.php:/a/secret.php",
+          "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
+          "local/php.ini:/usr/local/etc/php/php.ini",
+          "local/www.conf:/usr/local/etc/php-fpm.d/www.conf",
           # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
           "local/Hotfix.php:/config/mediawiki/Hotfix.php",
         ]
@@ -63,7 +84,7 @@ job "fastcgi" {
         ]
 
         network_mode      = "host"
-        memory_hard_limit = 200
+        memory_hard_limit = 300
       }
 
       env {
@@ -75,10 +96,6 @@ job "fastcgi" {
         MEDIAWIKI_SKIP_INSTALL        = "1"
         MEDIAWIKI_SKIP_UPDATE         = "1"
         MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
-      }
-
-      resources {
-        memory = 150
       }
     }
   }
