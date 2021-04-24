@@ -51,6 +51,12 @@ job "fastcgi" {
       }
 
       artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/main/php/php-fpm.conf"
+        destination = "local/php-fpm.conf"
+        mode        = "file"
+      }
+
+      artifact {
         source      = "https://github.com/femiwiki/nomad/raw/main/php/www.conf"
         destination = "local/www.conf"
         mode        = "file"
@@ -63,6 +69,7 @@ job "fastcgi" {
           "secrets/secrets.php:/a/secret.php",
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
           "local/php.ini:/usr/local/etc/php/php.ini",
+          "local/php-fpm.conf:/usr/local/etc/php-fpm.conf",
           "local/www.conf:/usr/local/etc/php-fpm.d/www.conf",
           # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
           "local/Hotfix.php:/config/mediawiki/Hotfix.php",
