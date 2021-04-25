@@ -55,7 +55,7 @@ job "fastcgi" {
         destination = "local/php-fpm.conf"
         mode        = "file"
 
-        options { checksum = "md5:dda5643f0ab53c9c606d4cbf9d9b5de4" }
+        options { checksum = "md5:8060e82333648317f1f160779d31f197" }
       }
 
       artifact {
@@ -63,7 +63,7 @@ job "fastcgi" {
         destination = "local/www.conf"
         mode        = "file"
 
-        options { checksum = "md5:cb0be2c0f2955efd6709e99739adf15a" }
+        options { checksum = "md5:bf4d0d65b0e696c098213b75cee5d80a" }
       }
 
       config {
