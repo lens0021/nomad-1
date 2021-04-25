@@ -63,7 +63,7 @@ job "fastcgi" {
         destination = "local/www.conf"
         mode        = "file"
 
-        options { checksum = "md5:26dd262d81eb2c0ad92729646ca57755" }
+        options { checksum = "md5:cb0be2c0f2955efd6709e99739adf15a" }
       }
 
       config {
