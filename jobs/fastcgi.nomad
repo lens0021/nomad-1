@@ -98,7 +98,7 @@ job "fastcgi" {
       }
 
       resources {
-        memory = 200
+        memory = 500
       }
 
       env {

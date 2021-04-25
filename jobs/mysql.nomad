@@ -33,7 +33,7 @@ job "mysql" {
       }
 
       resources {
-        memory = 600
+        memory = 400
       }
 
       env {
