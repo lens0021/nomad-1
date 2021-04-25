@@ -54,6 +54,10 @@ job "fastcgi" {
         source      = "https://github.com/femiwiki/nomad/raw/main/php/php-fpm.conf"
         destination = "local/php-fpm.conf"
         mode        = "file"
+
+        options {
+          checksum = "md5:a908adcc3011d5165b532da0a518dab9"
+        }
       }
 
       artifact {
