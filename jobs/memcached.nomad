@@ -10,7 +10,7 @@ job "memcached" {
       }
 
       resources {
-        memory = 200
+        memory = 100
       }
     }
 

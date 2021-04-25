@@ -22,7 +22,7 @@ job "backupbot" {
       }
 
       resources {
-        memory = 150
+        memory = 100
       }
     }
   }
