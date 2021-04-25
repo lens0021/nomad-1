@@ -15,7 +15,6 @@ job "backupbot" {
         image             = "ghcr.io/femiwiki/backupbot:2021-04-17T09-31-5ce8638c"
         volumes           = ["secrets/secrets.php:/a/secrets.php"]
         network_mode      = "host"
-        memory_hard_limit = 600
       }
 
       env {
