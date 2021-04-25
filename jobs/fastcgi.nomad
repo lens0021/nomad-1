@@ -56,7 +56,7 @@ job "fastcgi" {
         mode        = "file"
 
         options {
-          checksum = "md5:a908adcc3011d5165b532da0a518dab9"
+          checksum = "md5:fb395e5f8d785cbcf64ec8da1e5d8b2f"
         }
       }
 
