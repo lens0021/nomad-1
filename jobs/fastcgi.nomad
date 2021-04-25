@@ -67,7 +67,7 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-04-20T08-41-c3cea3e5"
+        image = "ghcr.io/femiwiki/mediawiki:2021-04-25T05-29-a73ed5f4"
 
         volumes = [
           "secrets/secrets.php:/a/secret.php",
