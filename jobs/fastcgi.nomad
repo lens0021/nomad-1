@@ -55,15 +55,15 @@ job "fastcgi" {
         destination = "local/php-fpm.conf"
         mode        = "file"
 
-        options {
-          checksum = "md5:fb395e5f8d785cbcf64ec8da1e5d8b2f"
-        }
+        options { checksum = "md5:a908adcc3011d5165b532da0a518dab9" }
       }
 
       artifact {
         source      = "https://github.com/femiwiki/nomad/raw/main/php/www.conf"
         destination = "local/www.conf"
         mode        = "file"
+
+        options { checksum = "md5:26dd262d81eb2c0ad92729646ca57755" }
       }
 
       config {
