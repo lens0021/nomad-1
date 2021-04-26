@@ -17,11 +17,12 @@ job "restbase" {
           }
         ]
 
-        network_mode = "host"
+        network_mode      = "host"
+        memory_hard_limit = 400
       }
 
       resources {
-        memory = 70
+        memory = 100
       }
 
       env {
