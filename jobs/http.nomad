@@ -48,6 +48,7 @@ job "http" {
         ulimit {
           nofile = "20000:40000"
         }
+        memory_hard_limit = 400
       }
 
       resources {
