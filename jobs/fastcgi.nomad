@@ -94,11 +94,12 @@ job "fastcgi" {
           }
         ]
 
-        network_mode = "host"
+        network_mode      = "host"
+        memory_hard_limit = 800
       }
 
       resources {
-        memory = 500
+        memory = 400
       }
 
       env {
