@@ -3,11 +3,6 @@ variable "nomad_token" {
   sensitive = true
 }
 
-variable "nomad_token_t3a" {
-  type      = string
-  sensitive = true
-}
-
 terraform {
   required_version = "~> 0.15.0"
 
