@@ -3,8 +3,8 @@
 resource "nomad_job" "mysql_consul_test" {
   provider = nomad.consul_test
   # depends_on = [nomad_volume.mysql] # during test period
-  detach     = false
-  jobspec    = file("../jobs-consul-test/mysql.nomad")
+  detach  = false
+  jobspec = file("../jobs-consul-test/mysql.nomad")
 
   hcl2 {
     enabled  = true
@@ -14,8 +14,8 @@ resource "nomad_job" "mysql_consul_test" {
 
 resource "nomad_job" "memcached_consul_test" {
   provider = nomad.consul_test
-  detach  = false
-  jobspec = file("../jobs-consul-test/memcached.nomad")
+  detach   = false
+  jobspec  = file("../jobs-consul-test/memcached.nomad")
 
   hcl2 {
     enabled  = true
@@ -43,8 +43,8 @@ resource "nomad_job" "memcached_consul_test" {
 resource "nomad_job" "http_consul_test" {
   provider = nomad.consul_test
   # depends_on = [nomad_volume.caddycerts] # depends_on = [nomad_volume.mysql] # during test period
-  detach     = false
-  jobspec    = file("../jobs-consul-test/http.nomad")
+  detach  = false
+  jobspec = file("../jobs-consul-test/http.nomad")
 
   hcl2 {
     enabled  = true
@@ -70,8 +70,8 @@ resource "nomad_job" "http_consul_test" {
 
 resource "nomad_job" "restbase_consul_test" {
   provider = nomad.consul_test
-  detach  = false
-  jobspec = file("../jobs-consul-test/restbase.nomad")
+  detach   = false
+  jobspec  = file("../jobs-consul-test/restbase.nomad")
 
   hcl2 {
     enabled  = true
@@ -81,8 +81,8 @@ resource "nomad_job" "restbase_consul_test" {
 
 resource "nomad_job" "mathoid_consul_test" {
   provider = nomad.consul_test
-  detach  = false
-  jobspec = file("../jobs-consul-test/mathoid.nomad")
+  detach   = false
+  jobspec  = file("../jobs-consul-test/mathoid.nomad")
 
   hcl2 {
     enabled  = true
