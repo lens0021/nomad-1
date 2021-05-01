@@ -16,8 +16,8 @@ job "fastcgi" {
         args = [
           "-c",
           join(";", [
-            "while ! ncat --send-only 127.0.0.1 3306 < /dev/null; do sleep 1; done",
-            "while ! ncat --send-only 127.0.0.1 11211 < /dev/null; do sleep 1; done"
+            "while [ -z \"$(dig +noall +answer @localhost mysql.service.dc1.consul)\" ]; do sleep 1; done",
+            "while [ -z \"$(dig +noall +answer @localhost memcached.service.dc1.consul\)" ]; do sleep 1; done"
           ])
         ]
       }

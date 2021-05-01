@@ -13,7 +13,7 @@ job "parsoid" {
       driver = "exec"
       config {
         command = "sh"
-        args    = ["-c", "while ! ncat --send-only 127.0.0.1 80 < /dev/null; do sleep 1; done"]
+        args    = ["-c", "while [ -z "$(dig +noall +answer @localhost http.service.dc1.consul)" ]; do sleep 1; done"]
       }
     }
 
