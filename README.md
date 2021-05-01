@@ -43,21 +43,14 @@ sudo ./up
 
 이상의 과정은 실제로는 [femiwiki/infra]에 저장된 스크립트를 통해 인스턴스 Launch 후 자동으로 실행됩니다.
 
-수작업으로는 Terraform Cloud와 Nomad cluster를 연결하기 위해 ACL을 시작시키고 생성된 토큰을 Terraform Cloud에 저장하는 과정이 필요합니다. 다음을 실행해주세요.
+수작업으로는 Terraform Cloud와 Nomad cluster를 연결하기 위해 ACL을 시작하고 생성된 토큰을 Terraform Cloud에 저장하는 과정이 필요합니다. 다음을 실행해주세요.
 
 ```
-$ nomad acl bootstrap
-Accessor ID  = 5b7fd453-d3f7-6814-81dc-fcfe6daedea5
-Secret ID    = 9184ec35-65d4-9258-61e3-0c066d0a45c5
-Name         = Bootstrap Token
-Type         = management
-Global       = true
-Policies     = n/a
-Create Time  = 2017-09-11 17:38:10.999089612 +0000 UTC
-Create Index = 7
-Modify Index = 7
+$ ./nomad-acl-bootstrap
+Nomad ACL Secret ID = 9184ec35-65d4-9258-61e3-0c066d0a45c5
 ```
 
+nomad-acl-bootstrap은 `nomad acl bootstrap`을 실행하고 `NOMAD_TOKEN`으로 쓸 수 있는 Secret ID를 출력하면서 `.bashrc`에 환경 변수 설정을 추가합니다.
 출력된 Secret ID를 [terraform cloud femiwiki/nomad workspace의 Variables 설정](https://app.terraform.io/app/femiwiki/workspaces/nomad/variables)에서 `nomad_token`으로 입력해주세요.
 
 &nbsp;

@@ -1,0 +1,18 @@
+#!/bin/bash
+set -euo pipefail; IFS=$'\n\t'
+
+# Enable verbose mode
+set -x
+
+# Wait Nomad
+until nomad acl policy list > /dev/null; do
+  sleep 1; done;
+
+NOMAD_TOKEN="$(nomad acl bootstrap | tail -n +2 | head -n 1 | awk '{print $4}')"
+export NOMAD_TOKEN=$NOMAD_TOKEN
+
+# Write NOMAD_TOKEN to .bashrc
+printf "\n# Nomad ACL token\nexport NOMAD_TOKEN=%s\n" "$NOMAD_TOKEN" >> "$HOME/.bashrc"
+
+# Print to stdout
+echo "Nomad ACL Secret ID = $NOMAD_TOKEN"
