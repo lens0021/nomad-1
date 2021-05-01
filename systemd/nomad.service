@@ -1,3 +1,4 @@
+# https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul#configure-systemd
 # https://github.com/hashicorp/terraform-aws-nomad/blob/master/modules/run-nomad/run-nomad
 [Unit]
 Description="HashiCorp Nomad"
