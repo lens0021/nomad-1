@@ -100,7 +100,7 @@ job "fastcgi" {
       }
 
       resources {
-        memory = 400
+        memory = 300
       }
 
       env {
@@ -155,10 +155,10 @@ job "fastcgi" {
 
         sidecar_task {
           config {
-            memory_hard_limit = 500
+            memory_hard_limit = 300
           }
           resources {
-            memory = 100
+            memory = 30
           }
         }
       }

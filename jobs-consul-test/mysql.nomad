@@ -36,7 +36,7 @@ job "mysql" {
       }
 
       resources {
-        memory = 400
+        memory = 300
       }
 
       env {
@@ -62,10 +62,10 @@ job "mysql" {
 
         sidecar_task {
           config {
-            memory_hard_limit = 500
+            memory_hard_limit = 300
           }
           resources {
-            memory = 300
+            memory = 30
           }
         }
       }
