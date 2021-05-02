@@ -2,13 +2,11 @@ datacenter = "dc1"
 data_dir   = "/opt/consul"
 
 server           = true
-node_name        = "femiwiki"
 bind_addr        = "{{GetInterfaceIP \"eth0\"}}"
-bootstrap        = true
-bootstrap_expect = 1
+bootstrap_expect = 2
 # Cloud Auto-join
 # https://www.consul.io/docs/install/cloud-auto-join#amazon-ec2
-retry_join = ["provider=aws tag_key=Name tag_value=femiwiki"]
+retry_join = ["provider=aws tag_key=Nomad tag_value=femiwiki"]
 
 ports {
   grpc = 8502

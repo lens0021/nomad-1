@@ -16,7 +16,7 @@ sudo -u consul consul validate /etc/consul.d/default.hcl
 # Configure Nomad
 # Reference: https://learn.hashicorp.com/tutorials/nomad/production-deployment-guide-vm-with-consul
 mkdir -p /opt/nomad /etc/nomad.d
-cp "${GIT_REPO}/nomad/production.hcl" /etc/nomad.d/default.hcl
+cp "${GIT_REPO}/nomad/consul-test.hcl" /etc/nomad.d/default.hcl
 
 # Configure systemd
 cp "${GIT_REPO}/systemd/consul.service" /etc/systemd/system/
