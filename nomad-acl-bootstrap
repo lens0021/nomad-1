@@ -1,9 +1,6 @@
 #!/bin/bash
 set -euo pipefail; IFS=$'\n\t'
 
-# Enable verbose mode
-set -x
-
 # Wait Nomad
 until nomad acl policy list > /dev/null; do
   sleep 1; done;
