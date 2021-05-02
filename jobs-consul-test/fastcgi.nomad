@@ -17,7 +17,7 @@ job "fastcgi" {
           "-c",
           join(";", [
             "while [ -z \"$(dig +noall +answer @localhost mysql.service.dc1.consul)\" ]; do sleep 1; done",
-            "while [ -z \"$(dig +noall +answer @localhost memcached.service.dc1.consul\)" ]; do sleep 1; done"
+            "while [ -z \"$(dig +noall +answer @localhost memcached.service.dc1.consul)\" ]; do sleep 1; done"
           ])
         ]
       }
