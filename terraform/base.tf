@@ -38,7 +38,8 @@ data "terraform_remote_state" "aws" {
 }
 
 provider "nomad" {
-  address   = data.terraform_remote_state.aws.outputs.nomad_addr
+  # address   = data.terraform_remote_state.aws.outputs.nomad_addr
+  address   = "http://54.65.184.173:4646"
   secret_id = var.nomad_token
 }
 
