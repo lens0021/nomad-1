@@ -3,7 +3,7 @@ job "lb" {
   datacenters = ["dc1"]
 
   constraint {
-    attribute = "${unique.platform.aws.local-ipv4}"
+    attribute = "${attr.unique.network.ip-address}"
     # TODO Replace this with a network interface
     value = "172.31.26.55"
   }
