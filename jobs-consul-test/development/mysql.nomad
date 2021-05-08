@@ -6,9 +6,9 @@ job "mysql" {
       driver = "docker"
 
       config {
-        image             = "mysql/mysql-server:8.0"
-        args              = ["--default-authentication-plugin=mysql_native_password"]
-        memory_hard_limit = 1000
+        image = "mysql/mysql-server:8.0"
+        args  = ["--default-authentication-plugin=mysql_native_password"]
+        ports = ["mysql"]
       }
 
       resources {
@@ -26,27 +26,18 @@ job "mysql" {
     network {
       mode = "bridge"
 
-      # Expose port to simply init task pattern of lifecycle
       port "mysql" {
-        static = 3306
+        to = 3306
       }
     }
 
     service {
-      name = "mysql"
-      port = "3306"
+      name         = "mysql"
+      port         = "mysql"
+      address_mode = "alloc"
 
       connect {
         sidecar_service {}
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
-          resources {
-            memory = 100
-          }
-        }
       }
     }
   }

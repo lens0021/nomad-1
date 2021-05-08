@@ -29,8 +29,8 @@ job "restbase" {
         MEDIAWIKI_APIS_DOMAIN = "femiwiki.com"
         # Workaround for https://github.com/femiwiki/femiwiki/issues/151
         MEDIAWIKI_APIS_URI = "https://femiwiki.com/api.php"
-        PARSOID_URI        = "http://127.0.0.1:8000"
-        MATHOID_URI        = "http://127.0.0.1:10044"
+        PARSOID_URI        = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
+        MATHOID_URI        = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
       }
     }
 

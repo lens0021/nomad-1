@@ -1,99 +1,30 @@
-# During test period
-variable "caddyfile_for_dev" {
-  type    = string
-  default = <<EOF
-{
-  # Global options
-  auto_https off
-  order mwcache before rewrite
-}
-:{$NOMAD_HOST_PORT_http}
-root * /srv/femiwiki.com
-php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
-file_server
-encode gzip
-mwcache {
-	ristretto {
-		num_counters 100000
-		max_cost 10000
-		buffer_items 64
-	}
-  purge_acl {
-    10.0.0.0/8
-    127.0.0.1
-  }
-}
-header {
-  # Enable XSS filtering for legacy browsers
-  X-XSS-Protection "1; mode=block"
-  # Block content sniffing, and enable Cross-Origin Read Blocking
-  X-Content-Type-Options "nosniff"
-  # Avoid clickjacking
-  X-Frame-Options "DENY"
-}
-rewrite /w/api.php /api.php
-rewrite /w/* /index.php
-
-# Proxy requests to RESTBase
-# Reference:
-#   https://www.mediawiki.org/wiki/RESTBase/Installation#Proxy_requests_to_RESTBase_from_your_webserver
-reverse_proxy /localhost/* 127.0.0.1:7231
-
-log {
-  output stdout
-}
-
-EOF
-}
-
 job "http" {
   datacenters = ["dc1"]
 
   group "http" {
-    # During test period
-    # volume "caddycerts" {
-    #   type      = "csi"
-    #   source    = "caddycerts"
-    #   read_only = false
-    # }
-
     task "http" {
       driver = "docker"
 
-      # During test period
-      # volume_mount {
-      #   volume      = "caddycerts"
-      #   destination = "/etc/caddycerts"
-      #   read_only   = false
-      # }
-
-      # During test period
-      template {
-        # Overwrite the default caddyfile provided by femiwiki:mediawiki
-        data        = var.caddyfile_for_dev
+      artifact {
+        source      = "https://github.com/femiwiki/nomad/raw/main/caddy/Caddyfile-consul-test"
         destination = "local/Caddyfile"
+        mode        = "file"
       }
-
-      # During test period
-      # artifact {
-      #   source      = "https://github.com/femiwiki/nomad/raw/main/caddy/Caddyfile"
-      #   destination = "local/Caddyfile"
-      #   mode        = "file"
-      # }
 
       config {
         image   = "ghcr.io/femiwiki/mediawiki:2021-04-19T12-14-11fd8960"
         command = "caddy"
         args    = ["run"]
         volumes = ["local/Caddyfile:/srv/femiwiki.com/Caddyfile"]
+        ports   = ["http"]
 
         # Mount volume into the container
         # Reference: https://www.nomadproject.io/docs/drivers/docker#mounts
         mounts = [
           {
             type     = "volume"
-            target   = "/srv/femiwiki.com/sitemap"
             source   = "sitemap"
+            target   = "/srv/femiwiki.com/sitemap"
             readonly = false
           },
         ]
@@ -103,6 +34,7 @@ job "http" {
         ulimit {
           nofile = "20000:40000"
         }
+
         memory_hard_limit = 400
       }
 
@@ -112,27 +44,26 @@ job "http" {
 
       env {
         CADDYPATH     = "/etc/caddycerts"
-        FASTCGI_ADDR  = "127.0.0.1:9000"
-        RESTBASE_ADDR = "127.0.0.1:7231"
       }
     }
 
-    # TODO avoid static port
     network {
       mode = "bridge"
 
       port "http" {
-        static = 80
-      }
-
-      port "https" {
-        static = 443
+        to = 80
       }
     }
 
     service {
-      name = "http"
-      port = "80"
+      name         = "http"
+      port         = "http"
+      address_mode = "alloc"
+
+      tags = [
+        "traefik.enable=true",
+        "traefik.http.routers.http.rule=Path(`/`)",
+      ]
 
       connect {
         sidecar_service {
@@ -160,6 +91,7 @@ job "http" {
       }
     }
 
+    # Avoid hitting limit too fast.
     restart {
       attempts = 0
     }

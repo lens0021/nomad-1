@@ -1,16 +1,3 @@
-variable "hotfix" {
-  type    = string
-  default = <<EOF
-<?php
-// Use this file for hotfixes
-
-// Examples:
-//
-// $wgDebugToolbar = false;
-// $wgDefaultSkin = 'vector';
-EOF
-}
-
 job "fastcgi" {
   datacenters = ["dc1"]
 
@@ -37,8 +24,8 @@ job "fastcgi" {
       }
 
       config {
-        image             = "ghcr.io/femiwiki/mediawiki:latest"
-        memory_hard_limit = 600
+        image = "ghcr.io/femiwiki/mediawiki:latest"
+        ports = ["fastcgi"]
 
         volumes = [
           "secrets/secrets.php:/a/secret.php",
@@ -52,7 +39,7 @@ job "fastcgi" {
             source   = "sitemap"
             target   = "/srv/femiwiki.com/sitemap"
             readonly = false
-          }
+          },
         ]
       }
 
@@ -61,19 +48,20 @@ job "fastcgi" {
         MEDIAWIKI_SERVER                  = "http://127.0.0.1"
         MEDIAWIKI_DOMAIN_FOR_NODE_SERVICE = "localhost"
       }
-
-      resources {
-        memory = 100
-      }
     }
 
     network {
       mode = "bridge"
+
+      port "fastcgi" {
+        to = 9000
+      }
     }
 
     service {
-      name = "fastcgi"
-      port = "9000"
+      name         = "fastcgi"
+      port         = "fastcgi"
+      address_mode = "alloc"
 
       connect {
         sidecar_service {
@@ -104,16 +92,20 @@ job "fastcgi" {
             }
           }
         }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
-          resources {
-            memory = 100
-          }
-        }
       }
     }
   }
+}
+
+variable "hotfix" {
+  type    = string
+  default = <<EOF
+<?php
+// Use this file for hotfixes
+
+// Examples:
+//
+// $wgDebugToolbar = false;
+// $wgDefaultSkin = 'vector';
+EOF
 }

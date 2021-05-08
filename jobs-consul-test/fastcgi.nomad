@@ -27,9 +27,7 @@ job "fastcgi" {
       driver = "docker"
 
       artifact {
-        # During test period
-        # source      = "s3::https://femiwiki-secrets.s3-ap-northeast-1.amazonaws.com/secrets.php"
-        source      = "https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs/secret.php.example"
+        source      = "s3::https://femiwiki-secrets.s3-ap-northeast-1.amazonaws.com/secrets.php"
         destination = "secrets/secrets.php"
         mode        = "file"
       }
@@ -69,14 +67,15 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-04-25T05-29-a73ed5f4"
+        image = "ghcr.io/femiwiki/mediawiki:2021-05-07T16-04-895338b3"
+        ports = ["fastcgi"]
 
         volumes = [
+          "secrets/secrets.php:/a/secret.php",
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
           "local/php.ini:/usr/local/etc/php/php.ini",
           "local/php-fpm.conf:/usr/local/etc/php-fpm.conf",
           "local/www.conf:/usr/local/etc/php-fpm.d/www.conf",
-          "secrets/secrets.php:/a/secret.php",
           # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
           "local/Hotfix.php:/a/Hotfix.php",
         ]
@@ -84,16 +83,16 @@ job "fastcgi" {
         mounts = [
           {
             type     = "volume"
-            target   = "/srv/femiwiki.com/sitemap"
             source   = "sitemap"
+            target   = "/srv/femiwiki.com/sitemap"
             readonly = false
           },
           {
             type     = "volume"
-            target   = "/tmp/cache"
             source   = "l18n_cache"
+            target   = "/tmp/cache"
             readonly = false
-          }
+          },
         ]
 
         memory_hard_limit = 800
@@ -104,11 +103,7 @@ job "fastcgi" {
       }
 
       env {
-        NOMAD_UPSTREAM_ADDR_http      = "127.0.0.1:80"
-        NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
-        NOMAD_UPSTREAM_ADDR_parsoid   = "127.0.0.1:8000"
-        NOMAD_UPSTREAM_ADDR_restbase  = "127.0.0.1:7231"
-        NOMAD_UPSTREAM_ADDR_mathoid   = "127.0.0.1:10044"
+        MEDIAWIKI_SERVER = "https://test.femiwiki.com"
         # MEDIAWIKI_SKIP_INSTALL        = "1"
         # MEDIAWIKI_SKIP_UPDATE         = "1"
         # MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
@@ -117,11 +112,16 @@ job "fastcgi" {
 
     network {
       mode = "bridge"
+
+      port "fastcgi" {
+        to = 9000
+      }
     }
 
     service {
-      name = "fastcgi"
-      port = "9000"
+      name         = "fastcgi"
+      port         = "fastcgi"
+      address_mode = "alloc"
 
       connect {
         sidecar_service {
@@ -182,6 +182,9 @@ variable "hotfix" {
   default = <<EOF
 <?php
 // Use this file for hotfixes
+
+// During the test period
+$wgDBserver = '172.31.28.31:3306';
 
 // Maintenance
 //// 점검이 끝나면 아래 라인 주석처리한 뒤, 아래 문서 내용을 비우면 됨

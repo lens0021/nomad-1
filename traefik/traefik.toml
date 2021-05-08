@@ -1,0 +1,16 @@
+# TODO Enable TLS (maybe including let's encrypt)
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+  [entryPoints.https]
+    address = ":443"
+
+# Enable Consul Catalog configuration backend.
+[providers.consulCatalog]
+  exposedByDefault = false
+
+  [providers.consulCatalog.endpoint]
+    address = "127.0.0.1:8500"
+    scheme  = "http"
+

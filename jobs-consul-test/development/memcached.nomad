@@ -7,33 +7,25 @@ job "memcached" {
 
       config {
         image = "memcached:1-alpine"
-        memory_hard_limit = 240
-      }
-
-      resources {
-        memory = 60
+        ports = ["memcached"]
       }
     }
 
     network {
       mode = "bridge"
+
+      port "memcached" {
+        to = 11211
+      }
     }
 
     service {
-      name = "memcached"
-      port = "11211"
+      name         = "memcached"
+      port         = "memcached"
+      address_mode = "alloc"
 
       connect {
         sidecar_service {}
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
-          resources {
-            memory = 100
-          }
-        }
       }
     }
   }

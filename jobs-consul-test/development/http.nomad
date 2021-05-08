@@ -6,7 +6,7 @@ variable "caddyfile_for_dev" {
   auto_https off
   order mwcache before rewrite
 }
-127.0.0.1:{$NOMAD_HOST_PORT_http} localhost:{$NOMAD_HOST_PORT_http}
+localhost:80 127.0.0.1:80 192.168.0.2:80
 root * /srv/femiwiki.com
 php_fastcgi {$NOMAD_UPSTREAM_ADDR_fastcgi}
 file_server
@@ -61,6 +61,7 @@ job "http" {
         image   = "ghcr.io/femiwiki/mediawiki:latest"
         command = "caddy"
         args    = ["run"]
+        ports   = ["http"]
 
         # Mount volumes into the container
         # Reference: https://www.nomadproject.io/docs/drivers/docker#mounts
@@ -76,19 +77,13 @@ job "http" {
             source   = "sitemap"
             target   = "/srv/femiwiki.com/sitemap"
             readonly = false
-          }
+          },
         ]
 
         volumes = [
           # Overwrite production Caddyfile
           "local/Caddyfile:/srv/femiwiki.com/Caddyfile"
         ]
-
-        memory_hard_limit = 400
-      }
-
-      resources {
-        memory = 80
       }
     }
 
@@ -96,20 +91,27 @@ job "http" {
       mode = "bridge"
 
       port "http" {
-        static = 80
-      }
-
-      port "https" {
-        static = 443
+        to = 80
       }
     }
 
     service {
-      name = "http"
-      port = "80"
+      name         = "http"
+      port         = "http"
+      address_mode = "alloc"
+
+      tags = [
+        "traefik.enable=true",
+        "traefik.http.routers.http.rule=PathPrefix(`/`)",
+      ]
 
       connect {
         sidecar_service {
+          tags = [
+            # Avoid "Router defined multiple times with different configurations"
+            "traefik.enable=false",
+          ]
+
           proxy {
             upstreams {
               destination_name = "fastcgi"
@@ -120,15 +122,6 @@ job "http" {
               destination_name = "restbase"
               local_bind_port  = 7231
             }
-          }
-        }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
-          resources {
-            memory = 100
           }
         }
       }

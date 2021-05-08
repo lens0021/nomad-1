@@ -7,30 +7,31 @@ job "restbase" {
 
       config {
         image = "ghcr.io/femiwiki/restbase:latest"
-        memory_hard_limit = 400
-      }
-
-      resources {
-        memory = 100
+        ports = ["restbase"]
       }
 
       env {
+        # Amazon EC2-t type small instances has two vCPUs
+        RESTBASE_NUM_WORKERS  = "2"
         MEDIAWIKI_APIS_DOMAIN = "localhost"
         MEDIAWIKI_APIS_URI    = "http://${NOMAD_UPSTREAM_ADDR_http}/api.php"
         PARSOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_parsoid}"
         MATHOID_URI           = "http://${NOMAD_UPSTREAM_ADDR_mathoid}"
-        # Amazon EC2-t type small instances has two vCPUs
-        RESTBASE_NUM_WORKERS = "2"
       }
     }
 
     network {
       mode = "bridge"
+
+      port "restbase" {
+        to = 7231
+      }
     }
 
     service {
       name = "restbase"
-      port = "7231"
+      port = "restbase"
+      address_mode = "alloc"
 
       connect {
         sidecar_service {
@@ -49,15 +50,6 @@ job "restbase" {
               destination_name = "mathoid"
               local_bind_port  = 10044
             }
-          }
-        }
-
-        sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
-          resources {
-            memory = 100
           }
         }
       }
