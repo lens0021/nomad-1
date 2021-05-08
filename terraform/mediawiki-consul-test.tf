@@ -1,8 +1,22 @@
 # This file is for test. See https://github.com/femiwiki/femiwiki/issues/253 for details.
 
+resource "nomad_job" "lb_consul_test" {
+  provider = nomad.consul_test
+  detach   = false
+  jobspec  = file("../jobs-consul-test/lb.nomad")
+
+  hcl2 {
+    enabled  = true
+    allow_fs = true
+  }
+}
+
 resource "nomad_job" "mysql_consul_test" {
   provider = nomad.consul_test
-  # depends_on = [nomad_volume.mysql] # during test period
+  depends_on = [
+    nomad_job.lb_consul_test,
+    nomad_volume.mysql,
+  ]
   detach  = false
   jobspec = file("../jobs-consul-test/mysql.nomad")
 
@@ -14,8 +28,11 @@ resource "nomad_job" "mysql_consul_test" {
 
 resource "nomad_job" "memcached_consul_test" {
   provider = nomad.consul_test
-  detach   = false
-  jobspec  = file("../jobs-consul-test/memcached.nomad")
+  depends_on = [
+    nomad_job.lb_consul_test,
+  ]
+  detach  = false
+  jobspec = file("../jobs-consul-test/memcached.nomad")
 
   hcl2 {
     enabled  = true
@@ -26,6 +43,7 @@ resource "nomad_job" "memcached_consul_test" {
 resource "nomad_job" "fastcgi_consul_test" {
   provider = nomad.consul_test
   depends_on = [
+    nomad_job.lb_consul_test,
     nomad_job.mysql,
     nomad_job.memcached,
   ]
@@ -41,8 +59,11 @@ resource "nomad_job" "fastcgi_consul_test" {
 
 resource "nomad_job" "http_consul_test" {
   provider = nomad.consul_test
-  detach   = false
-  jobspec  = file("../jobs-consul-test/http.nomad")
+  depends_on = [
+    nomad_job.lb_consul_test,
+  ]
+  detach  = false
+  jobspec = file("../jobs-consul-test/http.nomad")
 
   hcl2 {
     enabled  = true
@@ -53,6 +74,7 @@ resource "nomad_job" "http_consul_test" {
 resource "nomad_job" "parsoid_consul_test" {
   provider = nomad.consul_test
   depends_on = [
+    nomad_job.lb_consul_test,
     nomad_job.fastcgi,
     nomad_job.http,
   ]
@@ -67,8 +89,11 @@ resource "nomad_job" "parsoid_consul_test" {
 
 resource "nomad_job" "restbase_consul_test" {
   provider = nomad.consul_test
-  detach   = false
-  jobspec  = file("../jobs-consul-test/restbase.nomad")
+  depends_on = [
+    nomad_job.lb_consul_test,
+  ]
+  detach  = false
+  jobspec = file("../jobs-consul-test/restbase.nomad")
 
   hcl2 {
     enabled  = true
@@ -78,20 +103,11 @@ resource "nomad_job" "restbase_consul_test" {
 
 resource "nomad_job" "mathoid_consul_test" {
   provider = nomad.consul_test
-  detach   = false
-  jobspec  = file("../jobs-consul-test/mathoid.nomad")
-
-  hcl2 {
-    enabled  = true
-    allow_fs = true
-  }
-}
-
-
-resource "nomad_job" "lb_consul_test" {
-  provider = nomad.consul_test
-  detach   = false
-  jobspec  = file("../jobs-consul-test/lb.nomad")
+  depends_on = [
+    nomad_job.lb_consul_test,
+  ]
+  detach  = false
+  jobspec = file("../jobs-consul-test/mathoid.nomad")
 
   hcl2 {
     enabled  = true
