@@ -43,7 +43,7 @@ job "http" {
       }
 
       env {
-        CADDYPATH     = "/etc/caddycerts"
+        CADDYPATH = "/etc/caddycerts"
       }
     }
 
@@ -62,11 +62,16 @@ job "http" {
 
       tags = [
         "traefik.enable=true",
-        "traefik.http.routers.http.rule=Path(`/`)",
+        "traefik.http.routers.http.rule=PathPrefix(`/`)",
       ]
 
       connect {
         sidecar_service {
+          tags = [
+            # Avoid "Router defined multiple times with different configurations"
+            "traefik.enable=false",
+          ]
+
           proxy {
             upstreams {
               destination_name = "fastcgi"
