@@ -20,18 +20,14 @@ job "mysql" {
       # }
 
       artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/main/mysql/custom.cnf"
-        destination = "local/custom.cnf"
+        source      = "https://github.com/femiwiki/nomad/raw/main/mysql/my.cnf"
+        destination = "local/my.cnf"
         mode        = "file"
       }
 
       config {
         image   = "mysql/mysql-server:8.0.23"
-        volumes = ["local/custom.cnf:/etc/mysql/conf.d/custom.cnf"]
-        args = [
-          "--default-authentication-plugin=mysql_native_password",
-          "--datadir", "/srv/mysql"
-        ]
+        volumes = ["local/my.cnf:/etc/mysql/my.cnf"]
         memory_hard_limit = 800
       }
 
@@ -40,12 +36,7 @@ job "mysql" {
       }
 
       env {
-        # During test period
-        # MYSQL_RANDOM_ROOT_PASSWORD = "yes"
-        MYSQL_ROOT_PASSWORD = "localfemiwikipassword"
-        MYSQL_DATABASE      = "femiwiki"
-        MYSQL_USER          = "DB_USERNAME" // secrets.php.example에 적힌 기본값
-        MYSQL_PASSWORD      = "DB_PASSWORD" // secrets.php.example에 적힌 기본값
+        MYSQL_RANDOM_ROOT_PASSWORD = "yes"
       }
     }
 
