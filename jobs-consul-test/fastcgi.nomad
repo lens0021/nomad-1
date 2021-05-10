@@ -99,10 +99,10 @@ job "fastcgi" {
       }
 
       env {
-        MEDIAWIKI_SERVER = "https://test.femiwiki.com"
-        MEDIAWIKI_SKIP_INSTALL        = "1"
-        MEDIAWIKI_SKIP_UPDATE         = "1"
-        MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
+        MEDIAWIKI_SERVER            = "https://test.femiwiki.com"
+        MEDIAWIKI_SKIP_INSTALL      = "1"
+        MEDIAWIKI_SKIP_UPDATE       = "1"
+        MEDIAWIKI_SKIP_IMPORT_SITES = "1"
       }
     }
 
