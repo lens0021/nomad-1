@@ -1,3 +1,4 @@
+# This is for test. See https://github.com/femiwiki/femiwiki/issues/253 for details.
 datacenter = "dc1"
 data_dir   = "/opt/nomad"
 

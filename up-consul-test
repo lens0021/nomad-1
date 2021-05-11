@@ -1,4 +1,5 @@
 #!/bin/bash
+# This is for test. See https://github.com/femiwiki/femiwiki/issues/253 for details.
 set -euo pipefail; IFS=$'\n\t'
 
 # Enable verbose mode
