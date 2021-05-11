@@ -51,8 +51,8 @@ job "lb" {
         mounts = [
           {
             type     = "volume"
-            source   = "certificates"
-            target   = "/etc/certificates"
+            source   = "acme"
+            target   = "/etc/traefik/acme/"
             readonly = false
           },
         ]

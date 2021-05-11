@@ -1,7 +1,6 @@
-# TODO Enable TLS (maybe including let's encrypt)
 [entryPoints]
   [entryPoints.http]
-  address = ":80"
+    address = ":80"
 
   [entryPoints.https]
     address = ":443"
@@ -14,3 +13,12 @@
     address = "127.0.0.1:8500"
     scheme  = "http"
 
+[certificatesResolvers.myresolver.acme]
+  # Using the Let's Encrypt staging server
+  # TODO not use staging server on production
+  caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+  storage = "/etc/traefik/acme/acme.json"
+
+  [certificatesResolvers.myresolver.acme.dnsChallenge]
+    provider = "route53"
+    delayBeforeCheck = 0

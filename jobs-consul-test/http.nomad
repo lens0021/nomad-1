@@ -62,7 +62,11 @@ job "http" {
 
       tags = [
         "traefik.enable=true",
-        "traefik.http.routers.http.rule=PathPrefix(`/`)",
+        "traefik.http.routers.http.rule=PathPrefix(`/`) || Host(`femiwiki.com`)",
+        "traefik.http.routers.http.tls=true",
+        "traefik.http.routers.http.tls.certresolver=myresolver",
+        "traefik.http.routers.http.tls.domains[0].main=femiwiki.com",
+        "traefik.http.routers.http.tls.domains[0].sans=*.femiwiki.com",
       ]
 
       connect {

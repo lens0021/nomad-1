@@ -102,7 +102,7 @@ job "http" {
 
       tags = [
         "traefik.enable=true",
-        "traefik.http.routers.http.rule=PathPrefix(`/`)",
+        "traefik.http.routers.http.rule=PathPrefix(`/`) || Host(`femiwiki.com`)",
       ]
 
       connect {
