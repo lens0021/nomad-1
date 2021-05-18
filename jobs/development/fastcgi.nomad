@@ -3,9 +3,9 @@ variable "hotfix" {
   default = <<EOF
 <?php
 // Use this file for hotfixes
-
 // Examples:
-//
+
+// $wgGroupPermissions['*']['edit'] = true;
 // $wgDebugToolbar = false;
 // $wgDefaultSkin = 'vector';
 EOF
