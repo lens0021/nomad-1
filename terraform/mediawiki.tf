@@ -1,7 +1,11 @@
 resource "nomad_job" "mysql" {
-  depends_on = [nomad_volume.mysql]
-  detach     = false
-  jobspec    = file("../jobs/mysql.nomad")
+  depends_on = [
+    data.nomad_plugin.ebs,
+    nomad_volume.mysql,
+  ]
+
+  jobspec = file("../jobs/mysql.nomad")
+  detach  = false
 
   hcl2 {
     enabled  = true
@@ -10,8 +14,8 @@ resource "nomad_job" "mysql" {
 }
 
 resource "nomad_job" "memcached" {
-  detach  = false
   jobspec = file("../jobs/memcached.nomad")
+  detach  = false
 
   hcl2 {
     enabled  = true
@@ -25,8 +29,8 @@ resource "nomad_job" "fastcgi" {
     nomad_job.memcached,
   ]
 
-  detach  = false
   jobspec = file("../jobs/fastcgi.nomad")
+  detach  = false
 
   hcl2 {
     enabled  = true
@@ -35,9 +39,13 @@ resource "nomad_job" "fastcgi" {
 }
 
 resource "nomad_job" "http" {
-  depends_on = [nomad_volume.caddycerts]
-  detach     = false
-  jobspec    = file("../jobs/http.nomad")
+  depends_on = [
+    data.nomad_plugin.ebs,
+    nomad_volume.caddycerts,
+  ]
+
+  jobspec = file("../jobs/http.nomad")
+  detach  = false
 
   hcl2 {
     enabled  = true
@@ -50,8 +58,9 @@ resource "nomad_job" "parsoid" {
     nomad_job.fastcgi,
     nomad_job.http,
   ]
-  detach  = false
+
   jobspec = file("../jobs/parsoid.nomad")
+  detach  = false
 
   hcl2 {
     enabled  = true
@@ -60,8 +69,8 @@ resource "nomad_job" "parsoid" {
 }
 
 resource "nomad_job" "restbase" {
-  detach  = false
   jobspec = file("../jobs/restbase.nomad")
+  detach  = false
 
   hcl2 {
     enabled  = true
@@ -70,8 +79,8 @@ resource "nomad_job" "restbase" {
 }
 
 resource "nomad_job" "mathoid" {
-  detach  = false
   jobspec = file("../jobs/mathoid.nomad")
+  detach  = false
 
   hcl2 {
     enabled  = true
