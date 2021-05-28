@@ -22,7 +22,7 @@ job "mysql" {
         destination = "local/my.cnf"
         mode        = "file"
 
-        options { checksum = "md5:6f7980f86011888eed719cf41e5f93c7" }
+        options { checksum = "md5:113509f4ce4f5becb4ee7c3412593a32" }
       }
 
       config {
