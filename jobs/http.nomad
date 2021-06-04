@@ -3,9 +3,11 @@ job "http" {
 
   group "http" {
     volume "caddycerts" {
-      type      = "csi"
-      source    = "caddycerts"
-      read_only = false
+      type            = "csi"
+      source          = "caddycerts"
+      read_only       = false
+      access_mode     = "single-node-writer"
+      attachment_mode = "file-system"
     }
 
     task "http" {
@@ -24,7 +26,7 @@ job "http" {
       }
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:2021-05-28T14-01-0b1f9738"
+        image   = "ghcr.io/femiwiki/mediawiki:2021-06-04T16-59-0fc2785a"
         command = "caddy"
         args    = ["run"]
 
