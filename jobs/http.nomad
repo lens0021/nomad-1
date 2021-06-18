@@ -26,7 +26,7 @@ job "http" {
       }
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:2021-06-11T12-34-869d941b"
+        image   = "ghcr.io/femiwiki/mediawiki:2021-06-18T04-57-20822934"
         command = "caddy"
         args    = ["run"]
 
@@ -50,11 +50,11 @@ job "http" {
         ulimit {
           nofile = "20000:40000"
         }
-        memory_hard_limit = 400
       }
 
       resources {
-        memory = 100
+        memory     = 100
+        memory_max = 400
       }
 
       env {

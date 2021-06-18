@@ -12,7 +12,7 @@ job "http" {
       }
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:2021-05-28T14-01-0b1f9738"
+        image   = "ghcr.io/femiwiki/mediawiki:latest"
         command = "caddy"
         args    = ["run"]
         volumes = ["local/Caddyfile:/srv/femiwiki.com/Caddyfile"]
@@ -34,12 +34,11 @@ job "http" {
         ulimit {
           nofile = "20000:40000"
         }
-
-        memory_hard_limit = 400
       }
 
       resources {
-        memory = 100
+        memory     = 100
+        memory_max = 400
       }
 
       env {
@@ -90,11 +89,9 @@ job "http" {
         }
 
         sidecar_task {
-          config {
-            memory_hard_limit = 500
-          }
           resources {
-            memory = 300
+            memory     = 300
+            memory_max = 500
           }
         }
       }
