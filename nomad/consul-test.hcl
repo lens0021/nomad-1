@@ -9,6 +9,11 @@ acl {
 server {
   enabled          = true
   bootstrap_expect = 2
+
+  default_scheduler_config {
+    # Memory oversubscription is opt-in in Nomad 1.1
+    memory_oversubscription_enabled = true
+  }
 }
 
 # We also use the server as a client.
