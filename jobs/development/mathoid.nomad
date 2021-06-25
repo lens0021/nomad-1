@@ -10,8 +10,7 @@ job "mathoid" {
       }
 
       resources {
-        memory = 150
-        memory_max = 600
+        memory = 170
       }
 
       env {

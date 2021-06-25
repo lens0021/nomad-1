@@ -37,8 +37,7 @@ job "fastcgi" {
       }
 
       config {
-        image             = "ghcr.io/femiwiki/mediawiki:latest"
-        network_mode      = "host"
+        image = "ghcr.io/femiwiki/mediawiki:latest"
 
         volumes = [
           "secrets/secrets.php:/a/secret.php",
@@ -54,22 +53,27 @@ job "fastcgi" {
             readonly = false
           }
         ]
+
+        network_mode = "host"
+      }
+
+      resources {
+        memory     = 400
+        memory_max = 800
       }
 
       env {
-        MEDIAWIKI_DEBUG_MODE              = "1"
-        MEDIAWIKI_SERVER                  = "http://localhost:8080"
-        MEDIAWIKI_DOMAIN_FOR_NODE_SERVICE = "localhost"
         NOMAD_UPSTREAM_ADDR_http          = "127.0.0.1:8080"
         NOMAD_UPSTREAM_ADDR_mysql         = "127.0.0.1:3306"
         NOMAD_UPSTREAM_ADDR_memcached     = "127.0.0.1:11211"
         NOMAD_UPSTREAM_ADDR_restbase      = "127.0.0.1:7231"
         NOMAD_UPSTREAM_ADDR_mathoid       = "127.0.0.1:10044"
-      }
-
-      resources {
-        memory = 100
-        memory_max = 600
+        MEDIAWIKI_DEBUG_MODE              = "1"
+        MEDIAWIKI_SERVER                  = "http://localhost:8080"
+        MEDIAWIKI_DOMAIN_FOR_NODE_SERVICE = "localhost"
+        # MEDIAWIKI_SKIP_INSTALL        = "1"
+        # MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
+        # MEDIAWIKI_SKIP_UPDATE         = "1"
       }
     }
   }

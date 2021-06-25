@@ -11,7 +11,7 @@ job "restbase" {
       }
 
       resources {
-        memory = 100
+        memory     = 100
         memory_max = 400
       }
 

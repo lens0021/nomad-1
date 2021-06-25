@@ -10,22 +10,23 @@ job "mysql" {
 [mysqld]
 default_authentication_plugin=mysql_native_password
 datadir=/srv/mysql
-max_connections=20
+max_connections=40
 table_open_cache=300
 # performance_schema=OFF
 temptable_max_ram=64M
 temptable_max_mmap=64M
-max_binlog_cache_size=32K
-max_binlog_stmt_cache_size=32K
+max_binlog_cache_size=32M
+max_binlog_stmt_cache_size=32M
 myisam_mmap_size=64M
 parser_max_mem_size=64M
+tmp_table_size=8M # Defaults to 16M
 EOF
         destination = "local/my.cnf"
       }
 
       config {
-        image             = "mysql/mysql-server:8.0"
-        volumes           = ["local/my.cnf:/etc/mysql/my.cnf"]
+        image   = "mysql/mysql-server:8.0"
+        volumes = ["local/my.cnf:/etc/mysql/my.cnf"]
 
         mounts = [
           {
@@ -38,8 +39,8 @@ EOF
       }
 
       resources {
-        memory = 500
-        memory_max = 1000
+        memory     = 400
+        memory_max = 800
       }
 
       env {

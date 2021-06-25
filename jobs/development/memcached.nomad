@@ -6,12 +6,11 @@ job "memcached" {
       driver = "docker"
 
       config {
-        image             = "memcached:1-alpine"
+        image = "memcached:1-alpine"
       }
 
       resources {
-        memory = 60
-        memory_max = 240
+        memory = 100
       }
     }
 

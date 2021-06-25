@@ -63,6 +63,13 @@ job "http" {
         command = "caddy"
         args    = ["run"]
 
+        network_mode = "host"
+
+        volumes = [
+          # Overwrite production Caddyfile
+          "local/Caddyfile:/srv/femiwiki.com/Caddyfile"
+        ]
+
         # Mount volumes into the container
         # Reference: https://www.nomadproject.io/docs/drivers/docker#mounts
         mounts = [
@@ -80,16 +87,15 @@ job "http" {
           }
         ]
 
-        volumes = [
-          # Overwrite production Caddyfile
-          "local/Caddyfile:/srv/femiwiki.com/Caddyfile"
-        ]
-
-        network_mode      = "host"
+        # Increase max fd number
+        # https://github.com/femiwiki/docker-mediawiki/issues/467
+        ulimit {
+          nofile = "20000:40000"
+        }
       }
 
       resources {
-        memory = 80
+        memory     = 100
         memory_max = 400
       }
     }
