@@ -6,11 +6,9 @@ server {
 }
 
 client {
-  reserved {
-    cpu = 2500 # 2.5GHz
-    # The memory that AWS t4g.small instance has
-    memory = 2048
-  }
+  cpu_total_compute = 5000 # 5000MHz
+  # The memory that AWS t4g.small instance has
+  memory_total_mb = 1900 # about 1.9GiB
 }
 
 plugin "docker" {
