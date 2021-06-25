@@ -6,7 +6,6 @@ server {
 }
 
 client {
-  cpu_total_compute = 5000 # 5000MHz
   # The memory that AWS t4g.small instance has
   memory_total_mb = 1900 # about 1.9GiB
 }
