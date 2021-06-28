@@ -35,24 +35,18 @@ job "fastcgi" {
         source      = "https://github.com/femiwiki/nomad/raw/main/php/php.ini"
         destination = "local/php.ini"
         mode        = "file"
-
-        options { checksum = "md5:80449c56193c217c38f4badfb6134410" }
       }
 
       artifact {
         source      = "https://github.com/femiwiki/nomad/raw/main/php/php-fpm.conf"
         destination = "local/php-fpm.conf"
         mode        = "file"
-
-        options { checksum = "md5:8060e82333648317f1f160779d31f197" }
       }
 
       artifact {
         source      = "https://github.com/femiwiki/nomad/raw/main/php/www.conf"
         destination = "local/www.conf"
         mode        = "file"
-
-        options { checksum = "md5:8ce9afeeee1ae1ff893b58be8dc7c3ec" }
       }
 
       template {
