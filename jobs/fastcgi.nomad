@@ -49,7 +49,7 @@ job "fastcgi" {
         destination = "local/php.ini"
         mode        = "file"
 
-        options { checksum = "md5:f4c216a28e6da49041d2434f690fac56" }
+        options { checksum = "md5:80449c56193c217c38f4badfb6134410" }
       }
 
       artifact {
@@ -68,12 +68,6 @@ job "fastcgi" {
         options { checksum = "md5:8ce9afeeee1ae1ff893b58be8dc7c3ec" }
       }
 
-      artifact {
-        source      = "https://github.com/femiwiki/nomad/raw/main/res/robots.txt"
-        destination = "local/robots.txt"
-        mode        = "file"
-      }
-
       template {
         data        = var.hotfix
         destination = "local/Hotfix.php"
@@ -81,14 +75,13 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-06-25T02-02-4bcaa838"
+        image = "ghcr.io/femiwiki/mediawiki:2021-07-03T09-59-910c9651"
 
         volumes = [
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
           "local/php.ini:/usr/local/etc/php/php.ini",
           "local/php-fpm.conf:/usr/local/etc/php-fpm.conf",
           "local/www.conf:/usr/local/etc/php-fpm.d/www.conf",
-          "local/robots.txt:/srv/femiwiki.com/robots.txt",
           "secrets/secrets.php:/a/secret.php",
           "secrets/analytics-credentials-file.json:/a/analytics-credentials-file.json",
           # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
@@ -151,9 +144,6 @@ variable "hotfix" {
  *
  * @file
  */
-
-// https://github.com/femiwiki/femiwiki/issues/275
-$wgUnifiedExtensionForFemiwikiRelatedArticlesUseLinks = false;
 
 // Maintenance
 // 점검이 끝나면 아래 라인 주석처리한 뒤, 아래 문서 내용을 비우면 됨
