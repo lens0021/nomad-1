@@ -75,7 +75,7 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2021-10-30T11-28-94d505da"
+        image = "ghcr.io/femiwiki/mediawiki:2021-11-19T07-36-b8b158b1"
 
         volumes = [
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
@@ -118,7 +118,7 @@ job "fastcgi" {
         NOMAD_UPSTREAM_ADDR_mathoid   = "127.0.0.1:10044"
         MEDIAWIKI_SKIP_INSTALL        = "1"
         MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
-        MEDIAWIKI_SKIP_UPDATE         = "1"
+        # MEDIAWIKI_SKIP_UPDATE         = "1"
       }
     }
   }
@@ -152,7 +152,6 @@ variable "hotfix" {
 
 // 업로드를 막고싶을때엔 아래 라인 주석 해제하면 됨
 // $wgEnableUploads = false;
-$wgGroupPermissions['importer']['importupload'] = true;
 EOF
 }
 
