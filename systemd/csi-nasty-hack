@@ -12,7 +12,7 @@ export NOMAD_TOKEN
 detach_volume()
 {
   # Fetch whether there is a running allocation.
-  ALLOC="$(nomad job allocs -t "{{range .}}{{print 1}}{{end}}" "$1")"
+  ALLOC="$(nomad job allocs -t "{{range .}}{{if eq .ClientStatus \"running\"}}{{print 1}}{{end}}{{end}}" "$1")"
   if [ -z "$ALLOC" ]; then
     echo "There is a allocation for $1."
   fi
