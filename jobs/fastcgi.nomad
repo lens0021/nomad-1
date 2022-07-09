@@ -68,6 +68,14 @@ job "fastcgi" {
         options { checksum = "md5:8ce9afeeee1ae1ff893b58be8dc7c3ec" }
       }
 
+      artifact {
+        source      = "https://github.com/femiwiki/docker-mediawiki/blob/5acd46869e06de726f19b277d24005f356e5d901/configs/LocalSettings.php"
+        destination = "local/LocalSettings.php"
+        mode        = "file"
+
+        options { checksum = "md5:b3482a8b1b2d421a60bef817efed1aad" }
+      }
+
       template {
         data        = var.hotfix
         destination = "local/Hotfix.php"
@@ -84,6 +92,7 @@ job "fastcgi" {
           "local/www.conf:/usr/local/etc/php-fpm.d/www.conf",
           "secrets/secrets.php:/a/secret.php",
           "secrets/analytics-credentials-file.json:/a/analytics-credentials-file.json",
+          "local/LocalSettings.php:/a/LocalSettings.php",
           # Overwrite the default Hotfix.php provided by femiwiki/mediawiki
           "local/Hotfix.php:/a/Hotfix.php",
         ]
