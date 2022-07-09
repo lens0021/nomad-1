@@ -32,7 +32,7 @@ job "http" {
       }
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:2021-11-19T07-36-b8b158b1"
+        image   = "ghcr.io/femiwiki/mediawiki:2022-07-09t14-09-0dc5ae58"
         command = "caddy"
         args    = ["run"]
 
