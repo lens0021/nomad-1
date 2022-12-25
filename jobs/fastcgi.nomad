@@ -75,7 +75,7 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2022-12-24t18-18-5c80dd3c"
+        image = "ghcr.io/femiwiki/mediawiki:2022-12-25t00-28-9653515e"
 
         volumes = [
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
@@ -117,7 +117,7 @@ job "fastcgi" {
         NOMAD_UPSTREAM_ADDR_restbase  = "127.0.0.1:7231"
         MEDIAWIKI_SKIP_INSTALL        = "1"
         MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
-        # MEDIAWIKI_SKIP_UPDATE         = "1"
+        MEDIAWIKI_SKIP_UPDATE         = "1"
       }
     }
   }
@@ -151,17 +151,6 @@ variable "hotfix" {
 
 // 업로드를 막고싶을때엔 아래 라인 주석 해제하면 됨
 // $wgEnableUploads = false;
-
-// https://github.com/femiwiki/femiwiki/issues/309
-wfLoadExtension( 'FlaggedRevs' );
-
-function wfWikiID() {
-  return \WikiMap::getCurrentWikiId();
-}
-
-function wfGetMainCache() {
-  return \ObjectCache::getLocalClusterInstance();
-}
 EOF
 }
 
