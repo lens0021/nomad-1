@@ -24,6 +24,7 @@ jobs:
             }
 
       - run: go install github.com/minamijoyo/hcledit@latest
+        shell: bash
 
       - name: Edit HCL
         run: |
@@ -31,6 +32,7 @@ jobs:
           hcledit attribute set -f fastcgi.nomad \
             -u job.fastcgi.group.fastcgi.task.fastcgi.config.image \
           '"ghcr.io/femiwiki/mediawiki:${{fromJSON(steps.vars.outputs.result).tag}}"'
+        shell: bash
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
