@@ -25,14 +25,14 @@ jobs:
 
       - run: |
           curl -L https://github.com/minamijoyo/hcledit/releases/download/v${HCLEDIT_VERSION}/hcledit_${HCLEDIT_VERSION}_linux_amd64.tar.gz | tar -xz
-          chmod +x ./hcledit
+          sudo install hcledit /usr/local/bin
         env:
           HCLEDIT_VERSION: '0.2.6'
 
       - name: Edit HCL
         run: |
           cd jobs
-          ./hcledit attribute set -f fastcgi.nomad \
+          hcledit attribute set -f fastcgi.nomad \
             -u job.fastcgi.group.fastcgi.task.fastcgi.config.image \
           '"ghcr.io/femiwiki/mediawiki:${{fromJSON(steps.vars.outputs.result).tag}}"'
 
