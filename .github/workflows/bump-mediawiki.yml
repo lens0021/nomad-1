@@ -24,6 +24,8 @@ jobs:
             }
 
       - run: |
+          mkdir ~/hcledit
+          cd ~/hcledit
           curl -L https://github.com/minamijoyo/hcledit/releases/download/v${HCLEDIT_VERSION}/hcledit_${HCLEDIT_VERSION}_linux_amd64.tar.gz | tar -xz
           sudo install hcledit /usr/local/bin
         env:
