@@ -28,7 +28,7 @@ jobs:
       - name: Edit HCL
         run: |
           cd jobs
-          "$GOBIN"/hcledit attribute set -f fastcgi.nomad \
+          hcledit attribute set -f fastcgi.nomad \
             -u job.fastcgi.group.fastcgi.task.fastcgi.config.image \
           '"ghcr.io/femiwiki/mediawiki:${{fromJSON(steps.vars.outputs.result).tag}}"'
 
