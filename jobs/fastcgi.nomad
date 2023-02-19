@@ -3,7 +3,7 @@ job "fastcgi" {
 
   group "fastcgi" {
     # Init Task Lifecycle
-    # See https://www.nomadproject.io/docs/job-specification/lifecycle#init-task-pattern
+    # Reference: https://www.nomadproject.io/docs/job-specification/lifecycle#init-task-pattern
     task "wait-for-backend" {
       lifecycle {
         hook    = "prestart"
@@ -75,7 +75,7 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2023-02-11T16-51-a0a1f9ad"
+        image = "ghcr.io/femiwiki/mediawiki:2023-02-19T09-22-417d3a8b"
 
         volumes = [
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
