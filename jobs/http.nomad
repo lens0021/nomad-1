@@ -32,7 +32,7 @@ job "http" {
       }
 
       config {
-        image   = "ghcr.io/femiwiki/mediawiki:2023-08-08T05-42-5829bae5"
+        image   = "ghcr.io/femiwiki/mediawiki:2023-08-08T16-05-84cfc3ac"
         command = "caddy"
         args    = ["run"]
 
@@ -67,9 +67,8 @@ job "http" {
       }
 
       env {
-        CADDYPATH     = "/etc/caddycerts"
-        FASTCGI_ADDR  = "127.0.0.1:9000"
-        RESTBASE_ADDR = "127.0.0.1:7231"
+        CADDYPATH    = "/etc/caddycerts"
+        FASTCGI_ADDR = "127.0.0.1:9000"
       }
     }
 
