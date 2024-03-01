@@ -75,7 +75,7 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:2023-11-12T00-34-e178b385"
+        image = "ghcr.io/femiwiki/femiwiki:2024-03-01T15-31-d2df3a49"
 
         volumes = [
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
@@ -116,7 +116,7 @@ job "fastcgi" {
         NOMAD_UPSTREAM_ADDR_memcached = "127.0.0.1:11211"
         MEDIAWIKI_SKIP_INSTALL        = "1"
         MEDIAWIKI_SKIP_IMPORT_SITES   = "1"
-        MEDIAWIKI_SKIP_UPDATE         = "1"
+        # MEDIAWIKI_SKIP_UPDATE         = "1"
       }
     }
   }

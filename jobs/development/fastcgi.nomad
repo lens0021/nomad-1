@@ -19,7 +19,7 @@ job "fastcgi" {
       driver = "docker"
 
       artifact {
-        source      = "https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/configs/secret.php.example"
+        source      = "https://raw.githubusercontent.com/femiwiki/docker-mediawiki/main/development/secret.php.example"
         destination = "secrets/secrets.php"
         mode        = "file"
       }
@@ -56,7 +56,7 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/mediawiki:latest"
+        image = "ghcr.io/femiwiki/femiwiki:latest"
 
         volumes = [
           "secrets/secrets.php:/a/secret.php",
