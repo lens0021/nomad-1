@@ -16,4 +16,5 @@ export NOMAD_TOKEN=$NOMAD_TOKEN
 echo "$NOMAD_TOKEN" >> "/etc/nomad.d/token"
 
 # .bashrc: Add a step to read the token from the local file
-cat <<< 'export NOMAD_TOKEN=$(sudo cat /etc/nomad.d/token)' >> "$HOME/.bashrc"
+cat <<< 'export NOMAD_TOKEN=$(sudo cat /etc/nomad.d/token)' >> "/root/.bashrc"
+cat <<< 'export NOMAD_TOKEN=$(sudo cat /etc/nomad.d/token)' >> "/home/ec2-user/.bashrc"
