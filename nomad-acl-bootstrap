@@ -6,6 +6,10 @@ until nomad acl policy list > /dev/null; do
   sleep 1; done;
 
 NOMAD_TOKEN="$(nomad acl bootstrap | tail -n +2 | head -n 1 | awk '{print $4}')"
+
+# Print the token to stdout
+echo "Nomad ACL Secret ID = $NOMAD_TOKEN"
+
 export NOMAD_TOKEN=$NOMAD_TOKEN
 
 # Write NOMAD_TOKEN as a local file
@@ -13,6 +17,3 @@ echo "$NOMAD_TOKEN" >> "/etc/nomad.d/token"
 
 # .bashrc: Add a step to read the token from the local file
 cat <<< 'export NOMAD_TOKEN=$(sudo cat /etc/nomad.d/token)' >> "$HOME/.bashrc"
-
-# Print the token to stdout
-echo "Nomad ACL Secret ID = $NOMAD_TOKEN"
