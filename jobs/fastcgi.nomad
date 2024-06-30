@@ -87,7 +87,7 @@ job "fastcgi" {
       }
 
       config {
-        image = "ghcr.io/femiwiki/femiwiki:2024-06-30T02-27-15a818f3"
+        image = "ghcr.io/femiwiki/femiwiki:2024-06-30T02-55-7f2d12f8"
 
         volumes = [
           "local/opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini",
@@ -159,7 +159,7 @@ variable "hotfix" {
 
 $wgMWLoggerDefaultSpi = [ 'class' => 'MediaWiki\\Logger\\LegacySpi' ]; # default
 # https://github.com/femiwiki/UnifiedExtensionForFemiwiki/issues/147
-$wgUnifiedExtensionForFemiwikiBlockByEmail = falae;
+$wgUnifiedExtensionForFemiwikiBlockByEmail = false;
 
 // Maintenance
 // 점검이 끝나면 아래 라인 주석처리한 뒤, 아래 문서 내용을 비우면 됨
