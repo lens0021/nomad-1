@@ -8,24 +8,25 @@ on:
 jobs:
   # This name is used by status check requirement
   before-cd-test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+
+      - name: setup-cni
+        run: |
+          export ARCH_CNI=$( [ $(uname -m) = aarch64 ] && echo arm64 || echo amd64)
+          export CNI_PLUGIN_VERSION=v1.4.0
+          curl -L -o cni-plugins.tgz "https://github.com/containernetworking/plugins/releases/download/${CNI_PLUGIN_VERSION}/cni-plugins-linux-${ARCH_CNI}-${CNI_PLUGIN_VERSION}".tgz
+          sudo mkdir -p /opt/cni/bin
+          sudo tar -C /opt/cni/bin -xzf cni-plugins.tgz
 
       - name: Install Nomad and Consul
         run: |
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-          sudo apt-get update && sudo apt-get install -y nomad=1.7.5-1 consul
+          sudo apt-get update && sudo apt-get install -y nomad=1.8.1-1 consul
           echo "nomad_version: $(nomad -v)"
           echo "consul_version: $(consul -v)"
-
-      - name: Validate job files
-        run: |
-          shopt -s globstar
-          for job in **/*.nomad; do
-            nomad job validate "$job";
-          done
 
       - name: Start a Nomad Agent and a Consul agent
         run: |
@@ -44,7 +45,14 @@ jobs:
               RETRY=$((SECONDS+60))
             fi
             sleep 1
-          done;
+          done
+
+      - name: Validate job files
+        run: |
+          shopt -s globstar
+          for job in **/*.nomad; do
+            nomad job validate "$job";
+          done
 
       - name: Run a Nomad job
         run: |
@@ -53,7 +61,7 @@ jobs:
           done
 
       - name: Access MediaWiki until success
-        timeout-minutes: 5
+        timeout-minutes: 3
         run: |
           echo 'Waiting for http...'
           until curl -sLfo /dev/null localhost:8080; do
