@@ -1,7 +1,11 @@
 variable "test" {
   type        = bool
-  description = "Uses jobs for the test server. Without certification."
+  description = "Uses jobs for the test server.."
   default     = false
+}
+
+locals {
+  main = !var.test
 }
 
 job "memcached" {
@@ -33,7 +37,7 @@ job "memcached" {
     }
 
     dynamic "service" {
-      for_each = var.test ? [] : [{}]
+      for_each = local.main ? [{}] : []
       content {
         provider = "nomad"
         name     = "memcached"
